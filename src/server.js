@@ -24,11 +24,13 @@ const start = () => {
   }
 };
 
+start();
+
 //! The start() function above will be restructured to the one below once connected to the db's 'development' environment
 // const start = () => {
 //   try {
 //     app.listen(PORT, () => {
-//       // If we are in development mode, we want the server to run on localhost
+//       // If we are in development mode, the server will run on localhost
 //       if (process.env.NODE_ENV === 'development') {
 //         console.log(`🍏 Server running on: http://localhost:${PORT} ... 🌊`);
 //       } else {
@@ -55,4 +57,4 @@ const start = () => {
 //   }
 // };
 
-start();
+// start()
