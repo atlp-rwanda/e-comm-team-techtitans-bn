@@ -55,8 +55,14 @@ This is an e-commerce platform with essential commerce features, having a backen
     ├── /routes                        # All endpoints
     ├── /services                      # Communication with the db
     ├── app.js                         # Configuration for required packages
-    └── server.js                      # Entry point
+    └── server.js   
+    
 
+#### tests
+
+     ./test                             # Entry point
+    ├── /routes                 
+    ├── /utils
 ### Folder structure
 
 This is the structure for any folder. The same applies for next folders.
@@ -72,6 +78,7 @@ This is the structure for any folder. The same applies for next folders.
 - []() Express
 - []() Postgres DB
 - []() Sequelize ORM
+- []() Jest
 
 <!-- LIVE DEMO -->
 
@@ -115,6 +122,9 @@ To get a local duplicate up and running, follow these simple steps:
 ```sh
 npm dev
 ```
+5. Start your Tests
+
+npm run test
 
 <!-- CONTRIBUTING -->
 
