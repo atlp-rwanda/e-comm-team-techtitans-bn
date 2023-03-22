@@ -2,10 +2,10 @@ import YAML from 'yamljs';
 import fs from 'fs';
 import path from 'path';
 
-const __dirname = path.resolve();
+const dirname = path.resolve();
 
 
-const docsPath = path.join(__dirname, 'docs');
+const docsPath = path.join(dirname, 'docs');
 const apiDocs = [];
 
 fs.readdirSync(docsPath).forEach(file => {
