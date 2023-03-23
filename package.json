@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "e-comm-team-techtitans-bn",
   "version": "1.0.0",
   "description": "<!-- TABLE OF CONTENTS -->",
@@ -36,4 +37,35 @@
     "test": "tests"
   },
   "keywords": []
+=======
+    "name": "e-comm-team-techtitans-bn",
+    "version": "1.0.0",
+    "description": "",
+    "type": "module",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon src/server.js",
+        "test": "jest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/atlp-rwanda/e-comm-team-techtitans-bn.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/atlp-rwanda/e-comm-team-techtitans-bn/issues"
+    },
+    "homepage": "https://github.com/atlp-rwanda/e-comm-team-techtitans-bn#readme",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "express-generator": "^4.16.1",
+        "nodemon": "^2.0.21"
+    },
+    "devDependencies": {
+        "jest": "^29.5.0"
+    }
+>>>>>>> 7c7fe18 (chore:finish configuring postgresql and Sequelize ORM)
 }
