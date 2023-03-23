@@ -24,7 +24,6 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-generator": "^4.16.1",
-<<<<<<< HEAD
     "nodemon": "^2.0.21"
   },
   "devDependencies": {
@@ -37,13 +36,4 @@
     "test": "tests"
   },
   "keywords": []
-=======
-    "fs": "^0.0.1-security",
-    "nodemon": "^2.0.21",
-    "path": "^0.12.7",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^4.6.2",
-    "yamljs": "^0.3.0"
-  }
->>>>>>> 4b4c36d (chore(setup-swagger-docs):finished to setup swagger Api docs  with one simple example)
 }
