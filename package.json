@@ -7,10 +7,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/server.js",
-<<<<<<< HEAD
     "lint:fix": "eslint src --fix --cache",
-=======
->>>>>>> 6e7dee8 (chore(setup-swagger-docs):finished to setup swagger Api docs  with one simple example)
     "test": "jest"
   },
   "repository": {
@@ -28,8 +25,11 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-generator": "^4.16.1",
-<<<<<<< HEAD
-    "nodemon": "^2.0.21"
+    "fs": "^0.0.1-security",
+    "nodemon": "^2.0.21",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.2",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "eslint": "^8.36.0",
@@ -41,16 +41,4 @@
     "test": "tests"
   },
   "keywords": []
-=======
-    "fs": "^0.0.1-security",
-    "nodemon": "^2.0.21",
-    "supertest": "^6.3.3",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^4.6.2",
-    "yamljs": "^0.3.0"
-  },
-  "devDependencies": {
-    "jest": "^29.5.0"
-  }
->>>>>>> 6e7dee8 (chore(setup-swagger-docs):finished to setup swagger Api docs  with one simple example)
 }
