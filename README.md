@@ -37,6 +37,7 @@ This is an e-commerce platform with essential commerce features, having a backen
     ├── /src                     # Source files
     ├── .env                     # Environment variables (ignored)
     ├── .env.example             # Environment variables schema
+    ├── .eslintrc.json
     ├── .gitignore
     ├── package-lock.json
     ├── package.json

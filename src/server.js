@@ -1,11 +1,11 @@
 import app from './app.js';
 
-const PORT = process.env.PORT;
+const { PORT } = process.env;
 
 const start = () => {
     try {
         app.listen(PORT, () => {
-            console.log(`🍏 Server is running on: http://localhost:${PORT} ... 🌊`);
+      console.log(`🍏 Server is running on: http://localhost:${PORT} ... 🌊`);
         });
         // Catch all routes that were not found and send this response
         app.use((req, res) => {
