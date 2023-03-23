@@ -24,11 +24,4 @@ const start = () => {
     }
 };
 
-<<<<<<< HEAD
 start();
-=======
-start();
-
-
-// start()
->>>>>>> 5301db7 (chore:finish configuring postgresql and Sequelize ORM)
