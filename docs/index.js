@@ -1,9 +1,8 @@
-import YAML from 'yamljs';
-import fs from 'fs';
-import path from 'path';
+const YAML = require('yamljs');
+const fs = require('fs');
+const path = require('path');
 
 const dirname = path.resolve();
-
 
 const docsPath = path.join(dirname, 'docs');
 const apiDocs = [];
@@ -30,4 +29,5 @@ apiDocs.forEach(doc => {
         combinedDocs.paths[path] = doc.paths[path];
     }
 });
-export default  combinedDocs
+
+module.exports = combinedDocs
