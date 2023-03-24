@@ -25,3 +25,13 @@ const start = () => {
 };
 
 start();
+
+// "scripts": {
+//     "start": "nodemon src/server.js",
+//     "lint:fix": "eslint src --fix --cache",
+//     "test": "jest",
+//     "dev": "nodemon --exec babel-node src/server.js"
+//   },
+
+// "build": "babel src --out-dir lib",
+// "start": "npm run build && node lib/server.js"
