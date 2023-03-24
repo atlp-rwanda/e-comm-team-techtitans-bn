@@ -127,6 +127,10 @@ npm dev
 
 npm run test
 
+6. Start your Tests with code coverage
+
+npm run coverage
+
 <!-- CONTRIBUTING -->
 
 ## Contributing
