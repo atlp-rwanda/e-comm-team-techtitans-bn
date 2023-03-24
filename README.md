@@ -1,3 +1,5 @@
+[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
+
 <!-- TABLE OF CONTENTS -->
 
 <details open="open">
@@ -56,14 +58,14 @@ This is an e-commerce platform with essential commerce features, having a backen
     ├── /routes                        # All endpoints
     ├── /services                      # Communication with the db
     ├── app.js                         # Configuration for required packages
-    └── server.js   
-    
+    └── server.js
 
 #### tests
 
      ./test                             # Entry point
-    ├── /routes                 
+    ├── /routes
     ├── /utils
+
 ### Folder structure
 
 This is the structure for any folder. The same applies for next folders.
@@ -123,6 +125,7 @@ To get a local duplicate up and running, follow these simple steps:
 ```sh
 npm dev
 ```
+
 5. Start your Tests
 
 npm run test
