@@ -3,11 +3,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import { sequelize } from './database/models/index';
+// import db from './database/models/index';
 import combinedDocs from '../docs/index';
 
 dotenv.config();
 
-// const { PORT } = process.env;
 const app = express();
 app.use(cors());
 
@@ -24,8 +24,8 @@ app.get('/', (req, res) => {
 
 export const connectDB = async () => {
   try {
-    await sequelize.authenticate();
-    console.log('Database connection established successfully');
+    await sequelize.sync();
+    console.log('🟢 Database connection established successfully');
   } catch (err) {
     console.log(`Database connection failed: ${err}`);
     // process.exit(1);
