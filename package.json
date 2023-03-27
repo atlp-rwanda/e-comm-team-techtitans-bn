@@ -51,6 +51,7 @@
     "sequelize": "^6.29.3",
     "fs": "^0.0.1-security",
     "nodemon": "^2.0.21",
+    "supertest": "^6.3.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.2",
     "yamljs": "^0.3.0"
@@ -81,6 +82,7 @@
   "keywords": []
 
 }
+
 
 
 
