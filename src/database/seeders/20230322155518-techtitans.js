@@ -9,8 +9,9 @@ module.exports = {
         {
           fullname: 'richard',
           email: 'richard@gmail.com',
-          password: 'richard123',
-          role: 'admin',
+          //the hashed password below is 'richard123'
+          password: '$2y$10$7a52OC6C3uCvK7nm64efXejZaaTxd04jzgFoaKVJrJt8bhsJGfpKC',
+          role: '1',
           createdAt: new Date(),
           updatedAt: new Date(),
         },

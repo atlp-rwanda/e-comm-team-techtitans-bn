@@ -4,7 +4,7 @@ paths:
     post:
       summary: Product Register
       tags:
-        - Product
+        - Example
       produces:
         - application/json
       consumes:
