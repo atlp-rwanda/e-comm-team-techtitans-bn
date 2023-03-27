@@ -4,7 +4,6 @@
   "description": "<!-- TABLE OF CONTENTS -->",
   "main": "lib/server.js",
   "scripts": {
-<<<<<<< HEAD
     "start": "node lib/server.js",
     "dev": "npm run build && nodemon lib/server.js",
     "build": "babel src --out-dir docs --out-dir lib",
@@ -55,6 +54,7 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.2",
     "yamljs": "^0.3.0"
+
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
@@ -69,7 +69,7 @@
     "fs": "^0.0.1-security",
     "jest": "^29.5.0",
     "nodemon": "^2.0.21",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
     "eslint": "^8.36.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
@@ -81,5 +81,11 @@
   "keywords": []
 
 }
+
+
+
+
+
+
 
 
