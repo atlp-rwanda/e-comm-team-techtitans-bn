@@ -1,10 +1,10 @@
 
 paths:
-  /api/vi/login:
+  /api/v1/login:
     post:
       summary: User Login
       tags:
-        - Product
+        - Users
       produces:
         - application/json
       consumes:

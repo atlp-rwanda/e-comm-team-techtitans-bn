@@ -6,11 +6,13 @@ import { sequelize } from './database/models/index';
 // import db from './database/models/index';
 import router from './routes';
 import combinedDocs from '../docs/index';
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
+app.use(cookieParser());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
