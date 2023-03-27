@@ -30,7 +30,8 @@
     "js-yaml": "^4.1.0",
     "pg": "^8.10.0",
     "sequelize": "^6.29.3",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "nodemon": "^2.0.21"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
@@ -47,7 +48,8 @@
     "nodemon": "^2.0.21",
     "supertest": "^6.3.3",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^4.6.2"
+    "swagger-ui-express": "^4.6.2",
+    "yamljs": "^0.3.0"
   },
   "directories": {
     "test": "tests"

@@ -1,9 +1,9 @@
+
 const YAML = require('yamljs');
 const fs = require('fs');
 const path = require('path');
 
 const dirname = path.resolve();
-
 const docsPath = path.join(dirname, 'docs');
 const apiDocs = [];
 
@@ -23,11 +23,10 @@ const combinedDocs = {
     },
     paths: {},
 };
-
 apiDocs.forEach(doc => {
     for (const path in doc.paths) {
         combinedDocs.paths[path] = doc.paths[path];
     }
 });
-
 module.exports = combinedDocs
+
