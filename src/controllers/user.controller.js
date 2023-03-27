@@ -12,6 +12,7 @@ const verifyUser = async (req, res) => {
     const user = {
       ...req.body,
     };
+    console.log(user)
     switch (true) {
       case user.fullname.trim() === '':
         res.status(401).json({
@@ -63,9 +64,10 @@ const verifyUser = async (req, res) => {
 
         // Save user in the database
         const userToken = JwtUtility.generateToken(user, '1h');
+        console.log(userToken)
 
         // Redirect to another route
-        const redirectUrl = `http://localhost:3000/api/v1/user/${userToken}`;
+        const redirectUrl = `http://localhost:4000/api/v1/user/${userToken}`;
         // res.redirect(redirectUrl);
         res.json(redirectUrl);
         break;

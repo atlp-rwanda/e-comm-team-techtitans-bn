@@ -29,9 +29,7 @@ apiDocs.forEach((doc) => {
     combinedDocs.paths[path] = doc.paths[path];
   }
 });
-<<<<<<< HEAD
 
 module.exports = combinedDocs;
-=======
-export default  combinedDocs
->>>>>>> fe0a9e4 (initial commit)
+
+
