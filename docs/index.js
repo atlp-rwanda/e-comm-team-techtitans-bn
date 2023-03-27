@@ -2,9 +2,16 @@ const YAML = require('yamljs');
 const fs = require('fs');
 const path = require('path');
 
+<<<<<<< HEAD
 const dirname = path.resolve();
 
 const docsPath = path.join(dirname, 'docs');
+=======
+const __dirname = path.resolve();
+
+
+const docsPath = path.join(__dirname, 'docs');
+>>>>>>> 4b4c36d (chore(setup-swagger-docs):finished to setup swagger Api docs  with one simple example)
 const apiDocs = [];
 
 fs.readdirSync(docsPath).forEach((file) => {
