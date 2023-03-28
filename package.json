@@ -4,11 +4,24 @@
   "description": "<!-- TABLE OF CONTENTS -->",
   "main": "lib/server.js",
   "scripts": {
-    "start": "npm run build && node lib/server.js",
+    "start": "node lib/server.js",
+    "dev": "npm run build && nodemon lib/server.js",
     "build": "babel src --out-dir docs --out-dir lib",
     "lint:fix": "eslint src --fix --cache",
     "test": "jest",
-    "coverage":"jest --collect-coverage"
+    "coverage": "jest --collect-coverage",
+    "migration": "npm migrate:undo && npm migrate",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo:all",
+    "migrate:dev": "npm migrate:dev:undo && npm migrate:dev:all",
+    "migrate:dev:all": "npx sequelize-cli db:migrate",
+    "migrate:dev:undo": "npx sequelize-cli db:migrate:undo:all",
+    "seed:dev": "npm seed:dev:undo && npm seed:dev:do",
+    "seed:dev:do": "npx sequelize-cli db:seed:all",
+    "seed:dev:undo": "npx sequelize-cli db:seed:undo:all",
+    "seed:test": "npm seed:test:undo && npm seed:test:do",
+    "seed:test:do": "npx sequelize-cli db:seed:all",
+    "seed:test:undo": "npx sequelize-cli db:seed:undo:all"
   },
   "repository": {
     "type": "git",
@@ -31,7 +44,8 @@
     "pg": "^8.10.0",
     "sequelize": "^6.29.3",
     "yamljs": "^0.3.0",
-    "nodemon": "^2.0.21"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.2"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
@@ -46,10 +60,7 @@
     "fs": "^0.0.1-security",
     "jest": "^29.5.0",
     "nodemon": "^2.0.21",
-    "supertest": "^6.3.3",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^4.6.2",
-    "yamljs": "^0.3.0"
+    "supertest": "^6.3.3"
   },
   "directories": {
     "test": "tests"
