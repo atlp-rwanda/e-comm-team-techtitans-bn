@@ -1,0 +1,39 @@
+paths:
+  #Simple example for user register
+  /api/v1/user:
+    post:
+      summary:  Signup
+      tags:
+        - User
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          schema:
+            type: object
+            properties:
+              fullname:
+                type: string
+                required: true
+                description: username
+              email:
+                type: string
+                required: true
+                description: email
+              password:
+                type: string
+                required: true
+                description: product price
+              confirmPassword:
+                type: string
+                required: true
+                description: product price
+      responses:
+        201:
+          schema:
+            type: object
+        500:
+          description: Something went wrong, try again
