@@ -45,13 +45,13 @@ const verifyUser = async (req, res) => {
             message: 'Your password must be at least 8 characters long.',
           });
           break;
-        //   case !user.password.match(/^[a-z0-9]+$/i):
+          //   case !user.password.match(/^[a-z0-9]+$/i):
         case !user.password.match(
-          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i
+            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i
         ):
           res.status(401).json({
             message:
-              'Your password must contain at least 1 uppercase, 1 lowercase, 1 digit, and one case character.',
+                'Your password must contain at least 1 uppercase, 1 lowercase, 1 digit, and one case character.',
           });
           break;
         case user.confirmPassword.trim() === '':
@@ -70,19 +70,19 @@ const verifyUser = async (req, res) => {
           const to = user.email;
           const userToken = JwtUtility.generateToken(user, '1h');
           const context = {
-            verifyUrl: `http://localhost:${process.env.PORT}/api/v1/user/${userToken}`,
+            verifyUrl: `http://localhost:${process.env.PORT}/api/v1/user/signup/${userToken}`,
             content: 'VERIFY YOUR EMAIL',
           };
           sendEmail.sendVerification(to, 'verification email', context);
           response.success(
-            res,
-            200,
-            'Check your email and proceed with verification',
-            {
-              email: user.email,
-              password: user.password,
-              userToken,
-            },
+              res,
+              200,
+              'Check your email and proceed with verification',
+              {
+                email: user.email,
+                password: user.password,
+                userToken,
+              },
           );
           break;
       }
@@ -98,16 +98,16 @@ const createUser = async (req, res) => {
   const { token } = req.params;
   const check = jwt.verify(token, process.env.SECRET_TOKEN);
   User.create(check)
-    .then((data) => {
-      res
-        .status(200)
-        .send({ message: 'check a welcoming message we sent you...' });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while creating the User.',
+      .then((data) => {
+        res
+            .status(201)
+            .send({ message: 'check a welcoming message we sent you...' });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message || 'Some error occurred while creating the User.',
+        });
       });
-    });
   const context = {
     verifyUrl: `http://localhost:${process.env.PORT}`,
     content: 'GET STARTED',
@@ -117,17 +117,17 @@ const createUser = async (req, res) => {
 // Find all Users
 const findAllUsers = (req, res) => {
   User.findAll({ where: {} })
-    .then((usersList) => {
-      res.send({
-        message: `${usersList.length} Users were all fetched successfully!`,
-        data: usersList,
+      .then((usersList) => {
+        res.send({
+          message: `${usersList.length} Users were all fetched successfully!`,
+          data: usersList,
+        });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message || 'Some error occurred while removing all users.',
+        });
       });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while removing all users.',
-      });
-    });
 };
 // Delete all Users
 const deleteAllUsers = (req, res) => {
@@ -135,13 +135,61 @@ const deleteAllUsers = (req, res) => {
     where: {},
     truncate: false,
   })
-    .then((nums) => {
-      res.send({ message: `${nums} Users were all deleted successfully!` });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while removing all users.',
+      .then((nums) => {
+        res.send({ message: `${nums} Users were all deleted successfully!` });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message || 'Some error occurred while removing all users.',
+        });
       });
-    });
 };
-export { verifyUser, createUser, deleteAllUsers, findAllUsers };
+
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(401).json({
+        message: 'Please provide both email and password',
+      });
+    }
+    // Find the email of the user
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(401).json({
+        message: 'Invalid email or password',
+      });
+    }
+    // Check if the user password matches
+    const passwordMatch = await BcryptUtility.verifyPassword(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({
+        message: 'Invalid email or password',
+      });
+    }
+
+    const token = JwtUtility.generateToken(
+        {
+          id: user.id,
+          email: user.email,
+        },
+        '1d'
+    );
+
+    // Set cookie with the token as its value
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true, // cynthia you must remember to set this to true in production(push) and false in dev
+    });
+
+    res.status(200).json({
+      message: 'Login successful',
+      token,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export { verifyUser, createUser, deleteAllUsers, findAllUsers,login };

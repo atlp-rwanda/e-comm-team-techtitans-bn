@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  db:
+    container_name: techtitans-db
+    image: postgres:15
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - ${DB_PORT_EXPOSE}:5433
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: e-commerce-container
+    image: titans-e-commerce:1.0.0
+    env_file:
+      - ./.env
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_USERNAME=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=db
+      - ${DB_PORT}:${DB_PORT}
+
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    depends_on:
+      - db
+    links:
+      - db
+volumes:
+  db:
+    driver: local

@@ -1,6 +1,5 @@
 paths:
-  #Simple example for user register
-  /api/v1/user:
+  /api/v1/user/signup:
     post:
       summary:  Signup
       tags:
