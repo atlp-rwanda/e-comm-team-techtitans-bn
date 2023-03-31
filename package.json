@@ -4,7 +4,7 @@
   "description": "<!-- TABLE OF CONTENTS -->",
   "main": "lib/server.js",
   "scripts": {
-    "start": "node lib/server.js",
+    "start": "npm run build && npm run migrate && npm run seed:dev && node lib/server.js",
     "dev": "npm run build && nodemon lib/server.js",
     "build": "babel src --out-dir docs --out-dir lib",
     "lint:fix": "eslint src --fix --cache",
@@ -54,6 +54,7 @@
     "nodemon": "^2.0.21",
     "pg": "^8.10.0",
     "sequelize": "^6.29.3",
+    "sequelize-cli": "^6.6.0",
     "supertest": "^6.3.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.2",
