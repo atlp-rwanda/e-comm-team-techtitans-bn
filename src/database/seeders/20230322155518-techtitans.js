@@ -1,87 +1,87 @@
-"use strict";
+'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "Users",
+      'Users',
       [
         {
-          fullname: "richard",
-          email: "richard@gmail.com",
+          fullname: 'richard',
+          email: 'richard@gmail.com',
           //the hashed password below is 'richard123'
           password:
-            "$2y$10$7a52OC6C3uCvK7nm64efXejZaaTxd04jzgFoaKVJrJt8bhsJGfpKC",
-          role: 1,
+            '$2a$12$D4vH/vMcek72uZCmuVINNuURfe0uxmW1Z2xEmq4fQkt.ILdgBc6/y',
+          role: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
       ],
-      {}
+      {},
     );
 
     await queryInterface.bulkInsert(
-      "Carts",
+      'Carts',
       [
         {
-          product_id: "product1",
-          user_id: "user1",
+          product_id: 'product1',
+          user_id: 'user1',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
       ],
-      {}
+      {},
     );
 
     await queryInterface.bulkInsert(
-      "Products",
+      'Products',
       [
         {
-          name: "macbook",
-          category_id: "category1",
-          vendor_id: "vendor1",
-          price: "500000",
-          quantity: "100",
+          name: 'macbook',
+          category_id: 'category1',
+          vendor_id: 'vendor1',
+          price: '500000',
+          quantity: '100',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
       ],
-      {}
+      {},
     );
 
     await queryInterface.bulkInsert(
-      "Categories",
+      'Categories',
       [
         {
-          name: "laptop",
+          name: 'laptop',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
       ],
-      {}
+      {},
     );
 
     await queryInterface.bulkInsert(
-      "Orders",
+      'Orders',
       [
         {
-          product_id: "product1",
-          user_id: "user1",
-          quantity: "50packets",
-          status: "undelivered",
+          product_id: 'product1',
+          user_id: 'user1',
+          quantity: '50packets',
+          status: 'undelivered',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
       ],
-      {}
+      {},
     );
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("Users", null, {});
-    await queryInterface.bulkDelete("Carts", null, {});
-    await queryInterface.bulkDelete("Categories", null, {});
-    await queryInterface.bulkDelete("Products", null, {});
-    await queryInterface.bulkDelete("Orders", null, {});
+    await queryInterface.bulkDelete('Users', null, {});
+    await queryInterface.bulkDelete('Carts', null, {});
+    await queryInterface.bulkDelete('Categories', null, {});
+    await queryInterface.bulkDelete('Products', null, {});
+    await queryInterface.bulkDelete('Orders', null, {});
   },
 };
