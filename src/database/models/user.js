@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       preferredCurrency: DataTypes.STRING,
       location: DataTypes.STRING,
       billingAddress: DataTypes.STRING,
-      role: {
+      roleId: {
         type: DataTypes.INTEGER,
         defaultValue: 3,
         // Admin(1), Seller(2), Buyer(3)
