@@ -1,7 +1,7 @@
 paths:
   /api/v1/user/signup:
     post:
-      summary:  Signup
+      summary: Email Verification
       tags:
         - User
       produces:
@@ -16,18 +16,22 @@ paths:
             properties:
               fullname:
                 type: string
+                default: testUser
                 required: true
                 description: username
               email:
                 type: string
+                default: testUser@gmail.com
                 required: true
                 description: email
               password:
                 type: string
+                default: Password@123
                 required: true
                 description: product price
               confirmPassword:
                 type: string
+                default: Password@123
                 required: true
                 description: product price
       responses:
