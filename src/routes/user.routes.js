@@ -1,4 +1,6 @@
 import express from 'express';
+import Role from '../controllers/user/role.controller';
+// import roles from './roles.routes';
 
 import { verifyUser, createUser } from '../controllers/user/signup.controller';
 import login from '../controllers/user/login.controller';
@@ -31,5 +33,6 @@ userRouter.put('/:uuid', updateProfile);
 
 // Get all users
 userRouter.get('/profile/users', findAllUsers);
+userRouter.post('/role', Role.setRole);
 
 export default userRouter;
