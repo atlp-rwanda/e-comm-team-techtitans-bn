@@ -1,13 +1,14 @@
 import jwt from "jsonwebtoken";
-import db from "../database/models";
-import BcryptUtility from "../utils/bcrypt.util";
-import JwtUtility from "../utils/jwt.util";
-import response from "../utils/response.util";
-import sendEmail from "../utils/send.email";
+import db from "../../database/models";
+import BcryptUtility from "../../utils/bcrypt.util";
+import JwtUtility from "../../utils/jwt.util";
+import speakeasy from 'speakeasy';
+import response from "../../utils/response.util";
+import sendEmail from "../../utils/send.email";
 const User = db.users;
 const resetSecret = process.env.RESET_SECRET;
 const bcrypt = require("bcrypt");
-import sendFunc from "../utils/resetPasswordEmail";
+import sendFunc from "../../utils/resetPasswordEmail";
 
 // Create and Save a new User
 const verifyUser = async (req, res) => {
@@ -154,52 +155,138 @@ const deleteAllUsers = (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(401).json({
-        message: "Please provide both email and password",
-      });
-    }
-    // Find the email of the user
-    const user = await User.findOne({ where: { email } });
-    if (!user) {
-      return res.status(401).json({
-        message: "Invalid email or password",
-      });
-    }
-    // Check if the user password matches
-    const passwordMatch = await BcryptUtility.verifyPassword(
-      password,
-      user.password
-    );
-    if (!passwordMatch) {
-      return res.status(401).json({
-        message: "Invalid email or password",
-      });
-    }
+      const { email, password } = req.body;
+      if (!email || !password) {
+          return res.status(401).json({
+              message: 'Please provide both email and password',
+          });
+      }
+      // Find the email of the user
+      const user = await User.findOne({ where: { email } });
+      if (!user) {
+          return res.status(401).json({
+              message: 'Invalid email or password',
+          });
+      }
+      // Check if the user password matches
+      const passwordMatch = await BcryptUtility.verifyPassword(password, user.password);
+      if (!passwordMatch) {
+          return res.status(401).json({
+              message: 'Invalid email or password',
+          });
+      }
+      const secret = speakeasy.generateSecret();
 
-    const token = JwtUtility.generateToken(
-      {
+if(user.role == 1 ){
+
+  const token = JwtUtility.generateToken(
+    {
         id: user.id,
         email: user.email,
-      },
-      "1d"
-    );
+    },
+    '1d'
+);
+res.cookie("token", token, {
+    httpOnly: true,
+    secure: true, // cynthia you must remember to set this to true in production(push) and false in dev
+});
 
-    // Set cookie with the token as its value
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true, // cynthia you must remember to set this to true in production(push) and false in dev
-    });
+// Return a response indicating that the login was successful
+return res.status(200).json({
+    message: 'Login successful',
+    token,
+}); 
+}
+console.log(user)
+      user.mfa_secret = secret.base32;
+      await user.save();
 
-    res.status(200).json({
-      message: "Login successful",
-      token,
-    });
+      const otp = speakeasy.totp({
+          secret: secret.base32,
+          encoding: 'base32',
+      });
+      const to=email;
+      const subject='your Otp';
+      const text=otp;
+      sendEmail.sendEmail(to,subject,text)
+      console.log(`Your one-time code is: ${otp}`);
+
+      // Return a response indicating that the user needs to enter their one-time code
+      return res.status(202).json({
+          message: 'Please enter your OTP',
+          user: {
+              id: user.id,
+              email: user.email,
+              secondFactorEnabled: user.mfa_secret ? true : false,
+          },
+      });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+      res.status(500).json({
+          message: error.message,
+      });
+  }
+};
+
+const verifyOtp = async (req, res) => {
+  try {
+      const { email, otp } = req.body;
+      if (!email || !otp) {
+          return res.status(400).json({
+              message: 'Please provide valid OTP/email',
+          });
+      }
+
+// const mfa_secret = otp 
+      // Find the user in the database
+
+      // console.log(otp)
+       const user = await User.findOne({ where: {email} });
+
+      if (!user) {
+          return res.status(401).json({
+              message: 'Invalid email or OTP',
+          });
+      }
+
+      // Verify the one-time code
+      const secret = user.mfa_secret;
+      const isValid = speakeasy.totp.verify({
+          secret,
+          encoding: 'base32',
+          token: otp,
+          window: 1,
+      });
+      console.log("isValid", isValid)
+      if (!isValid) {
+
+
+          return res.status(401).json({
+              message: 'Invalid one-time code',
+          });
+      }
+    
+      // Generate a new JWT token and set it as a cookie
+      const token = JwtUtility.generateToken(
+          {
+              id: user.id,
+              email: user.email,
+          },
+          '1d'
+      );
+      res.cookie("token", token, {
+          httpOnly: true,
+          secure: true, // cynthia you must remember to set this to true in production(push) and false in dev
+      });
+
+      // Return a response indicating that the login was successful
+      res.status(200).json({
+          message: 'Login successful',
+          token,
+      });
+  } catch (error) {
+      res.status(500).json({
+          message: error.message,
+      });
   }
 };
 
@@ -351,6 +438,7 @@ const updateProfile = async (req, res) => {
 export {
   verifyUser,
   createUser,
+  verifyOtp,
   deleteAllUsers,
   findAllUsers,
   forgotPassword,
