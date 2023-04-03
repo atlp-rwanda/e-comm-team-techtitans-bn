@@ -104,12 +104,10 @@ const createUser = async (req, res) => {
   const check = jwt.verify(token, process.env.SECRET_TOKEN);
   User.create(check)
     .then((data) => {
-
       res.status(201).json({
         data: data,
         message: "check a welcoming message we sent you...",
       });
-
     })
     .catch((err) => {
       res.status(500).send({
@@ -130,17 +128,13 @@ const findAllUsers = (req, res) => {
       res.send({
         message: `${usersList.length} Users were all fetched successfully!`,
         data: usersList,
-
       });
     })
     .catch((err) => {
       res.status(500).send({
         message: err.message || "Some error occurred while removing all users.",
       });
-
-      });
-    })
-  
+    });
 };
 // Delete all Users
 const deleteAllUsers = (req, res) => {
@@ -208,7 +202,6 @@ const login = async (req, res) => {
     });
   }
 };
-
 
 //FORGOT PASSWORD
 const forgotPassword = async (req, res) => {
@@ -314,7 +307,8 @@ const resetPassword = async (req, res) => {
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
-
+  }
+};
 // update a profile
 const updateProfile = async (req, res) => {
   const { uuid } = req.params;
@@ -351,7 +345,6 @@ const updateProfile = async (req, res) => {
     return res.status(500).json({
       error: "Server error",
     });
-
   }
 };
 
