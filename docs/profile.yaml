@@ -1,0 +1,52 @@
+paths:
+  
+  /api/v1/user/{uuid}:
+    put:
+      summary:  Update
+      tags:
+        - User
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: uuid
+          type: string
+          required: true
+          description: ID of the user
+        - in: body
+          name: Update
+          schema:
+            type: object
+            properties:
+              gender:
+                type: string
+                required: true
+                description: gender
+              birthdate:
+                type: string
+                required: true
+                description: birthdate
+              preferredLanguage:
+                type: string
+                required: true
+                description: preferredLanguage
+              preferredCurrency:
+                type: string
+                required: true
+                description: preferredCurrency
+              billingAddress:
+                type: string
+                required: true
+                description: billingAddress
+              location:
+                type: string
+                required: true
+                description: location          
+      responses:
+        201:
+          schema:
+            type: object
+        500:
+          description: Something went wrong, try again
