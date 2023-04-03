@@ -17,11 +17,19 @@ jobs:
           paths:
             - ~/.npm
       - run:
+          name: Start Postgres
+          command: |
+            docker run --privileged -d \
+              -e POSTGRES_USER=${DB_USER} \
+              -e POSTGRES_PASSWORD=${DB_PASSWORD} \
+              -e POSTGRES_DB=${DB_NAME} \
+              -p 5432:5432 \
+              postgres:13.3
+      - run:
           name: Run Tests
-          command: npm run test
+          command: DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@dpg-cgel34e4dadd1mlsi2kg-a:5432/${DB_NAME} npm run test
 
 workflows:
   test_my_app:
     jobs:
       - test
-
