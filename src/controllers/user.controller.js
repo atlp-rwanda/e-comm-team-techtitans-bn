@@ -98,14 +98,18 @@ const verifyUser = async (req, res) => {
   }
 };
 // Create a new user
+
 const createUser = async (req, res) => {
   const { token } = req.params;
   const check = jwt.verify(token, process.env.SECRET_TOKEN);
   User.create(check)
     .then((data) => {
-      res
-        .status(201)
-        .send({ message: "check a welcoming message we sent you..." });
+
+      res.status(201).json({
+        data: data,
+        message: "check a welcoming message we sent you...",
+      });
+
     })
     .catch((err) => {
       res.status(500).send({
@@ -118,6 +122,7 @@ const createUser = async (req, res) => {
   };
   sendEmail.sendWelcome(check.email, "verification email", context);
 };
+
 // Find all Users
 const findAllUsers = (req, res) => {
   User.findAll({ where: {} })
@@ -125,13 +130,17 @@ const findAllUsers = (req, res) => {
       res.send({
         message: `${usersList.length} Users were all fetched successfully!`,
         data: usersList,
+
       });
     })
     .catch((err) => {
       res.status(500).send({
         message: err.message || "Some error occurred while removing all users.",
       });
-    });
+
+      });
+    })
+  
 };
 // Delete all Users
 const deleteAllUsers = (req, res) => {
@@ -199,6 +208,7 @@ const login = async (req, res) => {
     });
   }
 };
+
 
 //FORGOT PASSWORD
 const forgotPassword = async (req, res) => {
@@ -304,6 +314,44 @@ const resetPassword = async (req, res) => {
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
+
+// update a profile
+const updateProfile = async (req, res) => {
+  const { uuid } = req.params;
+  const {
+    gender,
+    birthdate,
+    preferredLanguage,
+    preferredCurrency,
+    location,
+    billingAddress,
+  } = req.body;
+
+  try {
+    const user = await User.findOne({ where: { uuid } });
+    user.gender = gender;
+    user.birthdate = birthdate;
+    user.preferredLanguage = preferredLanguage;
+    user.preferredCurrency = preferredCurrency;
+    user.location = location;
+    user.billingAddress = billingAddress;
+
+    await user.save();
+    return res.status(201).json({
+      user: {
+        gender: user.gender,
+        birthdate: user.birthdate,
+        preferredLanguage: user.preferredLanguage,
+        preferredCurrency: user.preferredCurrency,
+        location: user.location,
+        billingAddress: user.billingAddress,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Server error",
+    });
+
   }
 };
 
@@ -315,5 +363,6 @@ export {
   forgotPassword,
   getResetPassword,
   resetPassword,
+  updateProfile,
   login,
 };
