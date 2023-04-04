@@ -1,0 +1,61 @@
+paths:
+  /api/v1/product/create:
+    post:
+      summary: add product
+      tags:
+        - Product
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: Product
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                required: true
+                description: product name
+              categoryId:
+                type: string
+                required: true
+                description: Product UUID
+              price:
+                type: number
+                format: float
+                required: true
+                description: Product Price
+              quantity:
+                type: integer
+                required: true
+                description: User Id
+              images:
+                type: array
+                items:
+                  type: string
+                required: true
+                description: images
+              description:
+                type: string
+                required: false
+                description: description
+              bonus:
+                type: integer
+                required: false
+                description: bonus
+              expiryDate:
+                type: string
+                required: true
+                description: expiration date
+              ec:
+                type: integer
+                required: false
+                description: ec
+      responses:
+        201:
+          schema:
+            type: object
+        500:
+          description: Something went wrong, try again

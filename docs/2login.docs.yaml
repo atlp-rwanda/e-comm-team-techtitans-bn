@@ -1,4 +1,3 @@
-
 paths:
   /api/v1/user/login:
     post:
@@ -17,10 +16,12 @@ paths:
             properties:
               email:
                 type: string
+                default: testUser@gmail.com
                 required: true
                 description: email
               password:
                 type: string
+                default: Password@123
                 required: true
                 description: user password
       responses:
@@ -53,4 +54,3 @@ paths:
                 properties:
                   message:
                     type: string
-
