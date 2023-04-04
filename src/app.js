@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
+import session from 'express-session';
+import passport from 'passport';
 import { sequelize } from './database/models/index';
 // import db from './database/models/index';
 import router from './routes';
@@ -14,6 +16,17 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(session({ 
+  secret: 'melody hensley is my spirit animal',
+ resave: false,
+ saveUninitialized: true,
+}));
+
+
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', (req, res) => {
   res

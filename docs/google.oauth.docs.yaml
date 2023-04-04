@@ -1,0 +1,21 @@
+paths:
+  /api/v1/auth/:
+    get:
+      tags:
+        - Auth
+      summary: Google authentication redirect endpoint
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      responses:
+        '200':
+          description: Redirect to the user's profile page
+        '401':
+          description: Unauthorized
+      security:
+        - google_auth: []
+
+    schemes:
+      - http
+      - https
