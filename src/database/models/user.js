@@ -18,16 +18,56 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-      fullname: DataTypes.STRING,
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      gender: DataTypes.STRING,
-      birthdate: DataTypes.DATE,
-      preferredLanguage: DataTypes.STRING,
-      preferredCurrency: DataTypes.STRING,
-      location: DataTypes.STRING,
-      billingAddress: DataTypes.STRING,
-      roleId: {
+      fullname: {
+        type: DataTypes.STRING,
+        set(val) {
+          this.setDataValue("fullname", val.toLowerCase());
+        },
+      },
+      email: {
+        type: DataTypes.STRING,
+        set(val) {
+          this.setDataValue("email", val.toLowerCase());
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        set(val) {
+          this.setDataValue("password", val.toLowerCase());
+        },
+      },
+
+      gender: {
+        type: DataTypes.STRING,
+        set(val) {
+          this.setDataValue("gender", val.toLowerCase());
+        },
+      },
+      preferredLanguage: {
+        type: DataTypes.STRING,
+        set(val) {
+          this.setDataValue("preferredLanguage", val.toLowerCase());
+        },
+      },
+      preferredCurrency: {
+        type: DataTypes.STRING,
+        set(val) {
+          this.setDataValue("preferredCurrency", val.toLowerCase());
+        },
+      },
+      location: {
+        type: DataTypes.STRING,
+        set(val) {
+          this.setDataValue("location", val.toLowerCase());
+        },
+      },
+      billingAddress: {
+        type: DataTypes.STRING,
+        set(val) {
+          this.setDataValue("billingAddress", val.toLowerCase());
+        },
+      },
+      role: {
         type: DataTypes.INTEGER,
         defaultValue: 3,
         // Admin(1), Seller(2), Buyer(3)
