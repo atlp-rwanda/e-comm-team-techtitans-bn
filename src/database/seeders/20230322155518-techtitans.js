@@ -49,6 +49,23 @@ module.exports = {
       {},
     );
 
+
+    await queryInterface.bulkInsert(
+      'Products',
+      [
+        {
+          name: 'macbook',
+          category_id: 'category1',
+          vendor_id: 'vendor1',
+          price: '500000',
+          quantity: '100',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+      {},
+    );
+
     await queryInterface.bulkInsert(
       'Categories',
       [

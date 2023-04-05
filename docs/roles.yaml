@@ -1,0 +1,30 @@
+paths:
+  /api/v1/user/role:
+    post:
+      summary:  Set Role
+      tags:
+        - User
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                required: true
+                description: email
+              role:
+                type: string
+                required: true
+                description: role
+      responses:
+        201:
+          schema:
+            type: object
+        500:
+          description: Something went wrong, try again
