@@ -54,6 +54,7 @@
     "nodemailer-express-handlebars": "^6.1.0",
     "nodemon": "^2.0.21",
     "passport": "^0.6.0",
+    "passport-google-oauth2": "^0.2.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-microsoft": "^1.0.0",
     "pg": "^8.10.0",
