@@ -10,7 +10,7 @@ import {
 } from '../controllers/user/forgotPassword.controller';
 import findAllUsers from '../controllers/user/findAllUsers.controller';
 import updateProfile from '../controllers/user/profile.controller';
-
+import editPassword from '../controllers/user/user.edit.password';
 const userRouter = express.Router();
 
 // Verify user email and then create a new user
@@ -31,5 +31,8 @@ userRouter.put('/:uuid', updateProfile);
 
 // Get all users
 userRouter.get('/profile/users', findAllUsers);
+
+//update user password
+userRouter.put('/editpassword/:uuid',editPassword)
 
 export default userRouter;
