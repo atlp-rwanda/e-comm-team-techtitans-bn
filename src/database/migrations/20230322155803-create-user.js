@@ -25,7 +25,7 @@ module.exports = {
       preferredCurrency: DataTypes.STRING,
       location: DataTypes.STRING,
       billingAddress: DataTypes.STRING,
-      roleId: {
+      role: {
         type: DataTypes.INTEGER,
       },
       createdAt: {

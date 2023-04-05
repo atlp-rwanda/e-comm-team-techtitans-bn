@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
+import { SwaggerTheme } from 'swagger-themes';
 import session from 'express-session';
 import passport from 'passport';
 import { sequelize } from './database/models/index';
@@ -17,13 +18,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(session({ 
-  secret: 'melody hensley is my spirit animal',
- resave: false,
- saveUninitialized: true,
-}));
-
-
+app.use(
+  session({
+    secret: 'melody hensley is my spirit animal',
+    resave: false,
+    saveUninitialized: true,
+  }),
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -47,7 +48,15 @@ export const connectDB = async () => {
   }
 };
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(combinedDocs));
+// Swagger Docs Dark-Mode setup
+const theme = new SwaggerTheme('v3');
+
+const options = {
+  explorer: true,
+  customCss: theme.getBuffer('dark'),
+};
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(combinedDocs, options));
 
 app.use('/api/v1', router);
 
