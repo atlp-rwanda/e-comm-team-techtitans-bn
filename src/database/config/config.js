@@ -11,6 +11,7 @@ module.exports = {
     logging: false,
     dialectOptions: {
       ssl: {
+        require: false,
         rejectUnauthorized: false,
       },
     },
@@ -19,13 +20,14 @@ module.exports = {
     use_env_variable: '',
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.TEST_DB_NAME,
+    database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: 'postgres',
     logging: false,
     dialectOptions: {
       ssl: {
+        require: false,
         rejectUnauthorized: false,
       },
     },
@@ -35,16 +37,18 @@ module.exports = {
     dialect: 'postgres',
     dialectOptions: {
       ssl: {
-        rejectUnauthorized: true,
+        require: false,
+        rejectUnauthorized: false,
       },
     },
   },
   staging: {
-    use_env_variable: 'DATABASE_URL_STAGING',
+    use_env_variable: 'DATABASE_URL',
     dialect: 'postgres',
     dialectOptions: {
       ssl: {
-        rejectUnauthorized: true,
+        require: false,
+        rejectUnauthorized: false,
       },
     },
   },
