@@ -1,26 +1,34 @@
-const YAML = require('yamljs');
-const fs = require('fs');
-const path = require('path');
+const YAML = require("yamljs");
+const fs = require("fs");
+const path = require("path");
 
 const dirname = path.resolve();
-const docsPath = path.join(dirname, 'docs');
+const docsPath = path.join(dirname, "docs");
 const apiDocs = [];
 
 fs.readdirSync(docsPath).forEach((file) => {
-  if (path.extname(file) === '.yaml') {
+  if (path.extname(file) === ".yaml") {
     const doc = YAML.load(path.join(docsPath, file));
     apiDocs.push(doc);
   }
 });
 
-// this will combine each YAML file craeted by team member  into one object
+// this will combine each YAML file created by team member into one object
 const combinedDocs = {
-  swagger: '2.0',
+  swagger: "2.0",
   info: {
-    title: 'Tech-titans Ecommerce Swagger Api Documentation ',
-    version: '1.0.0',
+    title: "Tech-titans Ecommerce Swagger Api Documentation ",
+    version: "1.0.0",
   },
   paths: {},
+  securityDefinitions: {
+    bearerAuth: {
+      type: "apiKey",
+      name: "Authorization",
+      in: "header",
+    },
+  },
+  security: [{ bearerAuth: [] }],
 };
 
 apiDocs.forEach((doc) => {
@@ -30,5 +38,3 @@ apiDocs.forEach((doc) => {
 });
 
 module.exports = combinedDocs;
-
-
