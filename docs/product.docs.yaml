@@ -1,0 +1,189 @@
+paths:
+  /api/v1/product/create:
+    post:
+      summary: Add a new Product
+      security:
+        - bearerAuth: []
+      tags: [Product]
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: Product
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                default: Leather Bag
+                required: true
+                description: product name
+              price:
+                type: number
+                default: 200
+                format: float
+                required: true
+                description: Product Price
+              quantity:
+                type: integer
+                default: 20
+                required: true
+                description: product quantity in Units
+              categoryId:
+                type: string
+                default: 53a57d9a-aebd-42ca-a9ef-0ddcea770dc1
+                required: true
+                description: Product UUID
+              description:
+                type: string
+                default: Made from quality Italian premium Leather
+                required: false
+                description: description
+              expiryDate:
+                type: string
+                default: '2030-02-09'
+                required: true
+                description: expiration date
+              images:
+                type: array
+                default:
+                  [
+                    'https://example.com/images/product1.jpg',
+                    'https://example.com/images/product1-thumb.jpg',
+                    'https://example.com/images/product2-thumb.jpg',
+                    'https://example.com/images/product3-thumb.jpg',
+                  ]
+                items:
+                  type: string
+                required: true
+                description: images
+              # bonus:
+              #   type: integer
+              #   required: false
+              #   description: bonus
+              # ec:
+              #   type: integer
+              #   required: false
+              #   description: ec
+      responses:
+        201:
+          schema:
+            type: object
+        500:
+          description: Something went wrong, try again
+
+  # List all seller's products
+  /api/v1/product:
+    get:
+      security: [{ jwt: [] }]
+      summary: List of all products
+      tags: [Product]
+      responses:
+        '200':
+          description: Update done Successfully
+        '404':
+          description: This Product doesn't exists.
+        '401':
+          description: You are not allowed to access this route
+
+  # 1. Update a product's stock status to 'Out of Stock'
+  /product/update/stockStatus/2/{id}:
+    get:
+      security: [{ jwt: [] }]
+      summary: Update a product's Stock status to 'Out of Stock'
+      tags: [Product]
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The Id of product you want to update
+          schema:
+            type: string
+            minimum: 15
+      responses:
+        '200':
+          description: Update done Successfully
+        '404':
+          description: This Product doesn't exists.
+        '401':
+          description: You are not allowed to access this route
+
+  # 2. Update a product's Stock status to 'Expired'
+  /product/update/stockStatus/3/{id}:
+    get:
+      security: [{ jwt: [] }]
+      summary: Update a product's Stock status to 'Expired'
+      tags: [Product]
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The Id of product you want to update
+          schema:
+            type: string
+            minimum: 15
+      responses:
+        '200':
+          description: Update done Successfully
+        '404':
+          description: This Product doesn't exists.
+        '401':
+          description: You are not allowed to access this route
+
+  # 3. Update a product's Stock status to 'Available'
+  /product/update/stockStatus/1/{id}:
+    get:
+      security: [{ jwt: [] }]
+      summary: Update a product's Stock status to 'Available'
+      tags: [Product]
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: The Id of product you want to update
+          schema:
+            type: string
+            minimum: 15
+      responses:
+        '200':
+          description: Update done Successfully
+        '404':
+          description: This Product doesn't exists.
+        '401':
+          description: You are not allowed to access this route
+
+  # Delete a product
+  /api/v1/product/delete/{id}:
+    delete:
+      security: [{ jwt: [] }]
+      summary: delete a product
+      tags: [Product]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: please fill all required fields
+          schema:
+            type: string
+            format: int64
+            minimum: 1
+        - name: deletedProductMessage
+          in: path
+          required: true
+          default: Contains harmful substances to the human body
+          description: Message sent to the client after deleting a product
+          schema:
+            type: string
+            format: int64
+            minimum: 1
+            type: string
+
+      responses:
+        201:
+          description: Product deleted
+        401:
+          description: Unauthorized
+        400:
+          description: product not available

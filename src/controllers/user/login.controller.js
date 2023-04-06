@@ -1,6 +1,6 @@
-import db from '../../database/models';
-import BcryptUtility from '../../utils/bcrypt.util';
-import JwtUtility from '../../utils/jwt.util';
+import db from "../../database/models";
+import BcryptUtility from "../../utils/bcrypt.util";
+import JwtUtility from "../../utils/jwt.util";
 
 const User = db.users;
 
@@ -9,24 +9,24 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(401).json({
-        message: 'Please provide both email and password',
+        message: "Please provide both email and password",
       });
     }
     // Find the email of the user
     const user = await User.findOne({ where: { email } });
     if (!user) {
       return res.status(401).json({
-        message: 'Invalid email or password',
+        message: "Invalid email or password",
       });
     }
     // Check if the user password matches
     const passwordMatch = await BcryptUtility.verifyPassword(
       password,
-      user.password,
+      user.password
     );
     if (!passwordMatch) {
       return res.status(401).json({
-        message: 'Invalid email or password',
+        message: "Invalid email or password",
       });
     }
 
@@ -34,18 +34,19 @@ const login = async (req, res) => {
       {
         id: user.id,
         email: user.email,
+        role: user.roleId,
       },
-      '1d',
+      "1d"
     );
 
     // Set cookie with the token as its value
-    res.cookie('token', token, {
+    res.cookie("token", token, {
       httpOnly: true,
       secure: true, // cynthia you must remember to set this to true in production(push) and false in dev
     });
 
     res.status(200).json({
-      message: 'Login successful',
+      message: "Login successful",
       token,
     });
   } catch (error) {
