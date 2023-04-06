@@ -8,8 +8,10 @@ const User = db.User;
 const isAdmin = async (req, res, next) => {
   const tokenHeader = req.headers.authorization;
   if (!tokenHeader) {
-    return res.status(401).json({ message: "Token not provided" }); // assuming the token is sent in the Authorization header
+    return res.status(401).json({ message: "Token not provided" });  // assuming the token is sent in the Authorization header
+   
   }
+  const token = tokenHeader.split(" ")[1];
   const { id } = req.params;
   try {
     const decodedToken = JwtUtility.verifyToken(token);
@@ -83,6 +85,7 @@ const checkPermission = (permission) => async (req, res, next) => {
     2: ["manage products"],
     3: ["view products"],
   };
+  
 
   try {
     const decodedToken = JwtUtility.verifyToken(token);

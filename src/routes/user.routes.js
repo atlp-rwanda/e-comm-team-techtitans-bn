@@ -1,7 +1,7 @@
 import express from 'express';
 import Role from '../controllers/user/role.controller';
 // import roles from './roles.routes';
-
+import { isAdmin,isBuyer,isSeller,checkPermission } from '../middleware/auth/auth.middleware';
 import { verifyUser, createUser } from '../controllers/user/signup.controller';
 import login from '../controllers/user/login.controller';
 import logout from '../controllers/user/logout.controller';
@@ -32,9 +32,8 @@ userRouter.post('/reset-password/:id/:token', resetPassword);
 userRouter.put('/:uuid', updateProfile);
 
 // Get all users
-userRouter.get('/profile/users', findAllUsers);
-userRouter.post('/role', Role.setRole);
-
+userRouter.get('/profile/users',isAdmin,checkPermission('manage users'), findAllUsers);
+userRouter.post('/role', isAdmin,checkPermission('manage users'),Role.setRole);
 //update user password
 userRouter.put('/editpassword/:uuid',editPassword)
 
