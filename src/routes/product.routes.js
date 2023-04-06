@@ -21,8 +21,8 @@ import {
 const productRouter = express.Router();
 
 // Create a new Product
-productRouter.post('/category/create', addCategory);
-productRouter.get('/category', findAllCategories);
+productRouter.post('/category/create',addCategory);
+productRouter.get('/category', checkPermission('manage product'),findAllCategories);
 productRouter.post(
   '/product/create',
   isSeller,
@@ -38,23 +38,23 @@ productRouter.get('/product/available', findAvailableProducts);
 // 1. Make a product Out_of_Stock
 productRouter.get(
   '/product/update/stockStatus/2/:id',
-  isSeller,
+  isSeller,checkPermission('manage products'),
   outOfStockStatusUpdate,
 );
 // 2. Make a product Expired
 productRouter.get(
   '/product/update/stockStatus/3/:id',
-  isSeller,
+  isSeller,checkPermission('manage products'),
   expiredStatusUpdate,
 );
 // 3. Make a product Available
 productRouter.get(
   '/product/update/stockStatus/1/:id',
-  isSeller,
+  isSeller,checkPermission('manage products'),
   availableStatusUpdate,
 );
 
 // Delete a Product
-productRouter.delete('/product/delete/:id', isSeller, deleteOneProduct);
+productRouter.delete('/product/delete/:id', isSeller,checkPermission('manage products'), deleteOneProduct);
 
 export default productRouter;

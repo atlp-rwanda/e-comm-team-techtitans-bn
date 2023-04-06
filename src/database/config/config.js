@@ -8,13 +8,7 @@ module.exports = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: 'postgres',
-    logging: false,
-    // dialectOptions: {
-    //   ssl: {
-    //     require: false,
-    //     rejectUnauthorized: false,
-    //   },
-    // },
+    logging: false
   },
   test: {
     use_env_variable: '',
@@ -25,31 +19,31 @@ module.exports = {
     port: process.env.DB_PORT,
     dialect: 'postgres',
     logging: false,
-    // dialectOptions: {
-    //   ssl: {
-    //     require: false,
-    //     rejectUnauthorized: false,
-    //   },
-    // },
+    dialectOptions: {
+      ssl: {
+        require: false,
+        rejectUnauthorized: false,
+      },
+    },
   },
   production: {
     use_env_variable: 'DATABASE_URL',
     dialect: 'postgres',
-    // dialectOptions: {
-    //   ssl: {
-    //     require: false,
-    //     rejectUnauthorized: false,
-    //   },
-    // },
+    dialectOptions: {
+      ssl: {
+        require: false,
+        rejectUnauthorized: false,
+      },
+    },
   },
   staging: {
     use_env_variable: 'DATABASE_URL',
     dialect: 'postgres',
-    // dialectOptions: {
-    //   ssl: {
-    //     require: false,
-    //     rejectUnauthorized: false,
-    //   },
-    // },
+    dialectOptions: {
+      ssl: {
+        require: false,
+        rejectUnauthorized: false,
+      },
+    },
   },
 };

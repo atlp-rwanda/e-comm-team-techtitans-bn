@@ -1,6 +1,6 @@
-import JWT from 'jsonwebtoken';
+import JWT from "jsonwebtoken";
 
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 class JwtUtility {

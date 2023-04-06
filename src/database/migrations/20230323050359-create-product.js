@@ -26,7 +26,7 @@ module.exports = {
         defaultValue: 'Available',
       },
       vendorId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         onDelete: 'CASCADE',
         references: {
           model: 'Users',

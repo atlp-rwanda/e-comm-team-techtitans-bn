@@ -71,7 +71,7 @@ const verifyUser = async (req, res) => {
           const to = user.email;
           const userToken = JwtUtility.generateToken(user, '1h');
           const context = {
-            verifyUrl: `http://localhost:${process.env.PORT}/api/v1/user/signup/${userToken}`,
+            verifyUrl: `https://ecommerce-tech-titans.herokuapp.com/api/v1/user/signup/${userToken}`,
             content: 'VERIFY YOUR EMAIL',
           };
           sendEmail.sendVerification(to, 'verification email', context);
@@ -81,7 +81,6 @@ const verifyUser = async (req, res) => {
             'Check your email and proceed with verification',
             {
               email: user.email,
-              password: user.password,
               userToken,
             },
           );
@@ -110,7 +109,7 @@ const createUser = async (req, res) => {
       });
     });
   const context = {
-    verifyUrl: `http://localhost:${process.env.PORT}`,
+    verifyUrl: `https://ecommerce-tech-titans.herokuapp.com/`,
     content: 'GET STARTED',
   };
   sendEmail.sendWelcome(check.email, 'verification email', context);
