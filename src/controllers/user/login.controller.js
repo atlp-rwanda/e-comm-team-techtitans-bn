@@ -34,7 +34,7 @@ const login = async (req, res) => {
       {
         id: user.id,
         email: user.email,
-        role: user.roleId,
+        roleId: user.roleId,
       },
       "1d"
     );

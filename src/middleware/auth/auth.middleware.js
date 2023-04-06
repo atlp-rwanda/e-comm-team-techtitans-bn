@@ -10,10 +10,10 @@ const isAdmin = async (req, res, next) => {
   if (!tokenHeader) {
     return res.status(401).json({ message: "Token not provided" }); // assuming the token is sent in the Authorization header
   }
-  const { uuid } = req.params;
+  const { id } = req.params;
   try {
     const decodedToken = JwtUtility.verifyToken(token);
-    const user = await User.findOne({ where: { uuid: decodedToken.uuid } });
+    const user = await User.findOne({ where: { id: decodedToken.id } });
     if (user && decodedToken && decodedToken.roleId === 1) {
       next();
     } else {
@@ -58,10 +58,10 @@ const isBuyer = async (req, res, next) => {
   if (!tokenHeader) {
     return res.status(401).json({ message: "Token not provided" }); // assuming the token is sent in the Authorization header
   }
-  const { uuid } = req.params;
+  const { id } = req.params;
   try {
     const decodedToken = JwtUtility.verifyToken(token);
-    const user = await User.findOne({ where: { uuid: decodedToken.uuid } });
+    const user = await User.findOne({ where: { id: decodedToken.id } });
     if (user && decodedToken && decodedToken.roleId === 3) {
       next();
     } else {
@@ -77,7 +77,7 @@ const isBuyer = async (req, res, next) => {
 
 const checkPermission = (permission) => async (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1]; // assuming the token is sent in the Authorization header
-  // const { uuid } = req.params;
+  // const { id } = req.params;
   const permissions = {
     1: ["manage users", "manage products"],
     2: ["manage products"],
@@ -86,7 +86,7 @@ const checkPermission = (permission) => async (req, res, next) => {
 
   try {
     const decodedToken = JwtUtility.verifyToken(token);
-    const user = await User.findOne({ where: { uuid: decodedToken.uuid } });
+    const user = await User.findOne({ where: { id: decodedToken.id } });
     const roleId = decodedToken?.roleId;
     if (user && permissions[roleId]?.includes(permission)) {
       next();
