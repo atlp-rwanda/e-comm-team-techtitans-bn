@@ -2,6 +2,8 @@ paths:
   /api/v1/product/create:
     post:
       summary: Add a new Product
+      security:
+        - bearerAuth: []
       tags: [Product]
       produces:
         - application/json

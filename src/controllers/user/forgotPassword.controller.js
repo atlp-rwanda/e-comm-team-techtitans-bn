@@ -20,7 +20,7 @@ const forgotPassword = async (req, res) => {
       const token = jwt.sign({ user: user.email }, resetSecret, {
         expiresIn: '10m',
       });
-      const link = `http://${process.env.HOST}:${process.env.PORT}/api/v1/user/reset-password/${user.id}/${token}`;
+      const link = `https://ecommerce-tech-titans.herokuapp.com/api/v1/user/reset-password/${user.id}/${token}`;
       sendFunc(user, link);
       res.status(201).json({
         message: 'Password reset Link has been send to your email ....',
