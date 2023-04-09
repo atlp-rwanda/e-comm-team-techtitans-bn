@@ -21,7 +21,20 @@ module.exports = {
           updatedAt: new Date(),
         },
       ],
-      {}
+      {},
+    );
+
+    await queryInterface.bulkInsert(
+      'Carts',
+      [
+        {
+          product_id: 'product1',
+          user_id: 'user1',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+      {},
     );
   },
 

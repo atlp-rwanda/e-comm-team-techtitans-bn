@@ -1,5 +1,6 @@
 import request from 'supertest';
 import app from '../../src/app';
+import PasswordReminder from '../../src/controllers/user/password.reminder';
 import {
   successRegistration,
   theSuccessLoginCredentials,
@@ -7,14 +8,14 @@ import {
   profile,
 } from '../mocks/user.mock';
 import { expect, describe, test } from '@jest/globals';
-import JwtUtility from "../../src/utils/jwt.util";
-import {product} from "../mocks/product.mock";
+import JwtUtility from '../../src/utils/jwt.util';
+import { product } from '../mocks/product.mock';
 
 let userTokens = '';
 let userUuid = '';
 const uuidRegex = new RegExp(
   '^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$',
-  'i',
+  'i'
 );
 
 describe('User Test (Signup and login)', () => {
@@ -35,7 +36,7 @@ describe('User Test (Signup and login)', () => {
 
   test('Successful Verification', async () => {
     const response = await request(app).get(
-      `/api/v1/user/signup/${userTokens}`,
+      `/api/v1/user/signup/${userTokens}`
     );
     expect(response.statusCode).toBe(201);
     expect(response.body.data).toHaveProperty('uuid');
@@ -80,5 +81,9 @@ describe('User Test (Signup and login)', () => {
       .send(profile);
     expect(response.statusCode).toBe(201);
   });
-
+  afterAll(() => {
+    PasswordReminder.stop(); // Stop the passwordReminder service
+    // Stop any other asynchronous tasks that are still running
+    // ...
+  });
 });
