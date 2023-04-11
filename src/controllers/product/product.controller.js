@@ -5,7 +5,8 @@ import JwtUtility from "../../utils/jwt.util";
 
 export const addCategory = async (req, res) => {
   try {
-    const { name } = req.body;
+    let { name } = req.body;
+    name = name.toLowerCase(); // convert name to lowercase
     const existingCategory = await models.Category.findOne({
       where: { name },
     });
@@ -59,15 +60,8 @@ export const findAllproducts = async (req, res) => {
 
 export const addProduct = async (req, res) => {
   try {
-    const {
-      name,
-      price,
-      quantity,
-      stock,
-      categoryId,
-      description,
-      expiryDate,
-    } = req.body;
+    let { name, price, quantity, categoryId, description, expiryDate } =
+      req.body;
     const images = req.body.images || [];
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = JwtUtility.verifyToken(token);
@@ -88,7 +82,6 @@ export const addProduct = async (req, res) => {
       name,
       price,
       quantity,
-      stock,
       categoryId,
       description,
       expiryDate,
@@ -111,7 +104,7 @@ export const findAvailableProducts = async (req, res) => {
     const { id } = decodedToken;
     const availableProducts = await models.Product.findAll({
       where: {
-        stock: "Available",
+        stock: "available",
         vendorId: id,
       },
     });
@@ -147,7 +140,7 @@ export const outOfStockStatusUpdate = async (req, res) => {
       });
     } else {
       const updatedProduct = await availableProduct.update({
-        stock: "Out of Stock",
+        stock: "out of stock",
       });
       res.status(200).json({
         status: "success",
@@ -175,7 +168,7 @@ export const expiredStatusUpdate = async (req, res) => {
       });
     } else {
       const updatedProduct = await availableProduct.update({
-        stock: "Expired",
+        stock: "expired",
       });
       res.status(200).json({
         status: "success",
@@ -184,7 +177,7 @@ export const expiredStatusUpdate = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).json({ status: "failss", message: error.message });
+    res.status(500).json({ status: "fail", message: error.message });
   }
 };
 

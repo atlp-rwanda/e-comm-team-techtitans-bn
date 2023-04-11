@@ -22,7 +22,7 @@ const productRouter = express.Router();
 
 // Create a new Product
 productRouter.post('/category/create',addCategory);
-productRouter.get('/category', checkPermission('manage product'),findAllCategories);
+productRouter.get('/category',findAllCategories);
 productRouter.post(
   '/product/create',
   isSeller,
