@@ -7,6 +7,8 @@ import {
   profile,
 } from '../mocks/user.mock';
 import { expect, describe, test } from '@jest/globals';
+import JwtUtility from "../../src/utils/jwt.util";
+import {product} from "../mocks/product.mock";
 
 let userTokens = '';
 let userUuid = '';
@@ -80,4 +82,5 @@ describe('User Test (Signup and login)', () => {
       .send(profile);
     expect(response.statusCode).toBe(201);
   });
+
 });

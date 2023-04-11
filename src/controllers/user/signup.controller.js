@@ -100,8 +100,10 @@ const createUser = async (req, res) => {
   User.create(check)
     .then((data) => {
       res
+
         .status(201)
-        .send({ message: 'check a welcoming message we sent you...' });
+        .send({ message: 'check a welcoming message we sent you...',data:data });
+
     })
     .catch((err) => {
       res.status(500).send({

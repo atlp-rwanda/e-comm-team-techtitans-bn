@@ -22,8 +22,8 @@ module.exports = {
         },
       },
       stock: {
-        type: Sequelize.ENUM('Available', 'Out of Stock', 'Expired'),
-        defaultValue: 'Available',
+        type: Sequelize.ENUM('available', 'out of stock', 'expired'),
+        defaultValue: 'available',
       },
       vendorId: {
         type: Sequelize.INTEGER,
