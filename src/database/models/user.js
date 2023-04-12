@@ -72,8 +72,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         defaultValue: 3,
         // Admin(1), Seller(2), Buyer(3)
+
       },
+
+      lastPasswordUpdate: {
+        type: DataTypes.DATE,
+          allowNull: true,
     },
+    },
+
     {
       sequelize,
       modelName: 'User',

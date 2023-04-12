@@ -9,14 +9,15 @@ const editPassword = async (req, res) => {
     try {
         const user = {
             ...req.body,
+            // lastPasswordUpdate: new Date(),
           };
-         
+
       if (!user.old_password || !user.new_password||!user.confirm_password) {
         console.log(user.new_password)
         return res.status(401).json({
           message: 'Please fill in the old password and new password',
         });
-       
+
       }
       // Find the user
       const Logged = await User.findOne({ where: { uuid } });
@@ -47,16 +48,19 @@ const editPassword = async (req, res) => {
               });
         }
         else{
-           
+
             Logged.password=await BcryptUtility.hashPassword(user.new_password);
+
+            Logged.lastPasswordUpdate=new Date();
+
             await Logged.save();
             return res.status(200).json({
-                message: 'your password was edited sucessfully',
-               
+                message: 'your password was edited successfully',
+
               });
         }
-        
-       
+
+
       }
     } catch (error) {
       res.status(500).json({

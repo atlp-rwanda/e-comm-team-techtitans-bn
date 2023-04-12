@@ -9,6 +9,7 @@ import { sequelize } from './database/models/index';
 // import db from './database/models/index';
 import router from './routes';
 import combinedDocs from '../docs/index';
+import passwordReminder from "./controllers/user/PasswordReminder";
 
 dotenv.config();
 
@@ -59,5 +60,7 @@ const options = {
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(combinedDocs, options));
 
 app.use('/api/v1', router);
+
+passwordReminder.start();
 
 export default app;

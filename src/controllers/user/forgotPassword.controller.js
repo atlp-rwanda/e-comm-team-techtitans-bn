@@ -94,8 +94,10 @@ const resetPassword = async (req, res) => {
             User.findOne({ where: { id } })
               .then((user) => {
                 user.password = bcrypt.hashSync(password, 10);
+                user.lastPasswordUpdate = new Date();
                 return user.save();
               })
+
               .then((theData) => {
                 res.status(200).json({
                   message: 'Password successfuly reset',
