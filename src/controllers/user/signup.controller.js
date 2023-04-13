@@ -48,7 +48,7 @@ const verifyUser = async (req, res) => {
           break;
         //   case !user.password.match(/^[a-z0-9]+$/i):
         case !user.password.match(
-          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i,
+          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i
         ):
           res.status(401).json({
             message:
@@ -71,7 +71,7 @@ const verifyUser = async (req, res) => {
           const to = user.email;
           const userToken = JwtUtility.generateToken(user, '1h');
           const context = {
-            verifyUrl: `https://ecommerce-tech-titans.herokuapp.com/api/v1/user/signup/${userToken}`,
+            verifyUrl: `${process.env.VERIFICATION_URL}/api/v1/user/signup/${userToken}`,
             content: 'VERIFY YOUR EMAIL',
           };
           sendEmail.sendVerification(to, 'verification email', context);
@@ -82,7 +82,7 @@ const verifyUser = async (req, res) => {
             {
               email: user.email,
               userToken,
-            },
+            }
           );
           break;
       }
@@ -102,8 +102,10 @@ const createUser = async (req, res) => {
       res
 
         .status(201)
-        .send({ message: 'check a welcoming message we sent you...',data:data });
-
+        .send({
+          message: 'check a welcoming message we sent you...',
+          data: data,
+        });
     })
     .catch((err) => {
       res.status(500).send({
@@ -111,7 +113,7 @@ const createUser = async (req, res) => {
       });
     });
   const context = {
-    verifyUrl: `https://ecommerce-tech-titans.herokuapp.com/`,
+    verifyUrl: `${process.env.WELCOME_URL}`,
     content: 'GET STARTED',
   };
   sendEmail.sendWelcome(check.email, 'verification email', context);
