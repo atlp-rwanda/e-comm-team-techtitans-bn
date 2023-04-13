@@ -3,6 +3,8 @@ export const successRegistration = {
   email: 'success@gmail.com',
   password: 'Password@123',
   confirmPassword: 'Password@123',
+  roleId:2,
+
 };
 
 export const unSuccessfullLoginCredentials = {

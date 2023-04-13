@@ -31,7 +31,7 @@ class sendEmail {
     };
     transporter.sendMail(mailOptions, (err, success) => {
       if (err) return ('email not sent:', err);
-      return console.log('email sent', success);
+      // return console.log('email sent', success);
     });
   }
   static sendWelcome(to, subject, context) {

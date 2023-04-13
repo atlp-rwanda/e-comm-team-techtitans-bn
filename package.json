@@ -24,6 +24,9 @@
     "seed:test:do": "npx sequelize-cli db:seed:all",
     "seed:test:undo": "npx sequelize-cli db:seed:undo:all"
   },
+  "jest": {
+    "testTimeout": 100000
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/atlp-rwanda/e-comm-team-techtitans-bn.git"

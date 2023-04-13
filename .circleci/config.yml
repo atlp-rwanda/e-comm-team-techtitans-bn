@@ -21,7 +21,7 @@ jobs:
           command: npm run test
 
 workflows:
-  test_my_app:
+  tech_titans_test:
     jobs:
       - test
 

@@ -6,9 +6,17 @@ const User = db.users;
 const findAllUsers = (req, res) => {
   User.findAll({ where: {} })
     .then((usersList) => {
+  const users=[]
+
+        for(let i=0;i<usersList.length;i++){
+            let {password,...rest}=usersList[i].dataValues
+            users.push(rest)
+        }
+
       res.status(201).json({
+
         message: `${usersList.length} Users were all fetched successfully!`,
-        data: usersList,
+        data: users
       });
     })
     .catch((err) => {
