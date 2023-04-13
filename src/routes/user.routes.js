@@ -13,6 +13,7 @@ import {
 import findAllUsers from '../controllers/user/findAllUsers.controller';
 import updateProfile from '../controllers/user/profile.controller';
 import editPassword from '../controllers/user/user.edit.password';
+import RestrictPassword from '../middleware/auth/check.password.update';
 const userRouter = express.Router();
 
 // Verify user email and then create a new user
@@ -29,7 +30,7 @@ userRouter.get('/reset-password/:id/:token', getResetPassword);
 userRouter.post('/reset-password/:id/:token', resetPassword);
 
 // Update user profile
-userRouter.put('/:uuid', updateProfile);
+userRouter.put('/:uuid', RestrictPassword, updateProfile);
 
 // Get all users
 userRouter.get('/profile/users',isAdmin,checkPermission('manage users'), findAllUsers);

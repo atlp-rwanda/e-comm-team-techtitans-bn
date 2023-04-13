@@ -49,6 +49,7 @@ const editPassword = async (req, res) => {
         else{
            
             Logged.password=await BcryptUtility.hashPassword(user.new_password);
+            Logged.lastPasswordUpdate=new Date();
             await Logged.save();
             return res.status(200).json({
                 message: 'your password was edited sucessfully',
