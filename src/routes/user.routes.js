@@ -13,6 +13,7 @@ import {
 import findAllUsers from '../controllers/user/findAllUsers.controller';
 import updateProfile from '../controllers/user/profile.controller';
 import editPassword from '../controllers/user/user.edit.password';
+import verifyOtp  from '../controllers/user/2fauthentication.controller';
 const userRouter = express.Router();
 
 // Verify user email and then create a new user
@@ -21,12 +22,14 @@ userRouter.get('/signup/:token', createUser);
 
 // User login and logout
 userRouter.post('/login', login);
+userRouter.post('/login/verifyOtp', verifyOtp);
 userRouter.post('/logout', logout);
 
 // Forgot password and reset password
 userRouter.patch('/forgot-password', forgotPassword);
 userRouter.get('/reset-password/:id/:token', getResetPassword);
 userRouter.post('/reset-password/:id/:token', resetPassword);
+
 
 // Update user profile
 userRouter.put('/:uuid', updateProfile);
