@@ -31,7 +31,7 @@ const login = async (req, res) => {
     const secret = speakeasy.generateSecret();
 
 
-    if (user.roleId == 1) {
+    if (user.roleId == 3) {
 
       const token = JwtUtility.generateToken(
         {
