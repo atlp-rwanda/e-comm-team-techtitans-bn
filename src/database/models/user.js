@@ -73,6 +73,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 3,
         // Admin(1), Seller(2), Buyer(3)
       },
+      lastPasswordUpdate: {
+        type: DataTypes.DATE,
+          allowNull: true,
+    },
     },
     {
       sequelize,

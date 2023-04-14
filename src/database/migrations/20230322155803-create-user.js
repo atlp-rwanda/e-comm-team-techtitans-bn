@@ -36,6 +36,10 @@ module.exports = {
         allowNull: false,
         type: DataTypes.DATE,
       },
+      lastPasswordUpdate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      }
     });
   },
   async down(queryInterface, DataTypes) {
