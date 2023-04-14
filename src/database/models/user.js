@@ -37,7 +37,9 @@ module.exports = (sequelize, DataTypes) => {
       password: {
         type: DataTypes.STRING,
       },
-
+      mfa_secret: {
+       type: DataTypes.STRING,
+      },
       gender: {
         type: DataTypes.STRING,
         set(val) {
@@ -73,6 +75,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 3,
         // Admin(1), Seller(2), Buyer(3)
       },
+      accountStatus:{
+        type:DataTypes.STRING,
+        defaultValue:"active"
+    },
+    
       lastPasswordUpdate: {
         type: DataTypes.DATE,
           allowNull: true,
@@ -81,6 +88,17 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'User',
+      getterMethods: {
+        mfa_token() {
+            if (this.mfa_secret) {
+                return speakeasy.totp({
+                    secret: this.mfa_secret,
+                    encoding: 'base32',
+                });
+            }
+            return null;
+        },
+    },
     },
   );
   return User;

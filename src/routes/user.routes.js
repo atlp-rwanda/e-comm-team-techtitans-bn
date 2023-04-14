@@ -13,7 +13,9 @@ import {
 import findAllUsers from '../controllers/user/findAllUsers.controller';
 import updateProfile from '../controllers/user/profile.controller';
 import editPassword from '../controllers/user/user.edit.password';
+import verifyOtp  from '../controllers/user/2fauthentication.controller';
 import RestrictPassword from '../middleware/auth/check.password.update';
+import disableEnableUsers from '../controllers/user/disableEnableUsers.controller';
 const userRouter = express.Router();
 
 // Verify user email and then create a new user
@@ -22,12 +24,14 @@ userRouter.get('/signup/:token', createUser);
 
 // User login and logout
 userRouter.post('/login', login);
+userRouter.post('/login/verifyOtp', verifyOtp);
 userRouter.post('/logout', logout);
 
 // Forgot password and reset password
 userRouter.patch('/forgot-password', forgotPassword);
 userRouter.get('/reset-password/:id/:token', getResetPassword);
 userRouter.post('/reset-password/:id/:token', resetPassword);
+
 
 // Update user profile
 userRouter.put('/:uuid', RestrictPassword, updateProfile);
@@ -36,6 +40,8 @@ userRouter.put('/:uuid', RestrictPassword, updateProfile);
 userRouter.get('/profile/users',isAdmin,checkPermission('manage users'), findAllUsers);
 userRouter.post('/role', isAdmin,checkPermission('manage users'),Role.setRole);
 //update user password
-userRouter.put('/editpassword/:uuid',editPassword)
+userRouter.put('/editpassword/:uuid',editPassword);
+//disable and enable user account
+userRouter.put('/updateAccountStatus/:uuid',isAdmin,checkPermission('manage users'),disableEnableUsers);
 
 export default userRouter;

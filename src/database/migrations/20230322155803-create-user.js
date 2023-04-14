@@ -19,6 +19,7 @@ module.exports = {
       fullname: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
+      mfa_secret: DataTypes.STRING,
       gender: DataTypes.STRING,
       birthdate: DataTypes.DATE,
       preferredLanguage: DataTypes.STRING,
@@ -28,6 +29,9 @@ module.exports = {
       roleId: {
         type: DataTypes.INTEGER,
       },
+      accountStatus:{
+        type:DataTypes.STRING
+     },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
