@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const {speakeasy} = require('speakeasy');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {

@@ -5,6 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 import { SwaggerTheme } from 'swagger-themes';
 import session from 'express-session';
 import passport from 'passport';
+import cookieParser from 'cookie-parser';
 import { sequelize } from './database/models/index';
 // import db from './database/models/index';
 import router from './routes';
@@ -18,6 +19,7 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 app.use(
   session({

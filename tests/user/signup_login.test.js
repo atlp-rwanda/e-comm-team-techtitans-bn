@@ -9,6 +9,7 @@ import {
 import { expect, describe, test } from '@jest/globals';
 import JwtUtility from "../../src/utils/jwt.util";
 import {product} from "../mocks/product.mock";
+import passwordReminder from "../../src/controllers/user/password.reminder";
 
 let userTokens = '';
 let userUuid = '';
@@ -16,7 +17,13 @@ const uuidRegex = new RegExp(
   '^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$',
   'i',
 );
+beforeAll(() => {
+  passwordReminder.start();
+});
 
+afterAll(() => {
+  passwordReminder.stop();
+});
 describe('User Test (Signup and login)', () => {
   /*
    **********************************************
@@ -59,7 +66,7 @@ describe('User Test (Signup and login)', () => {
     const response = await request(app)
       .post('/api/v1/user/login')
       .send(theSuccessLoginCredentials);
-    expect(response.statusCode).toBe(202);
+    expect(response.statusCode).toBe(200);
   });
   // Login for unverified User
   test('Unsuccessful Login', async () => {

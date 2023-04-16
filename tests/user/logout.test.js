@@ -1,6 +1,15 @@
 import request from 'supertest';
 import app from '../../src/app';
 import { expect, describe, test } from '@jest/globals';
+import passwordReminder from "../../src/controllers/user/password.reminder";
+
+beforeAll(() => {
+  passwordReminder.start();
+});
+
+afterAll(() => {
+  passwordReminder.stop();
+});
 
 describe('Test logout route', () => {
   test('test logout Route', async () => {
