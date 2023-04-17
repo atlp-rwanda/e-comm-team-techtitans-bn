@@ -75,6 +75,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 3,
         // Admin(1), Seller(2), Buyer(3)
       },
+      accountStatus:{
+        type:DataTypes.STRING,
+        defaultValue:"active"
+    },
+    
       lastPasswordUpdate: {
         type: DataTypes.DATE,
           allowNull: true,

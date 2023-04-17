@@ -59,7 +59,7 @@ describe('User Test (Signup and login)', () => {
     const response = await request(app)
       .post('/api/v1/user/login')
       .send(theSuccessLoginCredentials);
-    expect(response.statusCode).toBe(202);
+    expect(response.statusCode).toBe(200);
   });
   // Login for unverified User
   test('Unsuccessful Login', async () => {

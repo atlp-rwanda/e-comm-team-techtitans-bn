@@ -29,6 +29,9 @@ module.exports = {
       roleId: {
         type: DataTypes.INTEGER,
       },
+      accountStatus:{
+        type:DataTypes.STRING
+     },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

@@ -1,0 +1,36 @@
+paths:
+  
+  /api/v1/user/updateAccountStatus/{uuid}:
+    put:
+      summary:  Enable or Disable Account
+      tags:
+        - User
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: uuid
+          type: string
+          required: true
+          description: ID of the user
+        - in: body
+          name: Enable Disable Account
+          schema:
+            type: object
+            properties:
+              accountStatus:
+                type: string
+                required: true
+                description: accountStatus
+              reason:
+                type: string
+                required: true
+                description: reason         
+      responses:
+        200:
+          schema:
+            type: object
+        500:
+          description: Something went wrong, try again

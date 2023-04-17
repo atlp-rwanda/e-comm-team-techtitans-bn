@@ -21,6 +21,11 @@ const login = async (req, res) => {
         message: 'Invalid email or password',
       });
     }
+      //check if account is not disbaled
+      if (user.accountStatus === 'inactive') {
+        return res.status(400).json({
+           message: 'Your Account has been Disabled! Please contact Service manager'});
+          }
     // Check if the user password matches
     const passwordMatch = await BcryptUtility.verifyPassword(password, user.password);
     if (!passwordMatch) {
