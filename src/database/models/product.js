@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'vendorId',
       });
       Product.belongsTo(models.Category, {
-        foreignKey: 'categoryId', onDelete: 'CASCADE'
+        foreignKey: 'categoryId',
+        onDelete: 'CASCADE',
       });
     }
   }
@@ -21,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: DataTypes.STRING,
       stock: {
-        type: DataTypes.ENUM('available', 'out of Stock', 'expired'),
+        type: DataTypes.ENUM('available', 'out of stock', 'expired'),
         defaultValue: 'available',
       },
       price: DataTypes.FLOAT,
