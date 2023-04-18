@@ -1,0 +1,52 @@
+paths:
+  /api/v1/payment:
+    post:
+      summary: pay products
+      tags:
+        - Product
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: product
+          schema:
+            type: object
+            properties:
+              cvc:
+                type: string
+                default: '123'
+                required: true
+                description: cvc
+              cardNumber:
+                type: string
+                default: '4242424242424242'
+                required: true
+                description: number
+              token:
+                type: string
+                default: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbW91bnQiOjUwMDAsImVtYWlsIjoiaXNoaW13ZXJpY2hhcmQyNkBnbWFpbC5jb20iLCJpYXQiOjE2ODE3MzM5MzQsImV4cCI6MTcxMzI5MTUzNH0.1nVuxRPDgryuLxSQavIn474nmQzLGiPgS9WdmXMtyKs'
+                required: true
+                description: token
+      responses:
+        '200':
+          description: payment is successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  token:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string

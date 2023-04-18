@@ -1,4 +1,5 @@
 import express from 'express';
+import  productSearch from '../controllers/product/search.controller';
 import validateProductInput from '../middleware/validation/product.schema.middleware.js';
 import {
   isAdmin,
@@ -56,5 +57,7 @@ productRouter.get(
 
 // Delete a Product
 productRouter.delete('/product/delete/:id', isSeller,checkPermission('manage products'), deleteOneProduct);
+//product search
+productRouter.get('/product/search',productSearch);
 
 export default productRouter;

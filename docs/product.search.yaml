@@ -1,0 +1,109 @@
+
+basePath: /api/v1
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /search:
+    get:
+      tags:
+        - Product
+      summary: Search products
+      description: |
+        This endpoint returns a list of products based on query parameters such as name, category, and price.
+      parameters:
+        - name: name
+          in: query
+          description: The name of the product to search for (case-insensitive).
+          type: string
+        - name: category
+          in: query
+          description: The category of the product to search for.
+          type: string
+        - name: price
+          in: query
+          description: The price of the product to search for.
+          type: number
+        - name: page
+          in: query
+          description: The page number of the results to return (default: 1).
+          type: integer
+        - name: limit
+          in: query
+          description: The maximum number of results to return per page (default: 10).
+          type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: "🚀20 Products Found Successfully.🚀"
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Product"
+              pagination:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                    example: 1
+                  totalPages:
+                    type: integer
+                    example: 2
+        404:
+          description: Not Found
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: "🚫 Oops...no product found at the moment."
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: fail
+              message:
+                type: string
+                example: "Internal server error."
+
+definitions:
+  Product:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: "Product 1"
+      price:
+        type: number
+        format: double
+        example: 10.99
+      category:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          name:
+            type: string
+            example: "Category 1"
