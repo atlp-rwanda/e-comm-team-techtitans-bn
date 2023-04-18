@@ -4,7 +4,7 @@ const User = db.users;
 
 // update a profile
 const updateProfile = async (req, res) => {
-  const { uuid } = req.params;
+  const userID = req.params.id;
   const {
     gender,
     birthdate,
@@ -15,7 +15,11 @@ const updateProfile = async (req, res) => {
   } = req.body;
 
   try {
-    const user = await User.findOne({ where: { uuid } });
+    const user = await User.findOne({
+      where: {
+        id: userID,
+      },
+    });
     user.gender = gender;
     user.birthdate = birthdate;
     user.preferredLanguage = preferredLanguage;
@@ -35,6 +39,7 @@ const updateProfile = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       error: 'Server error',
     });
