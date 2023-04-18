@@ -11,16 +11,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasMany(models.Product, {
-        foreignKey: 'vendorId',
-        as: 'user',
+        foreignKey: "vendorId",
+        as: "user",
       });
     }
   }
   User.init(
     {
-      uuid: {
+      id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
       },
       fullname: {
         type: DataTypes.STRING,
@@ -38,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       mfa_secret: {
-       type: DataTypes.STRING,
+        type: DataTypes.STRING,
       },
       gender: {
         type: DataTypes.STRING,
@@ -75,31 +76,31 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 3,
         // Admin(1), Seller(2), Buyer(3)
       },
-      accountStatus:{
-        type:DataTypes.STRING,
-        defaultValue:"active"
-    },
-    
+      accountStatus: {
+        type: DataTypes.STRING,
+        defaultValue: "active",
+      },
+
       lastPasswordUpdate: {
         type: DataTypes.DATE,
-          allowNull: true,
-    },
+        allowNull: true,
+      },
     },
     {
       sequelize,
-      modelName: 'User',
+      modelName: "User",
       getterMethods: {
         mfa_token() {
-            if (this.mfa_secret) {
-                return speakeasy.totp({
-                    secret: this.mfa_secret,
-                    encoding: 'base32',
-                });
-            }
-            return null;
+          if (this.mfa_secret) {
+            return speakeasy.totp({
+              secret: this.mfa_secret,
+              encoding: "base32",
+            });
+          }
+          return null;
         },
-    },
-    },
+      },
+    }
   );
   return User;
 };
