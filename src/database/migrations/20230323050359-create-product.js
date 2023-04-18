@@ -22,11 +22,11 @@ module.exports = {
         },
       },
       stock: {
-        type: Sequelize.ENUM('available', 'out of stock', 'expired'),
-        defaultValue: 'available',
+        type: Sequelize.ENUM('Available', 'Out of Stock', 'Expired'),
+        defaultValue: 'Available',
       },
       vendorId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         onDelete: 'CASCADE',
         references: {
           model: 'Users',

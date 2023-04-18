@@ -3,7 +3,7 @@ import JwtUtility from '../../utils/jwt.util';
 import { isBuyer } from '../../middleware/auth/auth.middleware';
 import db from '../../database/models';
 
-const { getCart } = require('./cartFunctions');
+const { getCart } = require('./cartFunction');
 
 const User = db.users;
 const Product = db.products;
@@ -19,7 +19,6 @@ const addToCart = async (req, res) => {
     const decodedToken = JwtUtility.verifyToken(token);
 
     const user = await User.findOne({ where: { id: decodedToken.id } });
-
     const { productId, productQuantity } = req.body;
 
     // Check if the user is a buyer
@@ -40,7 +39,7 @@ const addToCart = async (req, res) => {
             name: product.name,
             quantity: productQuantity,
             price: product.price,
-            vendorId: product.vendorId,
+            images: product.images,
             total: product.price * productQuantity,
           },
         ];
@@ -54,7 +53,7 @@ const addToCart = async (req, res) => {
 
         res.status(201).json({
           message: `${product.name} has been added to your cart` ,
-          cart: createdCart
+          cart: createdCart,
         });
       } else { // if there is a product in the cart, new products will be added
         const existingProduct = cart.products.find(p => p.id === productId);
@@ -66,7 +65,7 @@ const addToCart = async (req, res) => {
             name: product.name,
             quantity: productQuantity,
             price: product.price,
-            vendorId: product.vendorId,
+            images: product.images,
             total: product.price * productQuantity,
           });
         }
@@ -86,7 +85,7 @@ const addToCart = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: error.message,
-      message: 'Something went wrong while adding product to cart',
+      message: 'Sorry, we encountered an error while trying to add the product to your cart.',
     });
   }
 };
