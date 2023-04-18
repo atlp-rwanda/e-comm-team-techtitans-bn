@@ -1,11 +1,11 @@
 import express from 'express';
 
 
-import addToCart from '../controllers/cart/addToCart.controller';
+import addItemToCart from '../controllers/cart/addToCart.controller';
 
 
 const cartRouter = express.Router();
 
-cartRouter.post('/add-to-cart',addToCart);
+cartRouter.post('/add-to-cart',addItemToCart);
 
 export default cartRouter;
