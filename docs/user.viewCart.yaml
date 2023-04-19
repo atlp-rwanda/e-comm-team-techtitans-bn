@@ -1,0 +1,16 @@
+paths:
+
+ /api/v1/cart/view-cart:
+   get:
+     summary: Buyer cart view
+     tags: [Cart]
+     responses:
+       '200':
+         description: Your cart has been retrieved successfully
+       '401':
+         description: Token not provided
+       '404':
+         description: Your cart is empty.
+       '500':
+         description: Sorry, we encountered an error while trying to view your cart
+
