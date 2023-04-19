@@ -6,35 +6,22 @@ const { UUIDV4 } = require('sequelize');
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "Users",
-      [
-        {
+        "Users",
+        [
+          {
 
-          uuid: uuidv4(),
-          fullname: "richard",
-          email: "richard@gmail.com",
-          //the hashed password below is 'Richard@123'
+            id: uuidv4(),
+            fullname: "richard",
+            email: "richard@gmail.com",
+            //the hashed password below is 'Richard@123'
 
-          password:"$2a$12$m8A9MqExqkOUgnKQcUqu1OfHlyPeF34uhB3ztnpdHP4UMLRnvlfuC",
-          roleId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ],
-      {},
-    );
-
-    await queryInterface.bulkInsert(
-      'Carts',
-      [
-        {
-          product_id: 'product1',
-          user_id: 'user1',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ],
-      {},
+            password:"$2a$12$m8A9MqExqkOUgnKQcUqu1OfHlyPeF34uhB3ztnpdHP4UMLRnvlfuC",
+            roleId: 1,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        ],
+        {}
     );
   },
 

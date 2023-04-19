@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'vendorId',
       });
       Product.belongsTo(models.Category, {
-        foreignKey: 'categoryId',
+        foreignKey: 'categoryId', onDelete: 'CASCADE'
       });
     }
   }

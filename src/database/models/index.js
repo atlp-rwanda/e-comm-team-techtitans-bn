@@ -48,8 +48,5 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.users = require('./user')(sequelize, Sequelize);
-db.products = require('./product')(sequelize, Sequelize);
-db.carts = require('./cart')(sequelize, Sequelize);
-
-
+// db.products = require("./product")(sequelize, Sequelize);
 module.exports = db;

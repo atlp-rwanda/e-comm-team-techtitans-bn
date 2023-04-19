@@ -58,7 +58,7 @@ const login = async (req, res) => {
       });
 
     } else {
-      console.log(user)
+      // console.log(user)
       user.mfa_secret = secret.base32;
       await user.save();
 
