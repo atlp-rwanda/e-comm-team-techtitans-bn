@@ -40,7 +40,7 @@ userRouter.put('/profile/:id', updateProfile);
 userRouter.get('/profile/users',RestrictPassword,isAdmin,checkPermission('manage users'), findAllUsers);
 userRouter.post('/role', RestrictPassword,isAdmin,checkPermission('manage users'),Role.setRole);
 //update user password
-userRouter.put('/editpassword/:uuid',editPassword);
+userRouter.put('/editpassword/:id',editPassword);
 //disable and enable user account
 userRouter.put('/updateAccountStatus/:uuid',isAdmin,checkPermission('manage users'),disableEnableUsers);
 

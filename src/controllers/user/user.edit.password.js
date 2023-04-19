@@ -5,21 +5,21 @@ import BcryptUtility from '../../utils/bcrypt.util';
 const User = db.users;
 
 const editPassword = async (req, res) => {
-    const { uuid } = req.params
+    const { id } = req.params
     try {
         const user = {
             ...req.body,
           };
-         
+
       if (!user.old_password || !user.new_password||!user.confirm_password) {
         console.log(user.new_password)
         return res.status(401).json({
           message: 'Please fill in the old password and new password',
         });
-       
+
       }
       // Find the user
-      const Logged = await User.findOne({ where: { uuid } });
+      const Logged = await User.findOne({ where: { id } });
       if (!Logged) {
         return res.status(401).json({
           message: 'no user with such id',
@@ -47,17 +47,17 @@ const editPassword = async (req, res) => {
               });
         }
         else{
-           
+
             Logged.password=await BcryptUtility.hashPassword(user.new_password);
             Logged.lastPasswordUpdate=new Date();
             await Logged.save();
             return res.status(200).json({
                 message: 'your password was edited sucessfully',
-               
+
               });
         }
-        
-       
+
+
       }
     } catch (error) {
       res.status(500).json({
