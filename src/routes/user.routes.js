@@ -37,8 +37,8 @@ userRouter.post('/reset-password/:id/:token', resetPassword);
 userRouter.put('/profile/:id', updateProfile);
 
 // Get all users
-userRouter.get('/profile/users',isAdmin,checkPermission('manage users'), findAllUsers);
-userRouter.post('/role', isAdmin,checkPermission('manage users'),Role.setRole);
+userRouter.get('/profile/users',RestrictPassword,isAdmin,checkPermission('manage users'), findAllUsers);
+userRouter.post('/role', RestrictPassword,isAdmin,checkPermission('manage users'),Role.setRole);
 //update user password
 userRouter.put('/editpassword/:uuid',editPassword);
 //disable and enable user account
