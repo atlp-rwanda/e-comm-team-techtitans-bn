@@ -34,7 +34,7 @@ userRouter.post('/reset-password/:id/:token', resetPassword);
 
 
 // Update user profile
-userRouter.put('/:uuid', RestrictPassword, updateProfile);
+userRouter.put('/profile/:id', updateProfile);
 
 // Get all users
 userRouter.get('/profile/users',isAdmin,checkPermission('manage users'), findAllUsers);
