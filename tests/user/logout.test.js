@@ -11,6 +11,7 @@ afterAll(() => {
   passwordReminder.stop();
 });
 
+
 describe('Test logout route', () => {
   test('test logout Route', async () => {
     const response = await request(app).post('/api/v1/user/logout');

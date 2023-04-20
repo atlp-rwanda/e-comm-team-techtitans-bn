@@ -8,7 +8,7 @@ import {
   profile,enableDisableUser
 } from '../mocks/user.mock';
 import db from '../../src/database/models';
-import passwordReminder from "../../src/controllers/user/password.reminder";
+import passwordReminder from '../../src/controllers/user/password.reminder';
 
 const User = db.users;
 

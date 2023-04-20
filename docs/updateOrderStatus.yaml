@@ -1,0 +1,23 @@
+paths:
+  /api/v1/order/updatestatus/{id}:
+    put:
+      summary: Mark order as shipped
+      tags:
+        - Order
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: ID of the order
+      responses:
+        200:
+          schema:
+            type: object
+            description: Sucess
+        500:
+          description: Something went wrong, try again
