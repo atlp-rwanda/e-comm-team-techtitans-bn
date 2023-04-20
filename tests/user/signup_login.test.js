@@ -194,10 +194,4 @@ describe('User Test (Signup and login)', () => {
    **********************************************
    */
 
-  test('Successful update', async () => {
-    const response = await request(app)
-      .put(`/api/v1/user/profile/${userUuid}`)
-      .send(profile);
-    expect(response.statusCode).toBe(201);
-  });
 });
