@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -26,49 +26,49 @@ module.exports = (sequelize, DataTypes) => {
       fullname: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("fullname", val.toLowerCase());
+          this.setDataValue('fullname', val.toLowerCase());
         },
       },
       email: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("email", val.toLowerCase());
+          this.setDataValue('email', val.toLowerCase());
         },
       },
       password: {
         type: DataTypes.STRING,
       },
       mfa_secret: {
-       type: DataTypes.STRING,
+        type: DataTypes.STRING,
       },
       gender: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("gender", val.toLowerCase());
+          this.setDataValue('gender', val.toLowerCase());
         },
       },
       preferredLanguage: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("preferredLanguage", val.toLowerCase());
+          this.setDataValue('preferredLanguage', val.toLowerCase());
         },
       },
       preferredCurrency: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("preferredCurrency", val.toLowerCase());
+          this.setDataValue('preferredCurrency', val.toLowerCase());
         },
       },
       location: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("location", val.toLowerCase());
+          this.setDataValue('location', val.toLowerCase());
         },
       },
       billingAddress: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("billingAddress", val.toLowerCase());
+          this.setDataValue('billingAddress', val.toLowerCase());
         },
       },
       roleId: {
@@ -76,30 +76,30 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 3,
         // Admin(1), Seller(2), Buyer(3)
       },
-      accountStatus:{
-        type:DataTypes.STRING,
-        defaultValue:"active"
-    },
-    
+      accountStatus: {
+        type: DataTypes.STRING,
+        defaultValue: 'active',
+      },
+
       lastPasswordUpdate: {
         type: DataTypes.DATE,
-          allowNull: true,
-    },
+        allowNull: true,
+      },
     },
     {
       sequelize,
       modelName: 'User',
       getterMethods: {
         mfa_token() {
-            if (this.mfa_secret) {
-                return speakeasy.totp({
-                    secret: this.mfa_secret,
-                    encoding: 'base32',
-                });
-            }
-            return null;
+          if (this.mfa_secret) {
+            return speakeasy.totp({
+              secret: this.mfa_secret,
+              encoding: 'base32',
+            });
+          }
+          return null;
         },
-    },
+      },
     },
   );
   return User;

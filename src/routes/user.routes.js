@@ -1,7 +1,12 @@
 import express from 'express';
 import Role from '../controllers/user/role.controller';
 // import roles from './roles.routes';
-import { isAdmin,isBuyer,isSeller,checkPermission } from '../middleware/auth/auth.middleware';
+import {
+  isAdmin,
+  isBuyer,
+  isSeller,
+  checkPermission,
+} from '../middleware/auth/auth.middleware';
 import { verifyUser, createUser } from '../controllers/user/signup.controller';
 import login from '../controllers/user/login.controller';
 import logout from '../controllers/user/logout.controller';
@@ -13,7 +18,7 @@ import {
 import findAllUsers from '../controllers/user/findAllUsers.controller';
 import updateProfile from '../controllers/user/profile.controller';
 import editPassword from '../controllers/user/user.edit.password';
-import verifyOtp  from '../controllers/user/2fauthentication.controller';
+import verifyOtp from '../controllers/user/2fauthentication.controller';
 import RestrictPassword from '../middleware/auth/check.password.update';
 import disableEnableUsers from '../controllers/user/disableEnableUsers.controller';
 const userRouter = express.Router();
@@ -32,16 +37,32 @@ userRouter.patch('/forgot-password', forgotPassword);
 userRouter.get('/reset-password/:id/:token', getResetPassword);
 userRouter.post('/reset-password/:id/:token', resetPassword);
 
-
 // Update user profile
 userRouter.put('/profile/:id', updateProfile);
 
 // Get all users
-userRouter.get('/profile/users',RestrictPassword,isAdmin,checkPermission('manage users'), findAllUsers);
-userRouter.post('/role', RestrictPassword,isAdmin,checkPermission('manage users'),Role.setRole);
+userRouter.get(
+  '/profile/users',
+  RestrictPassword,
+  isAdmin,
+  checkPermission('manage users'),
+  findAllUsers,
+);
+userRouter.post(
+  '/role',
+  RestrictPassword,
+  isAdmin,
+  checkPermission('manage users'),
+  Role.setRole,
+);
 //update user password
-userRouter.put('/editpassword/:id',editPassword);
+userRouter.put('/editpassword/:id', editPassword);
 //disable and enable user account
-userRouter.put('/updateAccountStatus/:uuid',isAdmin,checkPermission('manage users'),disableEnableUsers);
+userRouter.put(
+  '/updateAccountStatus/:uuid',
+  isAdmin,
+  checkPermission('manage users'),
+  disableEnableUsers,
+);
 
 export default userRouter;

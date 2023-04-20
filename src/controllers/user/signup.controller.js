@@ -48,7 +48,7 @@ const verifyUser = async (req, res) => {
           break;
         //   case !user.password.match(/^[a-z0-9]+$/i):
         case !user.password.match(
-          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i
+          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i,
         ):
           res.status(401).json({
             message:
@@ -82,7 +82,7 @@ const verifyUser = async (req, res) => {
             {
               email: user.email,
               userToken,
-            }
+            },
           );
           break;
       }
@@ -99,17 +99,14 @@ const createUser = async (req, res) => {
   const check = jwt.verify(token, process.env.SECRET_TOKEN);
   User.create(check)
     .then((data) => {
-      res
-
-        .status(201)
-        .send({
-          message: 'check a welcoming message we sent you...',
-          data: data,
-        });
+      res.status(201).send({
+        message: 'check a welcoming message we sent you...',
+        data: data,
+      });
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || 'Some error occurred while creating the User.',
+        message: 'Internal Server Error',
       });
     });
   const context = {
