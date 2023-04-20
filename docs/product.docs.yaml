@@ -88,6 +88,38 @@ paths:
         '401':
           description: You are not allowed to access this route
 
+  # Display a single product
+  /api/v1/product/{productId}:
+    get:
+      security: [{ jwt: [] }]
+      summary: Display a single product by inputing it's ID into the params
+      tags: [Product]
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: Input the ID of the product you want to fetch
+          # schema:
+          #   type: string
+          #   minimum: 15
+      responses:
+        '200':
+          description: 🍀 Product was fetched Successfully
+        '404':
+          description: 🚫 Sorry, the product was not found
+
+  # List all AVAILABLE products
+  /api/v1/product/available:
+    get:
+      security: [{ jwt: [] }]
+      summary: List of all available products
+      tags: [Product]
+      responses:
+        '200':
+          description: 🍀 Here are the AVAILABLE Products
+        '404':
+          description: 🚫 Sorry, there are no available products at the moment
+
   # 1. Update a product's stock status to 'Out of Stock'
   /product/update/stockStatus/2/{id}:
     get:
@@ -151,8 +183,6 @@ paths:
           description: Update done Successfully
         '404':
           description: This Product doesn't exists.
-        '401':
-          description: You are not allowed to access this route
 
   # Delete a product
   /api/v1/product/delete/{id}:

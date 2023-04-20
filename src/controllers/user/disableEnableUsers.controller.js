@@ -4,15 +4,15 @@ import sendEmail from '../../utils/send.email';
 const User = db.users;
 
 const disableEnableUsers= async (req, res)=> {
-    const { uuid } = req.params;
+    const { id } = req.params;
     const {accountStatus,reason}=req.body;
 
     try{
-    const user = await User.findOne({ where: { uuid } });
+    const user = await User.findOne({ where: { id } });
 
     if(!user){
         return res.status(404).json({
-          message:`user with id : ${uuid} does not exit `
+          message:`user with id : ${id} does not exit `
       })
     }
 

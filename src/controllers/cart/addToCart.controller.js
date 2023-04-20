@@ -2,11 +2,11 @@ import JwtUtility from '../../utils/jwt.util';
 
 import { isBuyer } from '../../middleware/auth/auth.middleware';
 import db from '../../database/models';
+import models from '../../database/models';
 
 const { getCart } = require('./cartFunction');
 
 const User = db.users;
-const Product = db.products;
 const Cart = db.carts;
 
 // add to cart function
@@ -23,8 +23,9 @@ const addToCart = async (req, res) => {
 
     // Check if the user is a buyer
     if (user && decodedToken && decodedToken.roleId === 3) {
-      const product = await Product.findByPk(productId);
-      if (!product) return res.status(400).json({ message: 'Product does not exist' });
+      const product = await models.Product.findByPk(productId);
+      if (!product)
+        return res.status(400).json({ message: 'Product does not exist' });
       if (product.quantity < productQuantity) {
         return res
           .status(400)
@@ -52,11 +53,12 @@ const addToCart = async (req, res) => {
         const createdCart = await Cart.create(newCart);
 
         res.status(201).json({
-          message: `${product.name} has been added to your cart` ,
+          message: `${product.name} has been added to your cart`,
           cart: createdCart,
         });
-      } else { // if there is a product in the cart, new products will be added
-        const existingProduct = cart.products.find(p => p.id === productId);
+      } else {
+        // if there is a product in the cart, new products will be added
+        const existingProduct = cart.products.find((p) => p.id === productId);
         if (existingProduct) {
           existingProduct.quantity += productQuantity;
         } else {
@@ -76,7 +78,8 @@ const addToCart = async (req, res) => {
           cart: updatedCart,
         });
       }
-    } else { // if a user is not a buyer
+    } else {
+      // if a user is not a buyer
       res.status(401).json({
         error: new Error('User is not a buyer').message,
         message: 'Please create a buyer account',
@@ -85,7 +88,8 @@ const addToCart = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: error.message,
-      message: 'Sorry, we encountered an error while trying to add the product to your cart.',
+      message:
+        'Sorry, we encountered an error while trying to add the product to your cart.',
     });
   }
 };

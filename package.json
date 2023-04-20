@@ -10,7 +10,7 @@
     "lint:fix": "eslint src --fix --cache",
     "pretest": "node tests/preTest.js",
     "test": "jest --detectOpenHandles --forceExit",
-    "coverage": "jest --collect-coverage",
+    "coverage": "node tests/preTest.js && npm run seed:dev:do && jest --collect-coverage",
     "migration": "npm run migrate:undo && npm run migrate",
     "migrate": "npx sequelize-cli db:migrate",
     "migrate:undo": "npx sequelize-cli db:migrate:undo:all",
@@ -77,7 +77,7 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
-    "@babel/core": "^7.21.3",
+    "@babel/core": "^7.21.4",
     "@babel/plugin-transform-runtime": "^7.21.0",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-modules": "^0.1.5",
