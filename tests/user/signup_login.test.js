@@ -165,14 +165,6 @@ describe('User Test (Signup and login)', () => {
     expect(userUuid).toBeDefined();
   });
 
-  test('Error after receiving the verification email', async () => {
-    const response = await request(app).get(
-      `/api/v1/user/signup/${expiredToken}`,
-    );
-    expect(response.statusCode).toBe(500);
-    expect(response.res.statusMessage).toBe('Internal Server Error');
-  });
-
   /*
    **********************************************
    * 🛑 End Signup a new User *

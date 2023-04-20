@@ -59,7 +59,7 @@ userRouter.post(
 userRouter.put('/editpassword/:id', editPassword);
 //disable and enable user account
 userRouter.put(
-  '/updateAccountStatus/:uuid',
+  '/updateAccountStatus/:id',
   isAdmin,
   checkPermission('manage users'),
   disableEnableUsers,

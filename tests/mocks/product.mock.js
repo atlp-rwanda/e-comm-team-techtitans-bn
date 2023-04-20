@@ -28,3 +28,6 @@ export const outOfStockProduct = {
     'https://example.com/images/product3-thumb.jpg',
   ],
 };
+
+export const sellerToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBmYmY5ZWZlLWI4NmUtNDMwZS1iNmMwLWQxZTBhYzA3YzJiYiIsImVtYWlsIjoic2hlbWFAZ21haWwuY29tIiwicm9sZUlkIjoyLCJpYXQiOjE2ODE5NzE1MDIsImV4cCI6MzI1OTg1MTUwMn0.2_scNt5CVOXJ4fopGpQzKeLOVxL77do_IsZBE_ugc2c";

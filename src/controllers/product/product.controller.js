@@ -208,6 +208,44 @@ export const availableStatusUpdate = async (req, res) => {
   }
 };
 // ...........end of PRODUCT-STATUS FUNCTIONALITY......
+export const updateProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const { name, price, quantity, categoryId, description, expiryDate } =
+      req.body;
+    const images = req.body.images || [];
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = JwtUtility.verifyToken(token);
+    const { id } = decodedToken;
+
+    const product = await models.Product.findOne({
+      where: { id: productId, vendorId: id },
+    });
+    if (!product) {
+      return res.status(404).json({
+        message: "🚫 Product not found.",
+      });
+    }
+
+    const updatedProduct = await product.update({
+      name,
+      price,
+      quantity,
+      categoryId,
+      description,
+      expiryDate,
+      images,
+    });
+    res.status(200).json({
+      message: `🍀 Product (${updatedProduct.name}) has been updated successfully.`,
+      data: updatedProduct,
+    });
+  } catch (error) {
+    res.status(500).json({ status: "fail", message: error.message });
+  }
+};
+
+// ...........end of UPDATE-PRODUCT FUNCTIONALITY......
 
 export const deleteOneProduct = async (req, res) => {
   try {
