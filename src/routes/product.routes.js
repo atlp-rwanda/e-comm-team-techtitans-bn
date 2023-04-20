@@ -19,8 +19,11 @@ import {
   deleteOneProduct,
   getOneProduct,
   updateProduct,
-} from '../controllers/product/product.controller';
-
+} from "../controllers/product/product.controller";
+import {
+  wishlist,
+  getAllWishes,
+} from "../controllers/product/wishlist.controller";
 
 const productRouter = express.Router();
 
@@ -37,14 +40,14 @@ productRouter.get("/product", findAllproducts);
 
 // Get available products
 productRouter.get(
-  '/product/available',
+  "/product/available",
   isSeller,
-  checkPermission('manage products'),
-  findAvailableProducts,
+  checkPermission("manage products"),
+  findAvailableProducts
 );
 
 // Get a specific product
-productRouter.get('/product/:id', getOneProduct);
+productRouter.get("/product/:id", getOneProduct);
 
 // According to the ENUMs: Available(1), Out_of_Stock(2), Expired(3)
 // 1. Make a product Out_of_Stock
@@ -84,5 +87,6 @@ productRouter.delete(
 );
 //product search
 productRouter.get("/product/search", productSearch);
-
+productRouter.post("/wishlist", isBuyer, wishlist);
+productRouter.get("/wishlist/:token", getAllWishes);
 export default productRouter;
