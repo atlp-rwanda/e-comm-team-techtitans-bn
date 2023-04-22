@@ -27,7 +27,7 @@ const PasswordReminder = cron.schedule('* * * * *', async () => {
         // const text=`http://localhost:3070/api/v1/user/editpassword${user.uuid}`;
         const text = `Dear,<br/><br/><strong>${user.fullname}</strong><br/><br/>You are required to update your password within 7 working days.<br/><br/> <a href="https://ecommerce-tech-titans.herokuapp.com/api/v1/user/login">Click here to Update your password</a>`;
         // const text=html
-        SendEmail.sendUpdatePassword(to, subject, text);
+        SendEmail.sendNotifications(to, subject, text);
 
         console.log('Please update your password');
       }
