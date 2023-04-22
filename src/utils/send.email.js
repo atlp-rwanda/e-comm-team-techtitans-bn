@@ -67,6 +67,40 @@ class sendEmail {
     });
   }
 
+  static confirmPayment(to, subject, context) {
+    const { USER_EMAIL, USER_PASS } = process.env;
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: USER_EMAIL,
+        pass: USER_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+    const handlebarOptions = {
+      viewEngine: {
+        parttialsDir: path.resolve('./views/'),
+        defaultLayout: false,
+      },
+      viewPath: path.resolve('./views/'),
+    };
+    transporter.use('compile', hbs(handlebarOptions));
+    const mailOptions = {
+      from: USER_EMAIL,
+      to,
+      subject,
+      template: 'payment',
+      context,
+    };
+    transporter.sendMail(mailOptions, (err, success) => {
+      if (err) return err;
+      return success;
+    });
+  }
+
+
   static sendUpdatePassword(to, subject, text) {
     const { USER_EMAIL, USER_PASS } = process.env;
     const transporter = nodemailer.createTransport({

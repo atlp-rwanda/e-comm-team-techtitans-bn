@@ -106,9 +106,10 @@ const createUser = async (req, res) => {
   if (!existUser) {
     User.create(check)
       .then((data) => {
+        const { password, ...rest } = data.dataValues;
         res.status(201).send({
           message: "check a welcoming message we sent you...",
-          data: data,
+          data: rest,
         });
       })
       .catch((err) => {

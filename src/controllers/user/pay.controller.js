@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import Stripe from 'stripe';
 import JwtUtility from '../../utils/jwt.util';
-import JWT from 'jsonwebtoken';
+import sendEmail from '../../utils/send.email';
 
 dotenv.config();
 
@@ -36,8 +36,15 @@ class payments {
   }
 
   static async pay(req, res) {
-    const { cvc, cardNumber, token } = req.body;
-    const decodedToken = JwtUtility.verifyToken(token);
+    const tokenHeader = req.headers.authorization;
+    if (!tokenHeader) {
+      return res.status(401).json({ message: 'Token not provided' }); // assuming the token is sent in the Authorization header
+    }
+    const token = tokenHeader.split(' ')[1];
+    const { payToken } = req.params;
+    const { cvc, cardNumber } = req.body;
+    const decodedToken = JwtUtility.verifyToken(payToken);
+    const authToken = JwtUtility.verifyToken(token);
     const checks = payments.checkCard(cardNumber);
     if (!checks) {
       return res.status(500).json({ message: 'card declined' });
@@ -52,21 +59,27 @@ class payments {
     });
 
     const customer = await stripe.customers.create({
-      email: decodedToken.email,
+      email: authToken.email,
       source: stripeToken.id,
     });
     try {
       const charge = await stripe.charges.create({
-        amount: decodedToken.amount,
+        amount: decodedToken.amount / 10,
         currency: 'usd',
         description: 'payment',
         customer: customer.id,
       });
+      // console.log(charge.receipt_url);
       res.status(200).json({
         message: 'your payment is successful',
         success: true,
         charge,
       });
+      const context = {
+        verifyUrl: `${charge.receipt_url}`,
+        content: 'View Receipt',
+      };
+      sendEmail.confirmPayment(authToken.email, 'Payment Confirmation', context);
     } catch (error) {
       res.status(500).json({ error: 'internal server error..........' });
     }
