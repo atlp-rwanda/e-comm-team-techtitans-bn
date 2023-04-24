@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import db from '../../database/models';
 import SendEmail from '../../utils/send.email';
 
@@ -11,7 +12,7 @@ const EXPIRATION_TIME = process.env.PASSWORD_EXPIRATION_TIME;
 // cron schedule run every 30 days:(0 0 0 */30 * *)
 // cron schedule run every 30 days at 9:00 am:(0 9 0 */30 * *)
 // cron schedule run every every five minutes:(*/5 * * * *)
-const PasswordReminder = cron.schedule('* * * * *', async () => {
+const PasswordReminder = cron.schedule('* * */30 * *', async () => {
   // every minute
   // console.log ('Please update your password');
   try {

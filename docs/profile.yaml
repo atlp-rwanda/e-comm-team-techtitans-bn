@@ -1,8 +1,10 @@
 paths:
   
-  /api/v1/user/{uuid}:
+  /api/v1/user/profile:
     put:
-      summary:  Update
+      summary:  Update user's profile
+      security:
+        - bearerAuth: []
       tags:
         - User
       produces:
@@ -10,11 +12,6 @@ paths:
       consumes:
         - application/json
       parameters:
-        - in: path
-          name: uuid
-          type: string
-          required: true
-          description: ID of the user
         - in: body
           name: Update
           schema:

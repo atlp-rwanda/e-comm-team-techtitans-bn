@@ -2,28 +2,42 @@ import db from '../../database/models';
 
 const User = db.users;
 
-// Find all Users
-const findAllUsers = (req, res) => {
-  User.findAll({ where: {} })
-    .then((usersList) => {
-  const users=[]
+const findAllUsers = async (req, res) => {
+  const limit = req.query.limit || 10; // default to 10 users per page
+  const offset = req.query.offset || 0; // default to the first page
+   // calculate the offset based on the page number
 
-        for(let i=0;i<usersList.length;i++){
-            let {password,...rest}=usersList[i].dataValues
-            users.push(rest)
-        }
-
-      res.status(201).json({
-
-        message: `${usersList.length} Users were all fetched successfully!`,
-        data: users
-      });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while removing all users.',
-      });
+  try {
+    const users = await User.findAndCountAll({
+      where: {},
+      limit,
+      offset,
+      attributes: {
+        exclude: ['password'],
+      },
     });
+
+    const result = users.rows;
+    const totalCount = users.count;
+
+    if (result.length <= 0) {
+      res.status(404).json({
+        status: 'fail',
+        message: '🚫 Oops...no user found at the moment.',
+      });
+    } else {
+      res.status(200).json({
+        status: 'success',
+        message: `🍀 ${result.length} Users Fetched Successfully.`,
+        data: result,
+        currentPage: offset / limit + 1,
+        totalPages: Math.ceil(totalCount / limit),
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ status: 'fail', message: error.message });
+  }
 };
+
 
 export default findAllUsers;
