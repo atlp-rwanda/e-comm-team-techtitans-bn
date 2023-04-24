@@ -1,7 +1,7 @@
 paths:
-  /api/v1/payment/{payToken}:
+  /api/v1/checkout:
     post:
-      summary: pay products
+      summary: checkout
       tags:
         - Product
       produces:
@@ -9,30 +9,39 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: payToken
-          in: path
-          description: ID of the user to get
-          required: true
-          schema:
-            type: string
         - in: body
           name: product
           schema:
             type: object
             properties:
-              cvc:
+              receiverName:
                 type: string
-                default: '123'
+                default: 'Buyer'
                 required: true
-                description: cvc
-              cardNumber:
+                description: name
+              address:
                 type: string
-                default: '4242424242424242'
+                default: 'kacyiru'
+                required: true
+                description: name
+              phoneNumber:
+                type: string
+                default: '0780417287'
+                required: true
+                description: number
+              shippingMethod:
+                type: string
+                default: "In-stock Pickup"
+                required: true
+                description: method
+              amount:
+                type: integer
+                default: 12000
                 required: true
                 description: number
       responses:
         '200':
-          description: checkout is successful
+          description: payment is successful
           content:
             application/json:
               schema:

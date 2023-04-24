@@ -5,6 +5,7 @@ import authRouter from './oauth.routes';
 import payment from './pay.routes';
 import cartRouter from './cart.routes';
 import orderRouter from './order.routes';
+import checkout from './checkout.routes'
 
 const router = Router();
 
@@ -14,4 +15,6 @@ router.use('/cart', cartRouter);
 router.use('/auth', authRouter);
 router.use('/payment', payment);
 router.use('/order', orderRouter);
+router.use('/checkout', checkout);
+
 export default router;

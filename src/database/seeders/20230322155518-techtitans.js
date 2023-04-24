@@ -19,6 +19,17 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          id: uuidv4(),
+          fullname: 'richard',
+          email: 'ishimwerichard26@gmail.com',
+          //the hashed password below is 'Richard@123'
+          password:
+            '$2a$12$m8A9MqExqkOUgnKQcUqu1OfHlyPeF34uhB3ztnpdHP4UMLRnvlfuC',
+          roleId: 3,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {},
     );
