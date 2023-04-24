@@ -16,9 +16,10 @@ const viewCart = async (req, res) => {
       include: { all: true },
     });
 
-    if (!cart) {
+    if (!cart || cart.length == 0) {
       return res.status(404).json({ message: 'Your cart is empty' });
     }
+
 
     res.status(200).json({
       message: 'Your cart has been retrieved successfully',

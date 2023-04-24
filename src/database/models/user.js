@@ -47,6 +47,10 @@ module.exports = (sequelize, DataTypes) => {
           this.setDataValue('gender', val.toLowerCase());
         },
       },
+      birthdate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
       preferredLanguage: {
         type: DataTypes.STRING,
         set(val) {

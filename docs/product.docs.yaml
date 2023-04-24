@@ -217,3 +217,16 @@ paths:
           description: Unauthorized
         400:
           description: product not available
+ # List all available products to buyers
+  /api/v1/product/all/viewAvailable:
+    get:
+      security: [{ jwt: [] }]
+      summary: List of  available products to buyers
+      tags: [Product]
+      responses:
+        '200':
+          description: Update done Successfully
+        '404':
+          description: This Product doesn't exists.
+        '401':
+          description: You are not allowed to access this route
