@@ -19,8 +19,8 @@ const clearCart = async (req, res) => {
         const user = await User.findOne({ where: { id: decodedToken.id } });
 
         if (user && decodedToken && decodedToken.roleId === 3) {
-            const { uid } = req.params;
-            if (uid !== decodedToken.id) {
+            const { id } = req.params;
+            if (id !== decodedToken.id) {
                 return res.status(401).json({
                     status: "fail",
                     message: "🚫 Sorry, You are unauthorised to perform action ..",
@@ -28,7 +28,7 @@ const clearCart = async (req, res) => {
             }
           const availableCart = await models.Cart.findOne({
                 where: {
-                    userId: uid,
+                    userId: id,
                 },
             });
             if (!availableCart) {

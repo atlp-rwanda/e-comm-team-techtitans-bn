@@ -1,0 +1,39 @@
+paths:
+  /api/v1/cart/add-to-cart:
+    post:
+      summary: Add a product to the cart
+      security:
+        - bearerAuth: []
+      tags: [Cart]
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: Cart
+          schema:
+            type: object
+            properties:
+              productId:
+                type: string
+                default: abcd1234-abcd-1234-abcd-123456abcdef
+                description: ID of the product to add to the cart
+              productQuantity:
+                type: integer
+                description: Quantity of the product to add to the cart
+
+      responses:
+        201:
+          schema:
+            type: object
+                    
+        400:
+          description: Bad request
+              
+        401:
+          description: User is not a buyer
+              
+        500:
+          description: Sorry, we encountered an error while trying to add the product to your cart.
+                  
