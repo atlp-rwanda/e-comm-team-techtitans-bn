@@ -10,6 +10,7 @@ import { sequelize } from './database/models/index';
 import router from './routes';
 import combinedDocs from '../docs/index';
 import passwordReminder from './controllers/user/password.reminder';
+import ExpiredProductRemover from './controllers/product/product.expiration';
 
 dotenv.config();
 
@@ -62,5 +63,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(combinedDocs, options));
 app.use('/api/v1', router);
 
 passwordReminder.start();
+ExpiredProductRemover.start();
 
 export default app;

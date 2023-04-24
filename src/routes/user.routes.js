@@ -38,7 +38,7 @@ userRouter.get('/reset-password/:id/:token', getResetPassword);
 userRouter.post('/reset-password/:id/:token', resetPassword);
 
 // Update user profile
-userRouter.put('/profile/:id', updateProfile);
+userRouter.put('/profile', updateProfile);
 
 // Get all users
 userRouter.get(
