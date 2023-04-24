@@ -10,7 +10,7 @@ import deleteCart from '../controllers/cart/clearcart.controller'
 const cartRouter = express.Router();
 
 cartRouter.post('/add-to-cart',addItemToCart);
-cartRouter.delete('/clear-cart/:uid', deleteCart);
+cartRouter.delete('/clear-cart/:id', deleteCart);
 cartRouter.get('/view-cart',isBuyer,viewCart);
 
 export default cartRouter;

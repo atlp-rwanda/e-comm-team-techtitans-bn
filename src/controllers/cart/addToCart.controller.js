@@ -1,16 +1,18 @@
+
 import JwtUtility from '../../utils/jwt.util';
 
 import { isBuyer } from '../../middleware/auth/auth.middleware';
 import db from '../../database/models';
 import models from '../../database/models';
 
-const { getCart } = require('./cartFunction');
+
+const { getCart, updateCart } = require('./cartFunction');
 
 const User = db.users;
 const Cart = db.carts;
 
 // add to cart function
-const addToCart = async (req, res) => {
+const addItemToCart = async (req, res) => {
   try {
     const tokenHeader = req.headers.authorization;
 
@@ -21,76 +23,61 @@ const addToCart = async (req, res) => {
     const user = await User.findOne({ where: { id: decodedToken.id } });
     const { productId, productQuantity } = req.body;
 
-    // Check if the user is a buyer
-    if (user && decodedToken && decodedToken.roleId === 3) {
-      const product = await models.Product.findByPk(productId);
-      if (!product)
-        return res.status(400).json({ message: 'Product does not exist' });
-      if (product.quantity < productQuantity) {
-        return res
-          .status(400)
-          .json({ message: 'We do not have sufficient products' });
-      }
-      const cart = await getCart(decodedToken.id);
-      // if a buyer doesn't have a cart it will be created
-      if (!cart) {
-        const products = [
-          {
-            id: productId,
-            name: product.name,
-            quantity: productQuantity,
-            price: product.price,
-            images: product.images,
-            total: product.price * productQuantity,
-          },
-        ];
-        const newCart = {
-          userId: decodedToken.id,
-          products,
-          total: products.reduce((acc, curr) => acc + curr.total, 0),
-        };
-
-        const createdCart = await Cart.create(newCart);
-
-        res.status(201).json({
-          message: `${product.name} has been added to your cart`,
-          cart: createdCart,
-        });
-      } else {
-        // if there is a product in the cart, new products will be added
-        const existingProduct = cart.products.find((p) => p.id === productId);
-        if (existingProduct) {
-          existingProduct.quantity += productQuantity;
-        } else {
-          cart.products.push({
-            id: productId,
-            name: product.name,
-            quantity: productQuantity,
-            price: product.price,
-            images: product.images,
-            total: product.price * productQuantity,
-          });
-        }
-        cart.total = cart.products.reduce((acc, curr) => acc + curr.total, 0);
-        const updatedCart = await cart.save();
-        return res.status(200).json({
-          message: `${product.name} has been added to your cart`,
-          cart: updatedCart,
-        });
-      }
-    } else {
-      // if a user is not a buyer
-      res.status(401).json({
+    if (!user || !decodedToken || decodedToken.roleId !== 3) { // If a user is not a buyer.
+      return res.status(401).json({
         error: new Error('User is not a buyer').message,
         message: 'Please create a buyer account',
       });
     }
+
+    const product = await models.Product.findByPk(productId);
+    if (!product) { // If a product is not in the database
+      return res.status(400).json({ message: 'Product does not exist' });
+    }
+
+    if (product.quantity < productQuantity) { // If a buyer chooses more than what exists.
+      return res.status(400).json({ message: 'We do not have sufficient products' });
+    }
+
+    let cart = await getCart(decodedToken.id);
+    const products = cart ? cart.products : [];
+
+    const existingProduct = products.find((p) => p.id === productId);
+    if (existingProduct) {
+      existingProduct.quantity += productQuantity;
+    } else {
+      const newProduct = {
+        id: productId,
+        name: product.name,
+        quantity: productQuantity,
+        price: product.price,
+        images: product.images,
+        total: product.price * productQuantity,
+      };
+      products.push(newProduct);
+    }
+
+    const total = products.reduce((acc, curr) => acc + curr.total, 0);
+
+    if (!cart) { // If the cart doesn't exist
+      cart = await Cart.create({
+        userId: decodedToken.id,
+        products,
+        total,
+      });
+    } else { // If the cart existed, it will be updated
+      await updateCart({ products, total }, cart.id);
+    }
+
+    return res.status(201).json({
+      message: `${product.name} has been added to your cart`,
+      cart: { products, total },
+    });
   } catch (error) {
     res.status(500).json({
       error: error.message,
-      message:
-        'Sorry, we encountered an error while trying to add the product to your cart.',
+      message: 'Sorry, we encountered an error while trying to add the product to your cart.',
     });
   }
 };
-export default addToCart;
+export default addItemToCart;
