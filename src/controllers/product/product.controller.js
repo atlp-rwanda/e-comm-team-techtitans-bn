@@ -1,6 +1,7 @@
 import models from '../../database/models';
 import Category from '../../database/models/category';
 import JwtUtility from '../../utils/jwt.util';
+import {notifyVendorOnProductCreate,notifyVendorOnProductDeletion} from "../notification/notifications.controller";
 
 export const addCategory = async (req, res) => {
   try {
@@ -86,6 +87,7 @@ export const addProduct = async (req, res) => {
       expiryDate,
       images,
     });
+    await notifyVendorOnProductCreate(product);
     res.status(201).json({
       message: `🍀 Product (${product.name}) has been added successfully.`,
       data: product,
@@ -262,6 +264,7 @@ export const deleteOneProduct = async (req, res) => {
         message: '🚫 Sorry, this product was not found...',
       });
     } else {
+      await notifyVendorOnProductDeletion(availableProduct);
       await availableProduct.destroy();
       res.status(200).json({
         status: 'success',
@@ -289,6 +292,32 @@ export const getOneProduct = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+// ...........Buyer-View-Product FUNCTIONALITY......
+export const buyerViewProduct = async (req, res) => {
+  try {
+    const availableProducts = await models.Product.findAll({
+      where: {
+        stock: "available"
+      },
+    });
+    if (availableProducts.length === 0) {
+      res.status(404).json({
+        status: "fail",
+        message: "🚫 Sorry, there are no available products at the moment",
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        message: `🍀 Here are the ${availableProducts.length} Available Products`,
+        data: availableProducts,
+      });
+    }
+  } catch (error) {
+  
+    res.status(500).json({ status: "fail", message: error.message });
   }
 };
 

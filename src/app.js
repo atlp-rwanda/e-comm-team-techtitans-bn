@@ -6,6 +6,10 @@ import { SwaggerTheme } from 'swagger-themes';
 import session from 'express-session';
 import passport from 'passport';
 import { sequelize } from './database/models/index';
+import {
+    ExpiringProducts,
+    notifyVendorProductOutOfStock,
+} from "./controllers/notification/notifications.controller";
 // import db from './database/models/index';
 import router from './routes';
 import combinedDocs from '../docs/index';
@@ -63,6 +67,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(combinedDocs, options));
 app.use('/api/v1', router);
 
 passwordReminder.start();
-ExpiredProductRemover.start();
+ExpiringProducts.start();
+notifyVendorProductOutOfStock.start();
+
 
 export default app;

@@ -1,0 +1,71 @@
+paths:
+
+  /api/v1/notification/vendor/all/:
+    get:
+      summary: Get all notification
+      tags: [Notification]
+      responses:
+        '200':
+          description: Notification retrieved successfully
+        '401':
+          description: Token not provided
+        '404':
+          description: you don't have any notification at the moment
+        '500':
+          description: Internal server error
+
+
+  /api/v1/notification/vendor/all/1/delete:
+    delete:
+      summary: Delete all notification
+      tags: [ Notification ]
+      responses:
+        '200':
+          description: Notifications deleted successfully
+        '401':
+          description: Token not provided
+        '404':
+          description: Notification not found
+        '500':
+          description: Internal server error
+
+  /api/v1/notification/vendor/all/delete/{id}:
+    delete:
+      summary: Delete one notification
+      tags: [ Notification ]
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Notification ID
+      responses:
+        '200':
+          description: Notification deleted successfully
+        '401':
+          description: Token not provided
+        '404':
+          description: Notification not found
+        '500':
+          description: Internal server error
+
+  /api/v1/notification/vendor/all/{id}:
+    get:
+      summary: get one notification
+      tags: [ Notification ]
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Notification ID
+      responses:
+        '200':
+          description: Notification retrieved successfully
+        '401':
+          description: Token not provided
+        '404':
+          description: you don't have any notification at the moment
+        '500':
+          description: Internal server error
+

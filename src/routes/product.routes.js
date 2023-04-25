@@ -19,6 +19,7 @@ import {
   deleteOneProduct,
   getOneProduct,
   updateProduct,
+  buyerViewProduct,
 } from "../controllers/product/product.controller";
 import {
   wishlist,
@@ -89,4 +90,6 @@ productRouter.delete(
 productRouter.get("/product/list/search", productSearch);
 productRouter.post("/wishlist", isBuyer, wishlist);
 productRouter.get("/wishlist/:token", getAllWishes);
+// buyer view all products
+productRouter.get('/product/all/viewAvailable',buyerViewProduct);
 export default productRouter;
