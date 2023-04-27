@@ -160,7 +160,7 @@ class sendEmail {
      // return console.log('email sent', success);
     });
   }
-  
+
   static sendEmailDisableEnable(to,subject,text) {
     const { USER_EMAIL, USER_PASS } = process.env;
     const transporter = nodemailer.createTransport({
@@ -185,6 +185,7 @@ class sendEmail {
         return console.log('email sent', success);
     });
 }
+
 
 static sendProductExpired(to, subject, text) {
   const { USER_EMAIL, USER_PASS } = process.env;
@@ -212,9 +213,36 @@ static sendProductExpired(to, subject, text) {
   });
 }
 
-  
+
+  static sendNotifications(to,subject, text) {
+    const { USER_EMAIL, USER_PASS } = process.env;
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: USER_EMAIL,
+        pass: USER_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    // transporter.use('compile', hbs(handlebarOptions));
+    const mailOptions = {
+      from: USER_EMAIL,
+      to,
+      subject,
+      html:text,
+    };
+    transporter.sendMail(mailOptions, (err, success) => {
+      if (err) return err;
+      return success;
+    });
+  }
+
+
 }
 
-  
+
 
 export default sendEmail;

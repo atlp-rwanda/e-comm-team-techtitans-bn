@@ -1,10 +1,11 @@
 import models from '../../database/models';
+import {notifyUserOnProductOrderShipped} from "../notification/notifications.controller";
 
 
 const OrderStatus = async (req, res) => {
     const { uuid } = req.params
     try {
-       
+
       // Find the order
       const order = await models.Order.findOne({ where: { uuid } });
       if (!order) {
@@ -22,12 +23,16 @@ const OrderStatus = async (req, res) => {
             message: "🍀 The order has been marked shipped sucessfully.",
             data: updatedOrder,
           });
+
+          await  notifyUserOnProductOrderShipped(updatedOrder);
       }
-      
-    } catch (error) {
+
+
+    }
+    catch (error) {
       res.status(500).json({
         message: error.message,
       });
     }
   };
-  export default OrderStatus 
+  export default OrderStatus
