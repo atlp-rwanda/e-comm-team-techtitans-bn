@@ -43,7 +43,6 @@ userRouter.put('/profile', updateProfile);
 // Get all users
 userRouter.get(
   '/profile/users',
-  RestrictPassword,
   isAdmin,
   checkPermission('manage users'),
   findAllUsers,

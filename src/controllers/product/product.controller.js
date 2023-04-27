@@ -26,12 +26,24 @@ export const addCategory = async (req, res) => {
 };
 
 export const findAllCategories = async (req, res) => {
+  const limit = req.query.limit || 10; // default to 10 categories per page
+  const page = req.query.page || 1; // default to the first page
+  const offset = (page - 1) * limit; // calculate the offset based on the page number
   try {
-    const categories = await models.Category.findAll();
+    const categories = await models.Category.findAndCountAll({
+      limit,
+      offset,
+    });
+    const result = categories.rows;
+    const totalCount = categories.count;
     if (categories.length <= 0) {
       res.status(404).json({ status: 'fail', message: '🚫 No category found' });
     } else {
-      res.status(200).json({ status: 'success', data: categories });
+      res.status(200).json({ status: 'success',
+      data: result,
+      currentPage: offset / limit + 1,
+      totalPages: Math.ceil(totalCount / limit)
+    });
     }
   } catch (error) {
     res.status(500).json({ status: 'fail', message: error.message });
@@ -39,8 +51,16 @@ export const findAllCategories = async (req, res) => {
 };
 
 export const findAllproducts = async (req, res) => {
+  const limit = req.query.limit || 10; // default to 10 products per page
+  const page = req.query.page || 1; // default to the first page
+  const offset = (page - 1) * limit; // calculate the offset based on the page number
   try {
-    const products = await models.Product.findAll();
+    const products = await models.Product.findAndCountAll({
+      limit,
+      offset,
+    });
+    const result = products.rows;
+    const totalCount = products.count;
     if (products.length <= 0) {
       res.status(404).json({
         status: 'fail',
@@ -49,8 +69,10 @@ export const findAllproducts = async (req, res) => {
     } else {
       res.status(200).json({
         status: 'success',
-        message: `🍀 ${products.length} Products Fetched Successfully.`,
-        data: products,
+        message: `🍀 ${products.rows.length} Products Fetched Successfully.`,
+        data: result,
+        currentPage: offset / limit + 1,
+        totalPages: Math.ceil(totalCount / limit),
       });
     }
   } catch (error) {
@@ -97,19 +119,25 @@ export const addProduct = async (req, res) => {
   }
 };
 
-// ...........start of PRODUCT-STATUS FUNCTIONALITY......
 export const findAvailableProducts = async (req, res) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = JwtUtility.verifyToken(token);
     const { id } = decodedToken;
-    const availableProducts = await models.Product.findAll({
+    const limit = req.query.limit || 10; // default to 10 products per page
+    const page = req.query.page || 0; // default to the first page
+    const offset = (page - 1) * limit;
+    const availableProducts = await models.Product.findAndCountAll({
       where: {
         stock: 'available',
         vendorId: id,
       },
+      limit,
+      offset,
     });
-    if (availableProducts.length === 0) {
+    const result = availableProducts.rows;
+    const totalCount = availableProducts.count;
+    if (result.length === 0) {
       res.status(404).json({
         status: 'fail',
         message: '🚫 Sorry, there are no available products at the moment',
@@ -117,8 +145,10 @@ export const findAvailableProducts = async (req, res) => {
     } else {
       res.status(200).json({
         status: 'success',
-        message: '🍀 Here are the AVAILABLE Products',
-        data: availableProducts,
+        message: `🍀 Here are the ${result.rows.length} Available Products`,
+        data: result,
+        currentPage: offset / limit + 1,
+        totalPages: Math.ceil(totalCount / limit),
       });
     }
   } catch (error) {
@@ -295,15 +325,19 @@ export const getOneProduct = async (req, res) => {
   }
 };
 
-// ...........Buyer-View-Product FUNCTIONALITY......
 export const buyerViewProduct = async (req, res) => {
   try {
-    const availableProducts = await models.Product.findAll({
+    const limit = req.query.limit || 10; // default to 10 products per page
+    const offset = req.query.offset || 0; // default to the first page
+
+    const availableProducts = await models.Product.findAndCountAll({
       where: {
         stock: "available"
       },
+      limit,
+      offset,
     });
-    if (availableProducts.length === 0) {
+    if (availableProducts.rows.length === 0) {
       res.status(404).json({
         status: "fail",
         message: "🚫 Sorry, there are no available products at the moment",
@@ -311,12 +345,13 @@ export const buyerViewProduct = async (req, res) => {
     } else {
       res.status(200).json({
         status: "success",
-        message: `🍀 Here are the ${availableProducts.length} Available Products`,
-        data: availableProducts,
+        message: `🍀 Here are the ${availableProducts.rows.length} Available Products`,
+        data: availableProducts.rows,
+        currentPage: offset / limit + 1,
+        totalPages: Math.ceil(availableProducts.count / limit),
       });
     }
   } catch (error) {
-  
     res.status(500).json({ status: "fail", message: error.message });
   }
 };
