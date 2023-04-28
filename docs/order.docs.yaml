@@ -1,0 +1,146 @@
+paths:
+  /api/v1/order/create:
+    post:
+      summary: Add a order
+      security:
+        - bearerAuth: []
+      tags: [Order]
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: Order
+          schema:
+            type: object
+            properties:
+              cartId:
+                type: string
+                default: 53a57d9a-aebd-42ca-a9ef-0ddcea770dc1
+                required: true
+                description: Cart UUID
+      responses:
+        201:
+          schema:
+            type: object
+        500:
+          description: Something went wrong, try again
+
+  /api/v1/order:
+    post:
+      summary: buy Now order
+      security:
+        - bearerAuth: []
+      tags: [Order]
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: Order
+          schema:
+            type: object
+            properties:
+              productId:
+                type: string
+                default: 53a57d9a-aebd-42ca-a9ef-0ddcea770dc1
+                required: true
+                description: Cart UUID
+              quantity:
+                type: integer
+                default: 10
+                required: true
+                description: product quantity in Units
+
+      responses:
+        201:
+          schema:
+            type: object
+        500:
+          description: Something went wrong, try again
+
+  /api/v1/order/list-orders:
+    get:
+      security:
+        - bearerAuth: []
+      summary: List of all orders for a user
+      tags: [Order]
+      responses:
+        "200":
+          description: orders done Successfully
+        "404":
+          description: This orders Not found.
+        "401":
+          description: You are not allowed to access this route
+
+  /api/v1/order/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      summary: List single order for a user
+      tags: [Order]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Recieve a single order
+      responses:
+        "200":
+          description: order done Successfully
+        "404":
+          description: This order Not found.
+        "401":
+          description: You are not allowed to access this route
+
+  /api/v1/order/delete/{id}:
+    delete:
+      security:
+        - bearerAuth: []
+      summary: List single order for a user
+      tags: [Order]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Recieve a single order
+      responses:
+        "200":
+          description: order done Successfully
+        "404":
+          description: This order Not found.
+        "401":
+          description: You are not allowed to access this route
+
+  /api/v1/order/update/{id}:
+    put:
+      security:
+        - bearerAuth: []
+      summary: Update the quantity of a single order for a user
+      tags: [Order]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the order to update
+
+        - name: quantity
+          in: body
+          required: true
+          description: The new quantity for the order
+          schema:
+            type: object
+            properties:
+              quantity:
+                type: integer
+                minimum: 1
+      responses:
+        "200":
+          description: Order updated successfully
+        "400":
+          description: Invalid request body
+        "404":
+          description: Order not found
+        "401":
+          description: You are not allowed to access this route
