@@ -1,42 +1,76 @@
-'use strict';
+"use strict";
 const { DataTypes } = require("sequelize");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Orders', {
+    await queryInterface.createTable("Orders", {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
       },
-      uuid: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+
+      userId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
-      product_id: {
-        type: Sequelize.STRING
+      cartId: {
+        type: Sequelize.UUID,
+        allowNull: true,
+        references: {
+          model: "Carts",
+          key: "id",
+          as: "cartId",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
-      user_id: {
-        type: Sequelize.STRING
+      productId: {
+        type: Sequelize.UUID,
+        allowNull: true,
+        references: {
+          model: "Products",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
+
+      status: {
+        type: Sequelize.ENUM("pending", "processing", "shipped", "delivered"),
+        defaultValue: "pending",
+      },
+
+      expected_delivery_date: {
+        type: Sequelize.DATE,
+        default: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000),
       },
       quantity: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER,
+        allowNull: true,
       },
-      status: {
-        type: Sequelize.STRING
+      total_price: {
+        type: Sequelize.FLOAT,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Orders');
-  }
+    await queryInterface.dropTable("Orders");
+  },
 };

@@ -1,11 +1,15 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Cart extends Model {
     static associate(models) {
       this.belongsTo(models.User, {
-        foreignKey: 'userId',
-        onDelete: 'CASCADE',
+        foreignKey: "userId",
+        onDelete: "CASCADE",
+      });
+      Cart.hasOne(models.Order, {
+        foreignKey: "cartId",
+        onDelete: "CASCADE",
       });
       // this.hasMany(models.Product, { foreignKey: 'id'});
     }
@@ -26,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       userId: {
         type: DataTypes.UUID,
-        references: { model: 'Users', key: 'id' },
+        references: { model: "Users", key: "id" },
       },
       total: {
         type: DataTypes.FLOAT,
@@ -43,8 +47,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Cart',
-    },
+      modelName: "Cart",
+    }
   );
 
   return Cart;
