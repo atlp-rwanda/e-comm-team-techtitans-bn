@@ -125,7 +125,7 @@ export const findAvailableProducts = async (req, res) => {
     const decodedToken = JwtUtility.verifyToken(token);
     const { id } = decodedToken;
     const limit = req.query.limit || 10; // default to 10 products per page
-    const page = req.query.page || 0; // default to the first page
+    const page = req.query.page || 1; // default to the first page
     const offset = (page - 1) * limit;
     const availableProducts = await models.Product.findAndCountAll({
       where: {
@@ -145,7 +145,7 @@ export const findAvailableProducts = async (req, res) => {
     } else {
       res.status(200).json({
         status: 'success',
-        message: `🍀 Here are the ${result.rows.length} Available Products`,
+        message: `🍀 Here are the ${result.length} Available Products`,
         data: result,
         currentPage: offset / limit + 1,
         totalPages: Math.ceil(totalCount / limit),

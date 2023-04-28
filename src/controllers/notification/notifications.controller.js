@@ -21,6 +21,7 @@ const Orders = db.orders;
 const Notifications=models.Notification;
 
 //cron job to find products that are going to expire in 7 days
+//cron job  to run every day at 12:00 am:(0 0 * * *)
 const ExpiringProducts = cron.schedule('* * * * *', async () => {
     try {
         const products = await Products.findAll();
