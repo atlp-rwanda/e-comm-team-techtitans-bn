@@ -8,7 +8,7 @@ const User = db.User;
 const isAdmin = async (req, res, next) => {
   const tokenHeader = req.headers.authorization;
   if (!tokenHeader) {
-    return res.status(401).json({ message: "Token not provided" });  // assuming the token is sent in the Authorization header
+    return res.status(401).json({ message: "🚫 Token not provided" });  // assuming the token is sent in the Authorization header
    
   }
   const token = tokenHeader.split(" ")[1];
@@ -21,18 +21,18 @@ const isAdmin = async (req, res, next) => {
     } else {
       res
         .status(403)
-        .json({ message: "Your are Unauthorized to perform this action" });
+        .json({ message: "🚫 Your are Unauthorized to perform this action" });
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "🚫 Internal server error" });
   }
 };
 
 const isSeller = async (req, res, next) => {
   const tokenHeader = req.headers.authorization;
   if (!tokenHeader) {
-    return res.status(401).json({ message: "Token not provided" });
+    return res.status(401).json({ message: "🚫 Token not provided" });
   }
 
   const token = tokenHeader.split(" ")[1];
@@ -45,20 +45,20 @@ const isSeller = async (req, res, next) => {
     } else {
       res
         .status(403)
-        .json({ message: "Your are Unauthorized to perform this action" });
+        .json({ message: "🚫 Your are Unauthorized to perform this action" });
     }
   } catch (err) {
     console.error(err);
     res
       .status(500)
-      .json({ message: "Your are Unauthorized to perform this action" });
+      .json({ message: "🚫 Your are Unauthorized to perform this action" });
   }
 };
 
 const isBuyer = async (req, res, next) => {
   const tokenHeader = req.headers.authorization;
   if (!tokenHeader) {
-    return res.status(401).json({ message: "Token not provided" }); // assuming the token is sent in the Authorization header
+    return res.status(401).json({ message: "🚫 Token not provided" }); // assuming the token is sent in the Authorization header
   }
   const token = tokenHeader.split(" ")[1];
   const { id } = req.params;
@@ -70,11 +70,11 @@ const isBuyer = async (req, res, next) => {
     } else {
       res
         .status(403)
-        .json({ message: "Your are Unauthorized to perform this action" });
+        .json({ message: "🚫 Your are Unauthorized to perform this action" });
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "🚫 Internal server error" });
   }
 };
 

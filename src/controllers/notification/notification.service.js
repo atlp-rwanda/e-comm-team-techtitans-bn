@@ -13,11 +13,15 @@ const getNotificationForVendor = async (req, res) => {
 
   }
   const token = tokenHeader.split(" ")[1];
+  const limit = req.query.limit || 10; // default to 10 products per page
+  const page = req.query.page || 1; // default to the first page
+  const offset = (page - 1) * limit; // calculate the offset based on the page number
   try {
     const decodedToken = JwtUtility.verifyToken(token);
-    const allNotifications = await Notification.findAll({where:{email: decodedToken.email}});
-
-    if (!allNotifications || allNotifications.length === 0) {
+    const allNotifications = await Notification.findAndCountAll({where:{email: decodedToken.email}, limit, offset});
+    const notifications = allNotifications.rows;
+    const totalCount = allNotifications.count;
+    if (!notifications || notifications.length === 0) {
       return res.status(404).json({
         status: 404,
         message: "you don't have any notification at the moment",
@@ -26,10 +30,12 @@ const getNotificationForVendor = async (req, res) => {
 
       return res.status(200).json({
         status: 200,
-        message: 'Notifications retrieved successfully',
+        message: ` ${notifications.length}  Notifications retrieved successfully`,
         data: {
-          allNotifications,
+          notifications,
         },
+        currentPage: offset / limit + 1,
+        totalPages: Math.ceil(totalCount / limit),
       });
 
 
