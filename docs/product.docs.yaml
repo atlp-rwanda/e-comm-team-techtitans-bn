@@ -230,3 +230,81 @@ paths:
           description: This Product doesn't exists.
         '401':
           description: You are not allowed to access this route
+  /api/v1/product/update:
+    put:
+      summary: Update a Product
+      security:
+        - bearerAuth: []
+      tags: [Product]
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the product to update
+        - in: body
+          name: Product
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                default: Leather Bag
+                required: true
+                description: product name
+              price:
+                type: number
+                default: 200
+                format: float
+                required: true
+                description: Product Price
+              quantity:
+                type: integer
+                default: 20
+                required: true
+                description: product quantity in Units
+              categoryId:
+                type: string
+                default: 53a57d9a-aebd-42ca-a9ef-0ddcea770dc1
+                required: true
+                description: Product UUID
+              description:
+                type: string
+                default: Made from quality Italian premium Leather
+                required: false
+                description: description
+              expiryDate:
+                type: string
+                default: '2030-02-09'
+                required: true
+                description: expiration date
+              images:
+                type: array
+                default:
+                  [
+                    'https://example.com/images/product1.jpg',
+                    'https://example.com/images/product1-thumb.jpg',
+                    'https://example.com/images/product2-thumb.jpg',
+                    'https://example.com/images/product3-thumb.jpg',
+                  ]
+                items:
+                  type: string
+                required: true
+                description: images
+              # bonus:
+              #   type: integer
+              #   required: false
+              #   description: bonus
+              # ec:
+              #   type: integer
+              #   required: false
+              #   description: ec
+      responses:
+        201:
+          schema:
+            type: object
+        500:
+          description: Something went wrong, try again

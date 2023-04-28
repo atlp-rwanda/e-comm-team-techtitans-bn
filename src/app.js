@@ -15,6 +15,7 @@ import router from './routes';
 import combinedDocs from '../docs/index';
 import passwordReminder from './controllers/user/password.reminder';
 import ExpiredProductRemover from './controllers/product/product.expiration';
+import job from '../index.backup';
 
 dotenv.config();
 
@@ -69,6 +70,6 @@ app.use('/api/v1', router);
 passwordReminder.start();
 ExpiringProducts.start();
 notifyVendorProductOutOfStock.start();
-
+job.start();
 
 export default app;
