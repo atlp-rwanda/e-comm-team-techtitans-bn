@@ -75,7 +75,7 @@ describe('list product to buyers ', () => {
     const response = await request(app).get(`/api/v1/product/all/viewAvailable`);
     const listedProduct = await models.Product.findAll({
       where: {
-        stock: "available"
+        stock: 'available'
       },
     });
     if (listedProduct.length === 0) {
