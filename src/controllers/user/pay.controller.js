@@ -81,7 +81,7 @@ class payments {
       };
       sendEmail.confirmPayment(authToken.email, 'Payment Confirmation', context);
     } catch (error) {
-      res.status(500).json({ error: 'internal server error..........' });
+      res.status(500).json({ error: `internal server error..........`});
     }
   }
 }
