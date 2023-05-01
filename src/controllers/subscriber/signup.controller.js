@@ -4,9 +4,12 @@ import BcryptUtility from "../../utils/bcrypt.util";
 import JwtUtility from "../../utils/jwt.util";
 import response from "../../utils/response.util";
 import sendEmail from "../../utils/send.email";
-
+import request from "superagent";
+import app from "../../app";
 const Subscriber = db.subscribers;
-
+var mailchimpInstance = "us10",
+    listUniqueId = "4c847bb5ee",
+    mailchimpApiKey = "dea0bd7eedd46d80b152607219da99d0-us10";
 const verifySubscriber = async (req, res) => {
   try {
     const subscriber = {
@@ -45,18 +48,18 @@ const verifySubscriber = async (req, res) => {
           const subscriberToken = JwtUtility.generateToken(subscriber, "1h");
           const to = subscriber.email;
           const context = {
-            verifyUrl: `${process.env.VERIFICATION_URL}/api/v1/user/subscribe/${subscriberToken}`,
+            verifyUrl: `${process.env.VERIFICATION_URL}/api/v1/user/subscriber/${subscriberToken}`,
             content: "VERIFY YOUR EMAIL",
           };
           sendEmail.sendEmailSubscriber(to, "verification email", context);
           response.success(
-            res,
-            200,
-            "Check your email and proceed with verification",
-            {
-              email: subscriber.email,
-              subscriberToken,
-            }
+              res,
+              200,
+              "Check your email and proceed with verification",
+              {
+                email: subscriber.email,
+                subscriberToken,
+              }
           );
           break;
       }
@@ -80,17 +83,48 @@ const createSubscriber = async (req, res) => {
       });
     }
     if (!subscriberExist) {
+      request
+          .post(
+              "https://" +
+              mailchimpInstance +
+              ".api.mailchimp.com/3.0/lists/" +
+              listUniqueId +
+              "/members/"
+          )
+          .set("Content-Type", "application/json;charset=utf-8")
+          .set(
+              "Authorization",
+              "Basic " + new Buffer("any:" + mailchimpApiKey).toString("base64")
+          )
+          .send({
+            email_address: req.body.email,
+            status: "subscribed",
+            merge_fields: {
+              FNAME: req.body.firstName,
+              LNAME: req.body.lastName,
+            },
+          })
+          .end(function (err, response) {
+            if (
+                response.status < 300 ||
+                (response.status === 400 && response.body.title === "Member Exists")
+            ) {
+              res.send("Signed Up!");
+            } else {
+              res.send("Sign Up Failed :(");
+            }
+          });
       Subscriber.create(check)
-        .then((data) => {
-          res.status(201).send({
-            message: "check a welcoming message we sent you...",
+          .then((data) => {
+            res.status(201).send({
+              message: "check a welcoming message we sent you...",
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: "Internal Server Error",
+            });
           });
-        })
-        .catch((err) => {
-          res.status(500).send({
-            message: "Internal Server Error",
-          });
-        });
     }
     const context = {
       verifyUrl: `${process.env.WELCOME_URL}`,
@@ -103,7 +137,6 @@ const createSubscriber = async (req, res) => {
     });
   }
 };
-
 const updateSubscriber = async (req, res) => {
   const subcriber_id = req.params.id;
   const { firstName, lastName, email } = req.body;
@@ -115,33 +148,30 @@ const updateSubscriber = async (req, res) => {
       message: `subscriber not found`,
     });
   }
-
   Subscriber.update(
-    {
-      email,
-      firstName,
-      lastName,
-    },
-    {
-      where: {
-        id: subcriber_id,
+      {
+        email,
+        firstName,
+        lastName,
       },
-    }
+      {
+        where: {
+          id: subcriber_id,
+        },
+      }
   )
-
-    .then((findSubscriber) => {
-      Subscriber.findOne({ where: { id: subcriber_id } }).then((sub) => {
-        return res.status(200).json({
-          message: `subscriber with id ${subcriber_id} successfully updated`,
-          data: sub,
+      .then((findSubscriber) => {
+        Subscriber.findOne({ where: { id: subcriber_id } }).then((sub) => {
+          return res.status(200).json({
+            message: `subscriber with id ${subcriber_id} successfully updated`,
+            data: sub,
+          });
         });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 };
-
 const deleteSubscriber = async (req, res) => {
   try {
     const subcriber_id = req.params.id;
@@ -155,7 +185,7 @@ const deleteSubscriber = async (req, res) => {
     } else {
       await findSubscriber.destroy();
       res.status(200).json({
-        message: `🍀 The subscriber has been removed.`,
+        message: `:four_leaf_clover: The subscriber has been removed.`,
       });
     }
   } catch (error) {

@@ -21,6 +21,9 @@ import editPassword from "../controllers/user/user.edit.password";
 import verifyOtp from "../controllers/user/2fauthentication.controller";
 import RestrictPassword from "../middleware/auth/check.password.update";
 import disableEnableUsers from "../controllers/user/disableEnableUsers.controller";
+
+import message from "../controllers/subscriber/email.controller";
+
 import {
   verifySubscriber,
   createSubscriber,
@@ -75,4 +78,6 @@ userRouter.post("/subscriber", verifySubscriber);
 userRouter.get("/subscriber/:token", createSubscriber);
 userRouter.patch("/subscriber/:id", updateSubscriber);
 userRouter.delete("/subscriber/:id", deleteSubscriber);
+userRouter.get("/email", message);
+
 export default userRouter;
