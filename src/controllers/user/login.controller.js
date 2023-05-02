@@ -1,6 +1,6 @@
-import db from "../../database/models";
-import BcryptUtility from "../../utils/bcrypt.util";
-import JwtUtility from "../../utils/jwt.util";
+import db from '../../database/models';
+import BcryptUtility from '../../utils/bcrypt.util';
+import JwtUtility from '../../utils/jwt.util';
 import sendEmail from '../../utils/send.email';
 import speakeasy from 'speakeasy';
 
@@ -21,13 +21,18 @@ const login = async (req, res) => {
         message: 'Invalid email or password',
       });
     }
-      //check if account is not disbaled
-      if (user.accountStatus === 'inactive') {
-        return res.status(400).json({
-           message: 'Your Account has been Disabled! Please contact Service manager'});
-          }
+    //check if account is not disbaled
+    if (user.accountStatus === 'inactive') {
+      return res.status(400).json({
+        message:
+          'Your Account has been Disabled! Please contact Service manager',
+      });
+    }
     // Check if the user password matches
-    const passwordMatch = await BcryptUtility.verifyPassword(password, user.password);
+    const passwordMatch = await BcryptUtility.verifyPassword(
+      password,
+      user.password,
+    );
     if (!passwordMatch) {
       return res.status(401).json({
         message: 'Invalid email or password',
@@ -35,18 +40,17 @@ const login = async (req, res) => {
     }
     const secret = speakeasy.generateSecret();
 
-
     if (user.roleId == 3) {
-
       const token = JwtUtility.generateToken(
         {
           id: user.id,
+          fullname: user.fullname,
           email: user.email,
           roleId: user.roleId,
         },
-        '1d'
+        '1d',
       );
-      res.cookie("token", token, {
+      res.cookie('token', token, {
         httpOnly: true,
         secure: true, // cynthia you must remember to set this to true in production(push) and false in dev
       });
@@ -56,9 +60,8 @@ const login = async (req, res) => {
         message: 'Login successful',
         token,
       });
-
     } else {
-      console.log(user)
+      console.log(user);
       user.mfa_secret = secret.base32;
       await user.save();
 
@@ -68,11 +71,11 @@ const login = async (req, res) => {
       });
       const to = email;
       const subject = 'Your OTP';
-    
+
       const context = {
-        otp
+        otp,
       };
-      sendEmail.sendEmail(to, subject, context)
+      sendEmail.sendEmail(to, subject, context);
       console.log(`Your one-time code is: ${otp}`);
 
       // Return a response indicating that the user needs to enter their one-time code
@@ -90,7 +93,6 @@ const login = async (req, res) => {
       message: error.message,
     });
   }
-
 };
 
 export default login;

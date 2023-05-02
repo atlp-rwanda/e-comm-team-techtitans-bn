@@ -1,17 +1,19 @@
-import request from 'supertest';
-import { expect, describe, test } from '@jest/globals';
-import models from '../../src/database/models';
-import app from '../../src/app';
-import PasswordReminder from '../../src/controllers/user/password.reminder';
+import request from "supertest";
+import { expect, describe, test } from "@jest/globals";
+import models from "../../src/database/models";
+import app from "../../src/app";
+import PasswordReminder from "../../src/controllers/user/password.reminder";
+import ExpiredProductRemover from "../../src/controllers/product/product.expiration";
+import job from "../../index.backup";
 import {
   product,
   wrongProductStructure,
   outOfStockProduct,
-} from '../mocks/product.mock';
-import JwtUtility from '../../src/utils/jwt.util';
+} from "../mocks/product.mock";
+import JwtUtility from "../../src/utils/jwt.util";
 
-describe('Product Routes', () => {
-  test('Displaying one product', async () => {
+describe("Product Routes", () => {
+  test("Displaying one product", async () => {
     const newProduct = await models.Product.create({ product });
     const fetchedProduct = await models.Product.findOne({
       where: {
@@ -23,8 +25,8 @@ describe('Product Routes', () => {
     expect(response.status).toBe(200);
   });
 
-  test('Whether the product to display exists in our db', async () => {
-    const nonExistentId = '413c45dd-198e-42cc-a1c9-a1358d6e92ae';
+  test("Whether the product to display exists in our db", async () => {
+    const nonExistentId = "413c45dd-198e-42cc-a1c9-a1358d6e92ae";
     const response = await request(app).get(`/api/v1/product/${nonExistentId}`);
     const fetchedProduct = await models.Product.findOne({
       where: {
@@ -36,7 +38,7 @@ describe('Product Routes', () => {
     }
   });
 
-  test('Catch the Internal Server error', async () => {
+  test("Catch the Internal Server error", async () => {
     const newProduct = await models.Product.create({ product });
     const fetchedProduct = await models.Product.findOne({
       where: {
@@ -56,26 +58,29 @@ describe('Product Routes', () => {
 });
 
 // list product to buyers
-describe('list product to buyers ', () => {
-  test('Displaying all available  product to buyers', async () => {
+describe("list product to buyers ", () => {
+  test("Displaying all available  product to buyers", async () => {
     const newProduct = await models.Product.create({ product });
-    const response = await request(app).get(`/api/v1/product/all/viewAvailable`);
+    const response = await request(app).get(
+      `/api/v1/product/all/viewAvailable`
+    );
     const listedProduct = await models.Product.findAll({
       where: {
-        stock: "available"
+        stock: "available",
       },
     });
 
-      expect(response.status).toBe(200);
-  
+    expect(response.status).toBe(200);
   });
 
-  test('when the product to display is not exist ', async () => {
+  test("when the product to display is not exist ", async () => {
     // const nonExistentId = '413c45dd-198e-42cc-a1c9-a1358d6e92ae';
-    const response = await request(app).get(`/api/v1/product/all/viewAvailable`);
+    const response = await request(app).get(
+      `/api/v1/product/all/viewAvailable`
+    );
     const listedProduct = await models.Product.findAll({
       where: {
-        stock: "available"
+        stock: 'available'
       },
     });
     if (listedProduct.length === 0) {
@@ -84,8 +89,8 @@ describe('list product to buyers ', () => {
   });
 
   afterAll(() => {
-    PasswordReminder.stop(); // Stop the passwordReminder service
-    // Stop any other asynchronous tasks that are still running
-    // ...
+    PasswordReminder.stop();
+    job.stop();
+    
   });
 });

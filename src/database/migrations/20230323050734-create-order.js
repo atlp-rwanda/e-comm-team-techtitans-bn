@@ -27,7 +27,6 @@ module.exports = {
         references: {
           model: "Carts",
           key: "id",
-          as: "cartId",
         },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",

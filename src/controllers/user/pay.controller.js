@@ -64,6 +64,7 @@ class payments {
     });
     try {
       const charge = await stripe.charges.create({
+        // amount: 1000 / 10,
         amount: decodedToken.amount / 10,
         currency: 'usd',
         description: 'payment',
@@ -81,7 +82,7 @@ class payments {
       };
       sendEmail.confirmPayment(authToken.email, 'Payment Confirmation', context);
     } catch (error) {
-      res.status(500).json({ error: 'internal server error..........' });
+      res.status(500).json({ error });
     }
   }
 }

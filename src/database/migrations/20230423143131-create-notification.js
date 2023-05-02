@@ -18,6 +18,9 @@ module.exports = {
       body: {
         type: DataTypes.TEXT
       },
+      notificationStatus: {
+        type: DataTypes.STRING
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE

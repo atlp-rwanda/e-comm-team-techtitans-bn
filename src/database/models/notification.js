@@ -21,7 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: DataTypes.STRING,
     subject: DataTypes.STRING,
-    body: DataTypes.TEXT
+    body: DataTypes.TEXT,
+    notificationStatus: {
+      type: DataTypes.STRING,
+      defaultValue: 'unread',
+    },
   }, {
     sequelize,
     modelName: 'Notification',
