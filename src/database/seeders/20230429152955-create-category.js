@@ -1,18 +1,14 @@
-"use strict";
-const { v4: uuidv4 } = require("uuid");
-const { UUIDV4 } = require("sequelize");
+'use strict';
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "Orders",
+      "Categories",
       [
         {
-          id: "daa7ea52-71e7-412d-b250-8a0cf3dd8245",
-          productId: uuidv4(),
-          userId: uuidv4(),
-          quantity: 200,
-          status: "pending",
+          id: "daa7ea52-71e7-412d-b250-8a0cf3dd8212",
+          name: "electronics",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -21,12 +17,12 @@ module.exports = {
     );
   },
 
-  async down(queryInterface, Sequelize) {
+  async down (queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-  },
+  }
 };
