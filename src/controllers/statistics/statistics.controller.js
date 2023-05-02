@@ -1,10 +1,9 @@
 import { Op } from 'sequelize';
 import db from '../../database/models';
-import models from "../../database/models";
+import models from '../../database/models';
 import JwtUtility from '../../utils/jwt.util';
 
 const User = db.users;
-const Order = db.orders;
 
 const checkStats = async (req, res) => {
   try {
@@ -14,12 +13,22 @@ const checkStats = async (req, res) => {
     const user = await User.findOne({ where: { id: decodedToken.id } });
 
     if (!user || !decodedToken || decodedToken.roleId !== 2) {
-      return res.status(401).send({ message: 'Unauthorized User' });
+      return res.status(401).send({ message: "Please login with your seller's account"});
     }
 
-    const startTime = new Date('2023-04-27T13:00:00Z');
-    const currentYear = new Date().getFullYear();
-    const currentMonth = new Date().getMonth() + 1;
+    // Check if startDate and endDate are provided
+    const { startDate } = req.query;
+    const { endDate } = req.query;
+    if (!startDate || !endDate) {
+      return res.status(400).send({ message: 'Please provide both startDate and endDate' });
+    }
+
+    // Check if startDate and endDate are valid dates
+    const startDateTime = new Date(startDate).getTime();
+    const endDateTime = new Date(endDate).getTime();
+    if (!startDateTime || !endDateTime) {
+      return res.status(400).send({ message: 'Please provide valid startDate and endDate' });
+    }
 
     const stats = {
       pending: { orders: 0, revenue: 0, orderList: [] },
@@ -28,7 +37,7 @@ const checkStats = async (req, res) => {
       delivered: { orders: 0, revenue: 0, orderList: [] }
     };
 
-    const clearOrderList = status => status.orderList = [];
+    const clearOrderList = (status) => status.orderList = [];
     Object.values(stats).forEach(clearOrderList);
 
     const addOrder = (order, status) => {
@@ -39,25 +48,22 @@ const checkStats = async (req, res) => {
 
     const sortByTotalPriceDesc = (a, b) => b.totalPrice - a.totalPrice;
 
-    for (let year = startTime.getFullYear(), month = startTime.getMonth() + 1; 
-      year < currentYear || (year === currentYear && month <= currentMonth); 
-      month === 12 ? (year++, month = 1) : month++) 
-    {
-      const nextMonth = month === 12 ? new Date(year + 1, 1, 1) : new Date(year, month, 1);
-
-      const where = { createdAt: { [Op.between]: [new Date(year, month - 1, 1), nextMonth] } };
-      const orders = await models.Order.findAll({ where });
-
-      for (const order of orders) {
-        addOrder(order, order.status);
+    const orders = await models.Order.findAll({
+      where: {
+        createdAt: {
+          [Op.between]: [new Date(startDateTime), new Date(endDateTime)]
+        }
       }
+    });
+
+    for (const order of orders) {
+      addOrder(order, order.status);
     }
 
-    Object.values(stats).forEach(status => status.orderList.sort(sortByTotalPriceDesc));
+    Object.values(stats).forEach((status) => status.orderList.sort(sortByTotalPriceDesc));
 
-    return res.status(200).json({ message: "📈 Here is your statistics for the last month!", stats });
+    return res.status(200).json({ message: "📈 Here is your statistics for the specified time frame!", stats });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ error: 'internal server error' });
   }
 };
