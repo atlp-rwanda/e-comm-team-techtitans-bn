@@ -1,5 +1,9 @@
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
+[![Coverage Status](https://coveralls.io/repos/github/atlp-rwanda/e-comm-team-techtitans-bn/badge.svg?branch=develop)](https://coveralls.io/github/atlp-rwanda/e-comm-team-techtitans-bn?branch=develop)
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/atlp-rwanda/e-comm-team-techtitans-bn/tree/develop.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/atlp-rwanda/e-comm-team-techtitans-bn/tree/develop)
+
 <!-- TABLE OF CONTENTS -->
 
 <details open="open">
