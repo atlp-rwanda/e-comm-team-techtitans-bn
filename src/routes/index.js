@@ -7,7 +7,7 @@ import cartRouter from './cart.routes';
 import orderRouter from './order.routes';
 import checkout from './checkout.routes'
 import notifyRouter from './notification.routes';
-
+import statsRouter from './statistics.routes';
 
 const router = Router();
 
@@ -19,5 +19,6 @@ router.use('/payment', payment);
 router.use('/order', orderRouter);
 router.use('/checkout', checkout);
 router.use('/notification',notifyRouter)
+router.use('/stats', statsRouter);
 
 export default router;

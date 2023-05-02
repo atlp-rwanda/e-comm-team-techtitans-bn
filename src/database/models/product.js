@@ -26,8 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       name: DataTypes.STRING,
       stock: {
-        type: DataTypes.ENUM("available", "out of stock", "expired"),
-        defaultValue: "available",
+        type: DataTypes.ENUM('available', 'out of stock', 'expired'),
+        defaultValue: 'available',
+        allowNull: false,
+        sort: true,
       },
       price: DataTypes.FLOAT,
       quantity: DataTypes.INTEGER,
