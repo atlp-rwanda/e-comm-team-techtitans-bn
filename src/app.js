@@ -5,11 +5,12 @@ import swaggerUi from 'swagger-ui-express';
 import { SwaggerTheme } from 'swagger-themes';
 import session from 'express-session';
 import passport from 'passport';
+import path from 'path';
 import { sequelize } from './database/models/index';
 import {
-    ExpiringProducts,
-    notifyVendorProductOutOfStock,
-} from "./controllers/notification/notifications.controller";
+  ExpiringProducts,
+  notifyVendorProductOutOfStock,
+} from './controllers/notification/notifications.controller';
 // import db from './database/models/index';
 import router from './routes';
 import combinedDocs from '../docs/index';
@@ -20,6 +21,7 @@ import job from '../index.backup';
 dotenv.config();
 
 const app = express();
+
 app.use(cors());
 
 app.use(express.json());
@@ -71,5 +73,24 @@ passwordReminder.start();
 ExpiringProducts.start();
 notifyVendorProductOutOfStock.start();
 job.start();
+// 👇🏽 ChatApp frontend Deployment
+
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname1, '/views/chat/build')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(
+      path.resolve(__dirname1, 'views', 'chat', 'build', 'index.html'),
+    );
+  });
+} else {
+  app.get('/', (req, res) => {
+    res.status(200).send('🍀 API is running successfully');
+  });
+}
+
+// 👆🏽 ChatApp frontend Deployment
 
 export default app;

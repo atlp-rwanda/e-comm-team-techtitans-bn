@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from "joi";
 
 const validateProductInput = (req, res, next) => {
   try {
@@ -8,19 +8,17 @@ const validateProductInput = (req, res, next) => {
       quantity: Joi.number().integer().min(1).required(),
       categoryId: Joi.string().trim().required(),
       description: Joi.string().trim().required(),
-      bonus: Joi.number().integer().min(0),
       images: Joi.array()
         .items(
           Joi.string()
-            .uri({ scheme: ['http', 'https'] })
+            .uri({ scheme: ["http", "https"] })
             .trim()
-            .required(),
+            .required()
         )
         .min(4)
         .max(8)
         .unique(),
       expiryDate: Joi.date().iso(),
-      ec: Joi.number().integer().min(0).allow(null),
     });
 
     const { error } = schema.validate(req.body);

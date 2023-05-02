@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -11,14 +11,25 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasMany(models.Product, {
-        foreignKey: "vendorId",
-        as: "user",
+        foreignKey: 'vendorId',
+        as: 'user',
       });
       User.hasMany(models.Order, {
-        foreignKey: "userId",
-        as: "customer",
+        foreignKey: 'userId',
+        as: 'customer',
       });
-      
+      User.hasOne(models.Product, {
+        foreignKey: 'vendorId',
+      });
+      User.belongsToMany(models.Chat, {
+        through: 'UserChat',
+        foreignKey: 'userId',
+        as: 'chats',
+      });
+      User.hasMany(models.Message, {
+        as: 'messages',
+        onDelete: 'CASCADE',
+      });
     }
   }
   User.init(
@@ -31,13 +42,13 @@ module.exports = (sequelize, DataTypes) => {
       fullname: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("fullname", val.toLowerCase());
+          this.setDataValue('fullname', val.toLowerCase());
         },
       },
       email: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("email", val.toLowerCase());
+          this.setDataValue('email', val.toLowerCase());
         },
       },
       password: {
@@ -49,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
       gender: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("gender", val.toLowerCase());
+          this.setDataValue('gender', val.toLowerCase());
         },
       },
       birthdate: {
@@ -59,25 +70,25 @@ module.exports = (sequelize, DataTypes) => {
       preferredLanguage: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("preferredLanguage", val.toLowerCase());
+          this.setDataValue('preferredLanguage', val.toLowerCase());
         },
       },
       preferredCurrency: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("preferredCurrency", val.toLowerCase());
+          this.setDataValue('preferredCurrency', val.toLowerCase());
         },
       },
       location: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("location", val.toLowerCase());
+          this.setDataValue('location', val.toLowerCase());
         },
       },
       billingAddress: {
         type: DataTypes.STRING,
         set(val) {
-          this.setDataValue("billingAddress", val.toLowerCase());
+          this.setDataValue('billingAddress', val.toLowerCase());
         },
       },
       roleId: {
@@ -87,7 +98,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       accountStatus: {
         type: DataTypes.STRING,
-        defaultValue: "active",
+        defaultValue: 'active',
       },
 
       lastPasswordUpdate: {
@@ -97,19 +108,19 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "User",
+      modelName: 'User',
       getterMethods: {
         mfa_token() {
           if (this.mfa_secret) {
             return speakeasy.totp({
               secret: this.mfa_secret,
-              encoding: "base32",
+              encoding: 'base32',
             });
           }
           return null;
         },
       },
-    }
+    },
   );
   return User;
 };

@@ -39,7 +39,7 @@ const isSeller = async (req, res, next) => {
 
   try {
     const decodedToken = JwtUtility.verifyToken(token);
-    console.log(decodedToken);
+   
     if (decodedToken.roleId === 2) {
       next();
     } else {

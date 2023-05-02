@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import db from '../../database/models';
 
 const User = db.users;
@@ -5,7 +6,7 @@ const User = db.users;
 const findAllUsers = async (req, res) => {
   const limit = req.query.limit || 10; // default to 10 users per page
   const offset = req.query.offset || 0; // default to the first page
-   // calculate the offset based on the page number
+  // calculate the offset based on the page number
 
   try {
     const users = await User.findAndCountAll({
@@ -38,6 +39,5 @@ const findAllUsers = async (req, res) => {
     res.status(500).json({ status: 'fail', message: error.message });
   }
 };
-
 
 export default findAllUsers;
