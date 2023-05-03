@@ -10,7 +10,7 @@
     "lint:fix": "eslint src --fix --cache",
     "pretest": "node tests/preTest.js",
     "test": "jest --detectOpenHandles --forceExit",
-    "coverage": "node tests/preTest.js && npm run seed:dev:do && jest --collect-coverage",
+    "coverage": "node tests/preTest.js && jest --collect-coverage",
     "migration": "npm run migrate:undo && npm run migrate",
     "migrate": "npx sequelize-cli db:migrate",
     "migrate:undo": "npx sequelize-cli db:migrate:undo:all",
