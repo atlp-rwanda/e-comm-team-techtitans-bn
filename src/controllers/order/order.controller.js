@@ -36,7 +36,7 @@ export const createOrder = async (req, res) => {
       {
         total: cart.total,
       },
-      "1d"
+      "1y"
     );
     res.status(201).json({
       message: `🍀 Your order has been added successfully.`,
