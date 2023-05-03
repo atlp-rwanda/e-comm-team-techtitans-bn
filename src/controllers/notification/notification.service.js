@@ -2,23 +2,23 @@ import models from '../../database/models';
 import db from '../../database/models';
 import JwtUtility from "../../utils/jwt.util";
 
-const User= db.users;
-const Product= models.Product;
-const Notification= models.Notification;
+const User = db.users;
+const Product = models.Product;
+const Notification = models.Notification;
 
 const getNotificationForVendor = async (req, res) => {
   const tokenHeader = req.headers.authorization;
   if (!tokenHeader) {
     return res.status(401).json({ message: "Token not provided" });  // assuming the token is sent in the Authorization header
-
   }
+
   const token = tokenHeader.split(" ")[1];
   const limit = req.query.limit || 10; // default to 10 products per page
   const page = req.query.page || 1; // default to the first page
   const offset = (page - 1) * limit; // calculate the offset based on the page number
   try {
     const decodedToken = JwtUtility.verifyToken(token);
-    const allNotifications = await Notification.findAndCountAll({where:{email: decodedToken.email}, limit, offset});
+    const allNotifications = await Notification.findAndCountAll({ where: { email: decodedToken.email }, limit, offset });
     const notifications = allNotifications.rows;
     const totalCount = allNotifications.count;
     if (!notifications || notifications.length === 0) {
@@ -28,15 +28,15 @@ const getNotificationForVendor = async (req, res) => {
       });
     }
 
-      return res.status(200).json({
-        status: 200,
-        message: ` ${notifications.length}  Notifications retrieved successfully`,
-        data: {
-          notifications,
-        },
-        currentPage: offset / limit + 1,
-        totalPages: Math.ceil(totalCount / limit),
-      });
+    return res.status(200).json({
+      status: 200,
+      message: ` ${notifications.length}  Notifications retrieved successfully`,
+      data: {
+        notifications,
+      },
+      currentPage: offset / limit + 1,
+      totalPages: Math.ceil(totalCount / limit),
+    });
 
 
   } catch (error) {
@@ -73,10 +73,14 @@ const getNotificationById = async (req, res) => {
       });
     }
 
+    await notification.update({
+      notificationStatus: 'read',
+    });
     return res.status(200).json({
       status: 200,
-      message: "Notification retrieved successfully",
+      message: "Notification retrieved successfully ",
       data: {
+
         notification,
       },
     });
@@ -88,6 +92,7 @@ const getNotificationById = async (req, res) => {
     });
   }
 };
+
 const deleteNotificationById = async (req, res) => {
   const tokenHeader = req.headers.authorization;
   if (!tokenHeader) {
