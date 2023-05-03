@@ -5,7 +5,9 @@ import authRouter from './oauth.routes';
 import payment from './pay.routes';
 import cartRouter from './cart.routes';
 import orderRouter from './order.routes';
-import checkout from './checkout.routes'
+import checkout from './checkout.routes';
+import chatRouter from './chat.routes';
+import messageRouter from './message.routes';
 import notifyRouter from './notification.routes';
 import statsRouter from './statistics.routes';
 
@@ -18,7 +20,9 @@ router.use('/auth', authRouter);
 router.use('/payment', payment);
 router.use('/order', orderRouter);
 router.use('/checkout', checkout);
-router.use('/notification',notifyRouter)
+router.use('/notification', notifyRouter);
+router.use('/chats', chatRouter);
+router.use('/message', messageRouter);
 router.use('/stats', statsRouter);
 
 export default router;

@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&family=Work+Sans:wght@300&display=swap');
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  background: rgb(5, 3, 43);
+  background: linear-gradient(
+    90deg,
+    rgba(5, 3, 43, 1) 11%,
+    rgba(26, 75, 139, 1) 54%,
+    rgba(77, 45, 139, 1) 83%
+  );
+}

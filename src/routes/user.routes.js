@@ -21,6 +21,8 @@ import editPassword from '../controllers/user/user.edit.password';
 import verifyOtp from '../controllers/user/2fauthentication.controller';
 import RestrictPassword from '../middleware/auth/check.password.update';
 import disableEnableUsers from '../controllers/user/disableEnableUsers.controller';
+import { searchForUsers } from '../controllers/user/userSearch.controller';
+
 const userRouter = express.Router();
 
 // Verify user email and then create a new user
@@ -54,14 +56,16 @@ userRouter.post(
   checkPermission('manage users'),
   Role.setRole,
 );
-//update user password
+// update user password
 userRouter.put('/editpassword/:id', editPassword);
-//disable and enable user account
+// disable and enable user account
 userRouter.put(
   '/updateAccountStatus/:id',
   isAdmin,
   checkPermission('manage users'),
   disableEnableUsers,
 );
+
+userRouter.get('/search', searchForUsers);
 
 export default userRouter;

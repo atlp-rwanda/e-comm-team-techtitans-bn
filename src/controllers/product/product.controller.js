@@ -6,7 +6,7 @@ import {notifyVendorOnProductCreate,notifyVendorOnProductDeletion} from "../noti
 export const addCategory = async (req, res) => {
   try {
     let { name } = req.body;
-    name = name.toLowerCase(); // convert name to lowercase
+    name = name.toLowerCase(); // convert name to lowerCase
     const existingCategory = await models.Category.findOne({
       where: { name },
     });
@@ -246,7 +246,7 @@ export const updateProduct = async (req, res) => {
     const { name, price, quantity, categoryId, description, expiryDate } =
       req.body;
     const images = req.body.images || [];
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(' ')[1];
     const decodedToken = JwtUtility.verifyToken(token);
     const { id } = decodedToken;
 
@@ -255,7 +255,7 @@ export const updateProduct = async (req, res) => {
     });
     if (!product) {
       return res.status(404).json({
-        message: "🚫 Product not found.",
+        message: '🚫 Product not found.',
       });
     }
 
@@ -273,7 +273,7 @@ export const updateProduct = async (req, res) => {
       data: updatedProduct,
     });
   } catch (error) {
-    res.status(500).json({ status: "fail", message: error.message });
+    res.status(500).json({ status: 'fail', message: error.message });
   }
 };
 
