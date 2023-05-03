@@ -4,6 +4,12 @@ export const successRegistration = {
   password: 'Password@123',
   confirmPassword: 'Password@123',
 };
+export const BuyerMock = {
+  fullname: 'Registration',
+  email: 'success@gmail.com',
+  password: 'Password@123',
+  confirmPassword: 'Password@123',
+};
 
 // Signup validation mock data
 export const wrongStructure = {};
@@ -82,4 +88,10 @@ export const profile = {
   preferredCurrency: 'Eur',
   location: 'Karongi',
   billingAddress: 'India',
+};
+
+export const BuyerMockLogin = {
+  email: 'success@gmail.com',
+  password: 'Password@123',
+
 };

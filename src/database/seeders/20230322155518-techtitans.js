@@ -75,7 +75,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          id: uuidv4(),
+            id: '32cc953f-38f9-4979-b620-cded5304a0a6',
           fullname: 'buyer3',
           email: 'buyer3@gmail.com',
           // the hashed password below is 'Password@123'
