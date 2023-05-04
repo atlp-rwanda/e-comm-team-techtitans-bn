@@ -1,0 +1,110 @@
+import request from 'supertest';
+import app from '../../src/app';
+
+import PasswordReminder from '../../src/controllers/user/password.reminder';
+import { expect, describe, test } from '@jest/globals';
+import passwordReminder from "../../src/controllers/user/password.reminder";
+import {
+    ExpiringProducts,
+    notifyVendorProductOutOfStock
+} from "../../src/controllers/notification/notifications.controller";
+import job from "../../index.backup";
+import {createCart,SufcreateCart,IncreateCart} from "../mocks/cart.mock";
+
+beforeAll(() => {
+    PasswordReminder.start();
+
+    passwordReminder.start();
+    ExpiringProducts.start();
+    notifyVendorProductOutOfStock.start();
+    job.start();
+});
+
+afterAll(() => {
+    PasswordReminder.stop();
+
+    passwordReminder.stop();
+    ExpiringProducts.stop();
+    notifyVendorProductOutOfStock.stop();
+    job.stop();
+});
+describe('Adding and view cart', () => {
+
+    test('Buyer Add to cart', async () => {
+
+        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const response = await request(app)
+            .post('/api/v1/cart/add-to-cart')
+            .set('Authorization', `bearer ${userToken}`)
+            .send(createCart);
+
+        expect(response.statusCode).toBe(201);
+    });
+    test('Cart Invalid Product', async () => {
+
+        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const response = await request(app)
+            .post('/api/v1/cart/add-to-cart')
+            .set('Authorization', `bearer ${userToken}`)
+            .send(IncreateCart);
+
+        expect(response.statusCode).toBe(400);
+    });
+    test('Buyer Insuffient Product', async () => {
+
+        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const response = await request(app)
+            .post('/api/v1/cart/add-to-cart')
+            .set('Authorization', `bearer ${userToken}`)
+            .send(SufcreateCart);
+
+        expect(response.statusCode).toBe(400);
+    });
+    test('Buyer Add to cart', async () => {
+
+        const userToken= 'eyJhbGciOiJII1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const response = await request(app)
+            .post('/api/v1/cart/add-to-cart')
+            .set('Authorization', `bearer ${userToken}`)
+            .send(createCart);
+
+        expect(response.statusCode).toBe(500);
+    });
+    test('Buyer view cart', async () => {
+
+        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const response = await request(app)
+            .get('/api/v1/cart/view-cart')
+            .set('Authorization', `bearer ${userToken}`)
+
+        expect(response.statusCode).toBe(200);
+    });
+    test('Buyer view cart', async () => {
+
+        const userToken= 'eDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const response = await request(app)
+            .get('/api/v1/cart/view-cart')
+            .set('Authorization', `bearer ${userToken}`)
+
+        expect(response.statusCode).toBe(500);
+    });
+    // test('Buyer clear cart', async () => {
+    //
+    //     const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+    //     const response = await request(app)
+    //         .get('/api/v1/cart/view-cart')
+    //         .set('Authorization', `bearer ${userToken}`)
+    //
+    //     expect(response.statusCode).toBe(200);
+    // });
+    test('Buyer view empty cart', async () => {
+
+        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmMmE4NmQ5LTgzZmMtNDZjMy05YjU0LTFlNWFhMmJjMzU0ZCIsImZ1bGxuYW1lIjoiYnV5ZXIxIiwiZW1haWwiOiJidXllcjFAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMzIyMDgsImV4cCI6MTY4MzMxODYwOH0.K8wNX7jJuAMVPFH7hcWrk7fKjsCWSHt0FFKW81y5x6U';
+        const response = await request(app)
+            .get('/api/v1/cart/view-cart')
+            .set('Authorization', `bearer ${userToken}`)
+
+        expect(response.statusCode).toBe(404);
+    });
+
+});

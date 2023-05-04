@@ -7,10 +7,10 @@ import db from "../../src/database/models";
 import passwordReminder from "../../src/controllers/user/password.reminder";
 
 describe("users will be able to update their password", () => {
-   beforeAll(async () => {
-    // run seed before running the test
-     await execSync("npx sequelize-cli db:seed --seed 20230322155518-techtitans.js");
-   });
+   // beforeAll(async () => {
+   //  // run seed before running the test
+   //   await execSync("npx sequelize-cli db:seed --seed 20230322155518-techtitans.js");
+   // });
 
   test("changing password successfully", async () => {
     const User = db.users;
@@ -120,8 +120,8 @@ describe("users will be able to update their password", () => {
      expect(response.statusCode).toBe(401);
      //expect(response.body.data.status).toBe("shipped");
    });
-  afterAll(async() => {
-    passwordReminder.stop();
-    await execSync("npx sequelize-cli db:seed:undo --seed 20230322155518-techtitans.js");
-  });
+  // afterAll(async() => {
+  //   passwordReminder.stop();
+  //   await execSync("npx sequelize-cli db:seed:undo --seed 20230322155518-techtitans.js");
+  // });
 });
