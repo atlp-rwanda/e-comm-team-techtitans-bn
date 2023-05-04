@@ -12,7 +12,6 @@ const editPassword = async (req, res) => {
           };
 
       if (!user.old_password || !user.new_password||!user.confirm_password) {
-        console.log(user.new_password)
         return res.status(401).json({
           message: 'Please fill in the old password and new password',
         });
