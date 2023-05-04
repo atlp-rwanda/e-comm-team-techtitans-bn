@@ -1,0 +1,38 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <style>
+      body { width: 100%; box-sizing: border-box; margin: 0; padding: 0; }
+      .header { width: 500px; margin: 0 auto; padding: 30px; } .header img {
+      width: 100%; height: 250px; object-fit: cover; } .title-product { color:
+      red; text-align: center; font-size: 24px; } h5 span { font-weight: bold;
+      font-size: 18px; } .more { width: 95%; background-color: rgb(37, 12, 87);
+      padding: 20px; } .more .link { color: rgba(255, 255, 255, 0.883);
+      text-decoration: none; font-size: 20px; font-weight: bold; letter-spacing:
+      2px; text-transform: capitalize; display: block; text-align: center; }
+      .unsubscribed { width: 100%; text-align: right; } .unsubscribe { color:
+      gray; margin-top: 10px; display: block; }
+    </style>
+  </head>
+  <body>
+    <section class="header">
+      <img src="{{image}}" alt="" />
+      <div class="info-product">
+        <h3 class="title-product">{{name}}</h3>
+        <p>
+            {{description}}
+        </p>
+        <h5><span>Price</span>{{price}}</h5>
+        <div class="more">
+          <a href="#" class="link">Get One</a>
+        </div>
+      </div>
+      <div class="unsubscribed">
+        <a href="http://localhost:3000/api/v1/user/subscriber/delete/{{id}}" class="unsubscribe" >Unsubscribe</a>
+      </div>
+    </section>
+  </body>
+</html>

@@ -66,7 +66,6 @@ class sendEmail {
       return success;
     });
   }
-
   static confirmPayment(to, subject, context) {
     const { USER_EMAIL, USER_PASS } = process.env;
     const transporter = nodemailer.createTransport({
@@ -99,7 +98,6 @@ class sendEmail {
       return success;
     });
   }
-
   static sendUpdatePassword(to, subject, text) {
     const { USER_EMAIL, USER_PASS } = process.env;
     const transporter = nodemailer.createTransport({
@@ -112,7 +110,6 @@ class sendEmail {
         rejectUnauthorized: false,
       },
     });
-
     // transporter.use('compile', hbs(handlebarOptions));
     const mailOptions = {
       from: USER_EMAIL,
@@ -125,7 +122,6 @@ class sendEmail {
       return success;
     });
   }
-
   static sendEmail(to, subject, context) {
     const { USER_EMAIL, USER_PASS } = process.env;
     const transporter = nodemailer.createTransport({
@@ -146,7 +142,6 @@ class sendEmail {
       viewPath: path.resolve("./views/"),
     };
     transporter.use("compile", hbs(handlebarOptions));
-
     const mailOptions = {
       from: USER_EMAIL,
       to,
@@ -159,7 +154,38 @@ class sendEmail {
       // return console.log('email sent', success);
     });
   }
-
+  static sendPromotion(to, subject, context) {
+    const { USER_EMAIL, USER_PASS } = process.env;
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: USER_EMAIL,
+        pass: USER_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+    const handlebarOptions = {
+      viewEngine: {
+        parttialsDir: path.resolve("./views/"),
+        defaultLayout: false,
+      },
+      viewPath: path.resolve("./views/"),
+    };
+    transporter.use("compile", hbs(handlebarOptions));
+    const mailOptions = {
+      from: USER_EMAIL,
+      to,
+      subject,
+      template: "promotion",
+      context,
+    };
+    transporter.sendMail(mailOptions, (err, success) => {
+      if (err) return "email not sent:", err;
+      // return console.log('email sent', success);
+    });
+  }
   static sendEmailDisableEnable(to, subject, text) {
     const { USER_EMAIL, USER_PASS } = process.env;
     const transporter = nodemailer.createTransport({
@@ -172,7 +198,6 @@ class sendEmail {
         rejectUnauthorized: false,
       },
     });
-
     const mailOptions = {
       from: USER_EMAIL,
       to,
@@ -217,5 +242,4 @@ class sendEmail {
     });
   }
 }
-
 export default sendEmail;

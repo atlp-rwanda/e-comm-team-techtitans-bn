@@ -10,59 +10,56 @@ import { sequelize } from "./database/models/index";
 import router from "./routes";
 import combinedDocs from "../docs/index";
 import passwordReminder from "./controllers/user/password.reminder";
-
+import { scheduleEmail } from "./controllers/subscriber/service.schedule.controller";
 // import views from "../views/pages/form";
 dotenv.config();
-
 const app = express();
 app.use(cors());
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(
-  session({
-    secret: "melody hensley is my spirit animal",
-    resave: false,
-    saveUninitialized: true,
-  })
+    session({
+        secret: "melody hensley is my spirit animal",
+        resave: false,
+        saveUninitialized: true,
+    })
 );
-
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.get("/", (req, res) => {
-  res
-    .status(200)
-    .send(
-      `<h1 style='text-align: center; color: #CCD6F6; margin-top: 20vh; background: #0A192F; padding: 150px;'>Welcome to team Tech-Titans's E-commerce API!</h1>`
-    );
+    res
+        .status(200)
+        .send(
+            `<h1 style='text-align: center; color: #CCD6F6; margin-top: 20vh; background: #0A192F; padding: 150px;'>Welcome to team Tech-Titans's E-commerce API!</h1>`
+        );
 });
-
 export const connectDB = async () => {
-  try {
-    // await sequelize.sync({ force: true });
-    await sequelize.sync();
-    console.log("🟢 Database connection established successfully");
-  } catch (err) {
-    console.log(`Database connection failed: ${err}`);
-    process.exit(1);
-  }
+    try {
+        // await sequelize.sync({ force: true });
+        await sequelize.sync();
+        console.log(":large_green_circle: Database connection established successfully");
+    } catch (err) {
+        console.log(`Database connection failed: ${err}`);
+        process.exit(1);
+    }
 };
-
 // Swagger Docs Dark-Mode setup
 const theme = new SwaggerTheme("v3");
-
 const options = {
-  explorer: true,
-  customCss: theme.getBuffer("dark"),
+    explorer: true,
+    customCss: theme.getBuffer("dark"),
 };
-
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(combinedDocs, options));
-
 app.use("/api/v1", router);
-app.use(express.static("../views/pages"));
-
 passwordReminder.start();
-
+// scheduleEmail.start();
 export default app;
+
+
+
+
+
+
+
+
+
