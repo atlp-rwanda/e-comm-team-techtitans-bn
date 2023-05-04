@@ -1,4 +1,5 @@
 import request from 'supertest';
+import { execSync } from 'child_process';
 import app from '../../src/app';
 import {
   successRegistration,
@@ -16,6 +17,7 @@ import {
   wrongStructure,
   emailExists,
   expiredToken,
+  newUserToRegister,
 } from '../mocks/user.mock';
 import PasswordReminder from '../../src/controllers/user/password.reminder';
 import { expect, describe, test } from '@jest/globals';
@@ -34,6 +36,9 @@ const uuidRegex = new RegExp(
 beforeAll(() => {
   PasswordReminder.start();
 });
+beforeAll(() => {
+  execSync('npx sequelize-cli db:seed --seed 20230322155518-techtitans.js');
+});
 
 afterAll(() => {
   PasswordReminder.stop();
@@ -41,7 +46,7 @@ afterAll(() => {
 describe('User Test (Signup and login)', () => {
   /*
    **********************************************
-   *  🟢 Validation for Signup inputs *
+   *  🟢 Validation for all Signup inputs *
    **********************************************
    */
   test('If an error gets caught', async () => {
@@ -164,6 +169,29 @@ describe('User Test (Signup and login)', () => {
     userUuid = response.body.data.id;
     expect(userUuid).toBeDefined();
   });
+
+  test('If the user already exists while getting the signup URL via email', async () => {
+    const response = await request(app).get(
+      `/api/v1/user/signup/${userTokens}`,
+    );
+    const existUser = await User.findOne({
+      where: { email: '5616c2ed-cad5-4cb0-8ca2-81b31dc8cef2' },
+    });
+    if (existUser) {
+      expect(response.statusCode).toBe(404);
+    }
+  });
+
+  // test('Catch Internal Server error while creating a user', async () => {
+  //   const response = await request(app).get(
+  //     `/api/v1/user/signup/${userTokens}`,
+  //   );
+  //   const existUser = await User.findOne({
+  //     where: { email: newUserToRegister.email },
+  //   });
+  //   if (!existUser) {
+  //   }
+  // });
 
   /*
    **********************************************

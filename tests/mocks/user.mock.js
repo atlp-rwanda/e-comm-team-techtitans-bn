@@ -61,6 +61,12 @@ export const passwordsNotMatching = {
   password: 'Password@123',
   confirmPassword: 'password',
 };
+export const newUserToRegister = {
+  fullname: 'The New Guy',
+  email: 'theNewGuy@gmail.com',
+  password: 'Password@123',
+  confirmPassword: 'Password@1234', // password1 !== password2 for tests
+};
 
 // Expired Token
 export const expiredToken =
@@ -72,6 +78,10 @@ export const unSuccessfullLoginCredentials = {
 };
 export const theSuccessLoginCredentials = {
   email: 'success@gmail.com',
+  password: 'Password@123',
+};
+export const guestUser = {
+  email: 'guest@gmail.com',
   password: 'Password@123',
 };
 
