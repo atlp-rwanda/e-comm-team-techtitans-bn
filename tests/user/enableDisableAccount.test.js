@@ -63,7 +63,7 @@ describe('Disable enable account', () => {
 
   test('Buyer Add to wishlist', async () => {
 
-    const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImYwYWM2MzUwLTgwMTMtNGM2Zi1hMWQzLTBmZDg1ZDA1M2JhZSIsImVtYWlsIjoicmljaGFyZEBnbWFpbC5jb20iLCJyb2xlSWQiOjEsImlhdCI6MTY4MzI4MjYyMCwiZXhwIjoxNjgzMzY5MDIwfQ.96uQfaeCVmHKsiM2aIhhzmpLwoTzkZXntNvOH3Ej6G8';
+    const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyOTM0NDYsImV4cCI6MTcxNDg1MTA0Nn0.H85Mgz-GWLeuxKs9zXNiy9eCraKEKkAI048KO3w7pHA';
     const response = await request(app)
         .put('/api/v1/user/updateAccountStatus/32cc953f-38f9-4979-b620-cded5304a0a9')
         .set('Authorization', `bearer ${userToken}`)

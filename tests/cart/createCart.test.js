@@ -32,7 +32,7 @@ describe('Adding and view cart', () => {
 
     test('Buyer Add to cart', async () => {
 
-        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyOTM0NDYsImV4cCI6MTcxNDg1MTA0Nn0.H85Mgz-GWLeuxKs9zXNiy9eCraKEKkAI048KO3w7pHA';
         const response = await request(app)
             .post('/api/v1/cart/add-to-cart')
             .set('Authorization', `bearer ${userToken}`)
@@ -42,7 +42,7 @@ describe('Adding and view cart', () => {
     });
     test('Cart Invalid Product', async () => {
 
-        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyOTM0NDYsImV4cCI6MTcxNDg1MTA0Nn0.H85Mgz-GWLeuxKs9zXNiy9eCraKEKkAI048KO3w7pHA';
         const response = await request(app)
             .post('/api/v1/cart/add-to-cart')
             .set('Authorization', `bearer ${userToken}`)
@@ -52,7 +52,7 @@ describe('Adding and view cart', () => {
     });
     test('Buyer Insuffient Product', async () => {
 
-        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyOTM0NDYsImV4cCI6MTcxNDg1MTA0Nn0.H85Mgz-GWLeuxKs9zXNiy9eCraKEKkAI048KO3w7pHA';
         const response = await request(app)
             .post('/api/v1/cart/add-to-cart')
             .set('Authorization', `bearer ${userToken}`)
@@ -60,9 +60,9 @@ describe('Adding and view cart', () => {
 
         expect(response.statusCode).toBe(400);
     });
-    test('Buyer Add to cart', async () => {
+    test('Buyer view invalid token', async () => {
 
-        const userToken= 'eyJhbGciOiJII1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const userToken= 'JhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyOTM0NDYsImV4cCI6MTcxNDg1MTA0Nn0.H85Mgz-GWLeuxKs9zXNiy9eCraKEKkAI048KO3w7pHA';
         const response = await request(app)
             .post('/api/v1/cart/add-to-cart')
             .set('Authorization', `bearer ${userToken}`)
@@ -72,7 +72,7 @@ describe('Adding and view cart', () => {
     });
     test('Buyer view cart', async () => {
 
-        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyOTM0NDYsImV4cCI6MTcxNDg1MTA0Nn0.H85Mgz-GWLeuxKs9zXNiy9eCraKEKkAI048KO3w7pHA';
         const response = await request(app)
             .get('/api/v1/cart/view-cart')
             .set('Authorization', `bearer ${userToken}`)
@@ -81,7 +81,7 @@ describe('Adding and view cart', () => {
     });
     test('Buyer view cart', async () => {
 
-        const userToken= 'eDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const userToken= 'k3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
         const response = await request(app)
             .get('/api/v1/cart/view-cart')
             .set('Authorization', `bearer ${userToken}`)
