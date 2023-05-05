@@ -55,21 +55,18 @@ productRouter.get("/product/:id", getOneProduct);
 productRouter.get(
   "/product/update/stockStatus/2/:id",
   isSeller,
-  checkPermission("manage products"),
   outOfStockStatusUpdate
 );
 // 2. Make a product Expired
 productRouter.get(
   "/product/update/stockStatus/3/:id",
   isSeller,
-  checkPermission("manage products"),
   expiredStatusUpdate
 );
 // 3. Make a product Available
 productRouter.get(
   "/product/update/stockStatus/1/:id",
   isSeller,
-  checkPermission("manage products"),
   availableStatusUpdate
 );
 // update a Product

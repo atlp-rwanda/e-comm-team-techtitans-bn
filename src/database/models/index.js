@@ -48,7 +48,7 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.users = require('./user')(sequelize, Sequelize);
-// db.products = require('./product')(sequelize, Sequelize);
+//db.products = require('./product')(sequelize, Sequelize);
 db.carts = require('./cart')(sequelize, Sequelize);
 db.orders = require('./order')(sequelize, Sequelize);
 db.messages = require('./message')(sequelize, Sequelize);
