@@ -12,11 +12,11 @@ const isAdmin = async (req, res, next) => {
    
   }
   const token = tokenHeader.split(" ")[1];
-  const { id } = req.params;
+  // const { id } = req.params;
   try {
     const decodedToken = JwtUtility.verifyToken(token);
-    const user = await User.findOne({ where: { id: decodedToken.id } });
-    if (user && decodedToken && decodedToken.roleId === 1) {
+    // const user = await User.findOne({ where: { id: decodedToken.id } });
+    if (decodedToken && decodedToken.roleId === 1) {
       next();
     } else {
       res
