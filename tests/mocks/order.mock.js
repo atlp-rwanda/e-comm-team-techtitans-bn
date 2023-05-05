@@ -1,0 +1,7 @@
+export const orderCart = {
+  cartId: "6a5df8f3-6f89-4a39-8e5e-8d1412c5d5f1",
+};
+export const buyerToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNhY2JhYjRhLTZjMTktNGQ3Mi04ODVhLTllOTliZGM0Y2Q0MiIsImZ1bGxuYW1lIjoiYnV5ZXIiLCJlbWFpbCI6ImJ1eWVyQGdtYWlsLmNvbSIsInJvbGVJZCI6MywiaWF0IjoxNjgzMjkxNjU4LCJleHAiOjQ4MzkwNTE2NTh9.qoNt_rkEYh9cj2enC2mN77MPuECa3A3bHvp5HdAtuxI";
+export const sellerToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImMwNDQ1ZjViLTFhMTctNGVmOS1hOWNiLTE5Njc1ZTZlMWNmNiIsImVtYWlsIjoic2VsbGVyQGdtYWlsLmNvbSIsInJvbGVJZCI6MiwiaWF0IjoxNjgzMDEzODU5LCJleHAiOjQ4Mzg3NzM4NTl9.6102GSucfsngIdxr-ULPt5ykI6ARa9w4O051k52z3ow";

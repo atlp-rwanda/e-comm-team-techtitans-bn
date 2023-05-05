@@ -11,7 +11,6 @@ import {
   addCategory,
   addProduct,
   findAllCategories,
-  findAllproducts,
   findAvailableProducts,
   outOfStockStatusUpdate,
   expiredStatusUpdate,
@@ -37,7 +36,6 @@ productRouter.post(
   validateProductInput,
   addProduct
 );
-productRouter.get("/product", findAllproducts);
 
 // Get available products
 productRouter.get(
@@ -91,5 +89,5 @@ productRouter.get("/product/list/search", productSearch);
 productRouter.post("/wishlist", isBuyer, wishlist);
 productRouter.get("/wishlist/:token", getAllWishes);
 // buyer view all products
-productRouter.get('/product/all/viewAvailable',buyerViewProduct);
+productRouter.get("/product/all/viewAvailable", buyerViewProduct);
 export default productRouter;
