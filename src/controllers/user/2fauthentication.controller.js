@@ -42,7 +42,7 @@ const verifyOtp = async (req, res) => {
         email: user.email,
         roleId: user.roleId,
       },
-      '1d',
+      '1y',
     );
     res.cookie('token', token, {
       httpOnly: true,

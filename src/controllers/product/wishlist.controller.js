@@ -1,12 +1,13 @@
 // import Wishlist from "../../database/models/wishlist";
 // import Product from "../../database/models/product";
 import models from "../../database/models";
+import db from "../../database/models";
 import jwt from "jsonwebtoken";
 import JwtUtility from "../../utils/jwt.util";
 import bcrypt from "bcrypt";
 // import User from "../../database/models/user";
 
-const Users = models.User;
+const Users = db.users;
 const Products = models.Product;
 const Wishlists = models.Wishlist;
 
@@ -43,7 +44,6 @@ const wishlist = async (req, res) => {
         });
       }
       const wishList = await Wishlists.create({ user_id, product_id });
-
       return res.status(201).json({
         message: "product successfully added to a wishlist",
         data: wishList,
@@ -70,15 +70,7 @@ const getAllWishes = async (req, res) => {
     const allWishList = await Wishlists.findAndCountAll({
       where: { user_id },
       limit,
-      offset,
-      include: [
-        {
-          model: Products,
-          attributes: {
-            exclude: ['createdAt', 'updatedAt'],
-          },
-        },
-      ],
+      offset
     });
 
     const result = allWishList.rows;
