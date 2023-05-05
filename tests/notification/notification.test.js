@@ -43,7 +43,7 @@ describe('notification', () => {
 
     test('no notification ', async () => {
 
-        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMDU5NzIsImV4cCI6MTY4MzI5MjM3Mn0.y5gOtgrm0ondJLJ8Roo6o6Zq8dcPyHjlX3nsciAXxiE';
+        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyY2M5NTNmLTM4ZjktNDk3OS1iNjIwLWNkZWQ1MzA0YTBhNiIsImZ1bGxuYW1lIjoiYnV5ZXIzIiwiZW1haWwiOiJidXllcjNAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyOTM0NDYsImV4cCI6MTcxNDg1MTA0Nn0.H85Mgz-GWLeuxKs9zXNiy9eCraKEKkAI048KO3w7pHA';
         const response = await request(app)
             .get('/api/v1/notification/vendor/all')
             .set('Authorization', `bearer ${userToken}`)

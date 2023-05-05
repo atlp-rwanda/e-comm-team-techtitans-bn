@@ -1,0 +1,121 @@
+
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /order/trackorder/get{uuid}:
+    get:
+      tags:
+        - Order
+      summary: Get order status
+      description: Returns the status of the specified order.
+      produces:
+        - application/json
+      parameters:
+        - name: uuid
+          in: path
+          description: UUID of the order to retrieve
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          description: JWT token
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              orderStatus:
+                type: string
+              expectedDeliveryDate:
+                type: string
+              shippedOrDispatched:
+                type: boolean
+              delivered:
+                type: boolean
+              cancelled:
+                type: boolean
+              refunded:
+                type: boolean
+              onHold:
+                type: boolean
+              returned:
+                type: boolean
+        403:
+          description: User does not have access to this order
+        404:
+          description: Order not found
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Order
+      summary: Update order status
+      description: Updates the status of the specified order.
+      produces:
+        - application/json
+      parameters:
+        - name: uuid
+          in: path
+          description: UUID of the order to update
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          description: JWT token
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: New order status information
+          required: true
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              expectedDeliveryDate:
+                type: string
+              shipped:
+                type: boolean
+              delivered:
+                type: boolean
+              cancelled:
+                type: boolean
+              refunded:
+                type: boolean
+              returned:
+                type: boolean
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              orderStatus:
+                type: string
+              expectedDeliveryDate:
+                type: string
+              shippedOrDispatched:
+                type: boolean
+              delivered:
+                type: boolean
+              cancelled:
+                type: boolean
+              refunded:
+                type: boolean
+              onHold:
+                type: boolean
+              returned:
+                type: boolean
+        403:
+          description: User does not have permission to update the order status
+        404:
+          description: Order not found
+        500:
+          description: Internal server error
