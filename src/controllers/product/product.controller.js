@@ -2,6 +2,7 @@ import models from '../../database/models';
 import Category from '../../database/models/category';
 import JwtUtility from '../../utils/jwt.util';
 import {notifyVendorOnProductCreate,notifyVendorOnProductDeletion} from "../notification/notifications.controller";
+import {SendNewProductUpdated} from "../subscriber/service.schedule.controller";
 
 export const addCategory = async (req, res) => {
   try {
@@ -13,7 +14,7 @@ export const addCategory = async (req, res) => {
     if (existingCategory) {
       return res.status(409).json({
         message:
-          '😬 Category already exists. You can Update that category instead.',
+            '😬 Category already exists. You can Update that category instead.',
       });
     }
     const category = await models.Category.create({
@@ -40,10 +41,10 @@ export const findAllCategories = async (req, res) => {
       res.status(404).json({ status: 'fail', message: '🚫 No category found' });
     } else {
       res.status(200).json({ status: 'success',
-      data: result,
-      currentPage: offset / limit + 1,
-      totalPages: Math.ceil(totalCount / limit)
-    });
+        data: result,
+        currentPage: offset / limit + 1,
+        totalPages: Math.ceil(totalCount / limit)
+      });
     }
   } catch (error) {
     res.status(500).json({ status: 'fail', message: error.message });
@@ -83,7 +84,7 @@ export const findAllproducts = async (req, res) => {
 export const addProduct = async (req, res) => {
   try {
     let { name, price, quantity, categoryId, description, expiryDate } =
-      req.body;
+        req.body;
     const images = req.body.images || [];
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = JwtUtility.verifyToken(token);
@@ -95,7 +96,7 @@ export const addProduct = async (req, res) => {
     if (vendorProduct) {
       return res.status(403).json({
         message:
-          '🚫 You cannot create a product with the same name as an existing product. Please input a different name',
+            '🚫 You cannot create a product with the same name as an existing product. Please input a different name',
       });
     }
 
@@ -244,7 +245,7 @@ export const updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;
     const { name, price, quantity, categoryId, description, expiryDate } =
-      req.body;
+        req.body;
     const images = req.body.images || [];
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = JwtUtility.verifyToken(token);
@@ -268,6 +269,7 @@ export const updateProduct = async (req, res) => {
       expiryDate,
       images,
     });
+    await SendNewProductUpdated(updatedProduct)
     res.status(200).json({
       message: `🍀 Product (${updatedProduct.name}) has been updated successfully.`,
       data: updatedProduct,
