@@ -98,13 +98,10 @@ describe('Adding and view cart', () => {
     //     expect(response.statusCode).toBe(200);
     // });
     test('Buyer view empty cart', async () => {
-
-        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJmMmE4NmQ5LTgzZmMtNDZjMy05YjU0LTFlNWFhMmJjMzU0ZCIsImZ1bGxuYW1lIjoiYnV5ZXIxIiwiZW1haWwiOiJidXllcjFAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMyMzIyMDgsImV4cCI6MTY4MzMxODYwOH0.K8wNX7jJuAMVPFH7hcWrk7fKjsCWSHt0FFKW81y5x6U';
+        const userToken= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhkYjg4OTU2LWE5YzktNDg4ZC05NjkyLWM1NWQ1NDE4YmQ5OCIsImZ1bGxuYW1lIjoiYnV5ZXIxIiwiZW1haWwiOiJidXllcjFAZ21haWwuY29tIiwicm9sZUlkIjozLCJpYXQiOjE2ODMzMjQ1NzUsImV4cCI6MTcxNDg4MjE3NX0.LPNIF6aa8sFTsB8BjfedEVKj0gU5vbEsxKsjdV2uCAQ';
         const response = await request(app)
             .get('/api/v1/cart/view-cart')
             .set('Authorization', `bearer ${userToken}`)
-
         expect(response.statusCode).toBe(404);
     });
-
 });
