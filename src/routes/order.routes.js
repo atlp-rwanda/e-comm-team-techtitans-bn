@@ -1,5 +1,6 @@
 import express from "express";
 import OrderStatus from "../controllers/order/updateOrderStatus.controller";
+import getOrderStatus from "../controllers/order/order.status.track.controller";
 import {
   createOrder,
   buyNowOrder,
@@ -25,3 +26,6 @@ orderRouter.get("/:id", isBuyer, getOrder);
 orderRouter.delete("/delete/:id", isBuyer, deleteOrder);
 orderRouter.put("/update/:id", isBuyer, updateOrder);
 export default orderRouter;
+//order status tracking
+orderRouter.get('/get/trackorder/:id',isBuyer,getOrderStatus);
+orderRouter.post('/post/trackorder/:id',isSeller,getOrderStatus);

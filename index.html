@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Order Status Notification</title>
+    <style>
+      #notification {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #f2f2f2;
+        padding: 20px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .show {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Order Status Notification</h1>
+    <div id="notification"></div>
+    <button id="status-btn">Get Order Status</button>
+    <button id="update-btn">Update Order Status</button>
+    <script>
+      // send HTTP request to backend API to get order status information
+      function getOrderStatus() {
+        fetch('http://localhost:3000/api/v1/order/trackorder/8354782c-3137-41c3-bf01-50ba0f0660c7', {
+          method: 'GET',
+          headers: {
+            // put authentication token here
+            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM1YjE1NGE5LTNjZjUtNDZkZS1iNmZiLWIwZWUzNTc3MDM5MCIsImVtYWlsIjoicmljaGFyZEBnbWFpbC5jb20iLCJyb2xlSWQiOjIsImlhdCI6MTY4MjY2ODY5NCwiZXhwIjoxNjgyNzU1MDk0fQ.hJTnj_q2f3iyYGi9-RSsdPV2YrtltIkA3TnQaoB328U'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'shipped') {
+            showNotification('Your order has shipped and is on the way!');
+          } else {
+            showNotification('Your order is still being processed.');
+          }
+        })
+        .catch(error => {
+          console.error('Error getting order status:', error);
+          showNotification('Error getting order status');
+        });
+      }
+
+      // send HTTP request to backend API to update order status information
+      function updateOrderStatus() {
+        fetch('http://localhost:3000/api/v1/order/trackorder/8354782c-3137-41c3-bf01-50ba0f0660c7', {
+          method: 'POST',
+          headers: {
+            // put authentication token here
+            'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM1YjE1NGE5LTNjZjUtNDZkZS1iNmZiLWIwZWUzNTc3MDM5MCIsImVtYWlsIjoicmljaGFyZEBnbWFpbC5jb20iLCJyb2xlSWQiOjIsImlhdCI6MTY4MjY2ODY5NCwiZXhwIjoxNjgyNzU1MDk0fQ.hJTnj_q2f3iyYGi9-RSsdPV2YrtltIkA3TnQaoB328U',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ status: 'shipped' })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'updated') {
+            showNotification('Order status updated');
+          } else {
+            showNotification('Error updating order status');
+          }
+        })
+        .catch(error => {
+          console.error('Error updating order status:', error);
+          showNotification('Error updating order status');
+        });
+      }
+
+      // get auth token from local storage
+      function getAuthToken() {
+        return localStorage.getItem('authToken');
+      }
+
+      // display notification message on screen
+      function showNotification(message) {
+        const notification = document.getElementById('notification');
+        notification.innerHTML = message;
+        notification.classList.add('show');
+        setTimeout(function() {
+          notification.classList.remove('show');
+        }, 5000);
+      }
+
+      // send request to get order status when status button is clicked
+      const statusBtn = document.getElementById('status-btn');
+      statusBtn.addEventListener('click', function() {
+        getOrderStatus();
+      });
+
+      // send request to update order status when update button is clicked
+      const updateBtn = document.getElementById('update-btn');
+      updateBtn.addEventListener('click', function() {
+        updateOrderStatus();
+      });
+    </script>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Order Status Notification</title>
+    <style>
+      #notification {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #f2f2f2;
+        padding: 20px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .show {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Order Status Notification</h1>
+    <div id="notification"></div>
+    <button id="status-btn">Get Order Status</button>
+    <button id="update-btn">Update Order Status</button>
+    <script>
+      // send HTTP request to backend API to get order status information
+      function getOrderStatus() {
+        fetch('http://localhost:3000/api/v1/order/trackorder/8354782c-3137-41c3-bf01-50ba0f0660c7', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + getAuthToken()
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'shipped') {
+            showNotification('Your order has shipped and is on the way!');
+          } else {
+            showNotification('Your order is still being processed.');
+          }
+        })
+        .catch(error => {
+          console.error('Error getting order status:', error);
+          showNotification('Error getting order status');
+        });
+      }
+
+      // send HTTP request to backend API to update order status information
+      function updateOrderStatus() {
+        fetch('http://localhost:3000/api/v1/order/trackorder/8354782c-3137-41c3-bf01-50ba0f0660c7', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + getAuthToken(),
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ status: 'shipped' })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'updated') {
+            showNotification('Order status updated');
+          } else {
+            showNotification('Error updating order status');
+          }
+        })
+        .catch(error => {
+          console.error('Error updating order status:', error);
+          showNotification('Error updating order status');
+        });
+      }
+
+      // get auth token from local storage
+      function getAuthToken() {
+        return localStorage.getItem('authToken');
+      }
+
+      // display notification message on screen
+      function showNotification(message) {
+        const notification = document.getElementById('notification');
+        notification.innerHTML = message;
+        notification.classList.add('show');
+        setTimeout(function() {
+          notification.classList.remove('show');
+        }, 5000);
+      }
+
+      // send request to get order status when status button is clicked
+      const statusBtn = document.getElementById('status-btn');
+      statusBtn.addEventListener('click', function() {
+        getOrderStatus();
+      });
+
+      // send request to update order status when update button is clicked
+      const updateBtn = document.getElementById('update-btn');
+      updateBtn.addEventListener('click', function() {
+        updateOrderStatus();
+      });
+    </script>
+  </body>
+</html> -->
