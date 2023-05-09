@@ -1,0 +1,119 @@
+paths:
+
+  /api/v1/review/assign-review/{pid}:
+    post:
+      summary: Add Rieview to a product
+      security:
+        - bearerAuth: []
+      tags: [Review]
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: pid
+          type: string
+          required: true
+          description: ID of the Product
+        - in: body
+          name: Add Rieview to a product
+          schema:
+            type: object
+            properties:
+              ratings:
+                type: string
+                required: true
+                description: ratings
+              feedback:
+                type: string
+                required: true
+                description: feedback  
+
+      responses:
+        201:
+          schema:
+            type: object
+                    
+        400:
+          description: Bad request
+              
+        401:
+          description: User is not a buyer
+              
+        500:
+          description: Sorry, we encountered an error while trying to add the product to your cart.
+                  
+  /api/v1/review/rating/{pid}:
+    get:
+      summary:  calculate rating average
+      tags:
+        - Review
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: pid
+          type: string
+          required: true
+          description: ID of the product
+              
+      responses:
+        200:
+          schema:
+            type: object
+        500:
+          description: Something went wrong, try again
+  # Display Rivews of a product
+  /api/v1/review/getReview/{pid}:
+    get:
+      summary: Display Riviews of a product 
+      tags: [Review]
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Input the ID of the product you want to fetch Reviews
+      responses:
+        '200':
+          description: 🍀 Here are the AVAILABLE Reeviews
+        '404':
+          description: 🚫 Sorry, there are no  reviews at the moment
+    # Delete a product
+  /api/v1/review/{id}:
+    delete:
+      security: 
+       - bearerAuth: []
+      summary: delete a Review
+      tags: [Review]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: please fill all required fields
+          schema:
+            type: string
+            format: int64
+            minimum: 1
+        - name: deletedReviewMessage
+          in: path
+          required: true
+          default: Contains harmful substances to the human body
+          description: Message sent to the client after deleting a Review
+          schema:
+            type: string
+            format: int64
+            minimum: 1
+            type: string
+
+      responses:
+        200:
+          description: 🍀 Review Deleted Successfully.
+        401:
+          description: Unauthorized
+        404:
+          description: 🚫 Sorry, this Review was not found...
+  # add a Review To a Product  
+   
