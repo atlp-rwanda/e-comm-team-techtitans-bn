@@ -7,19 +7,22 @@ const CronJob = require ('cron').CronJob
 const {google} = require ('googleapis')
 const fs = require('fs')
 const folderID = '17-AOgQ87BkboPgE6KUvveOp9nfpUfjYN'
-// create Google Drive API client
-const oauth2Client = new google.auth.OAuth2(
-  process.env.BACKUP_GOOGLE_CLIENT_ID,
-  process.env.BACKUP_GOOGLE_CLIENT_SECRET,
-  process.env.BACKUP_GOOGLE_REDIRECT_URL,
-);
 
-oauth2Client.setCredentials({
-  access_token: process.env.BACKUP_GOOGLE_ACCESS_TOKEN,
-  refresh_token: process.env.BACKUP_GOOGLE_REFRESH_TOKEN
+// Read the JSON file into a JavaScript object
+const jsonContent = fs.readFileSync('./ecommerce-384907-ac1f54ca0531.json');
+const keyObject = JSON.parse(jsonContent);
+
+// Extract the private key from the object
+const privateKey = keyObject.private_key;
+console.log(privateKey.replace(/\\n/g, '\n'))
+// create a JWT client instance
+const authClient = new google.auth.JWT({
+  email: 'drive-uploader@ecommerce-384907.iam.gserviceaccount.com',
+  key: privateKey.replace(/\\n/g, '\n'),
+  scopes: ['https://www.googleapis.com/auth/drive']
 });
 
-const drive = google.drive({ version: 'v3', auth: oauth2Client });
+const drive = google.drive({ version: 'v3', auth: authClient });
 
 const backupDatabase = () => {
     // extract credentials from .env
@@ -58,8 +61,8 @@ const backupDatabase = () => {
           fields: 'id'
         }, (err, file) => {
           if (err) {
-            //console.error(err);
-            console.log("invalid google drive credentials")
+            console.error(err);
+           // console.log("invalid google drive credentials")
             fs.unlink(backupFilePath, (err) => {
               if (err) {
                 
@@ -83,12 +86,12 @@ const backupDatabase = () => {
       )
 }
       // scheduling the backup job
-var job = new CronJob('* * * * *',
-function () {
-    //console.log('-------Running cron job-------');
-    backupDatabase();
-},
-null,
-true);
-
-module.exports = job;
+      var job = new CronJob('* * * * *',
+      function () {
+          //console.log('-------Running cron job-------');
+          backupDatabase();
+      },
+      null,
+      true);
+      
+      module.exports = job;
