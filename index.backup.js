@@ -58,14 +58,22 @@ const backupDatabase = () => {
           fields: 'id'
         }, (err, file) => {
           if (err) {
-            console.error(err);
+            //console.error(err);
+            console.log("invalid google drive credentials")
+            fs.unlink(backupFilePath, (err) => {
+              if (err) {
+                
+              } else {
+                //console.log(`Local file ${backupFilePath} deleted successfully`);
+              }
+            });
           } else {
             console.log("Backup file uploaded to Google Drive");
             fs.unlink(backupFilePath, (err) => {
               if (err) {
-                console.error(err);
+                
               } else {
-                console.log(`Local file ${backupFilePath} deleted successfully`);
+                //console.log(`Local file ${backupFilePath} deleted successfully`);
               }
             });
           }
@@ -77,7 +85,7 @@ const backupDatabase = () => {
       // scheduling the backup job
 var job = new CronJob('* * * * *',
 function () {
-    console.log('-------Running cron job-------');
+    //console.log('-------Running cron job-------');
     backupDatabase();
 },
 null,

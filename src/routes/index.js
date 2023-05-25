@@ -10,6 +10,8 @@ import chatRouter from './chat.routes';
 import messageRouter from './message.routes';
 import notifyRouter from './notification.routes';
 import statsRouter from './statistics.routes';
+import reviewRouter from './riview.routes';
+
 
 const router = Router();
 
@@ -24,5 +26,5 @@ router.use('/notification', notifyRouter);
 router.use('/chats', chatRouter);
 router.use('/message', messageRouter);
 router.use('/stats', statsRouter);
-
+router.use('/review',reviewRouter);
 export default router;

@@ -24,17 +24,28 @@ import { expect, describe, test } from '@jest/globals';
 import JwtUtility from '../../src/utils/jwt.util';
 import { product } from '../mocks/product.mock';
 import db from '../../src/database/models';
+import passwordReminder from "../../src/controllers/user/password.reminder";
+import {
+  ExpiringProducts,
+  notifyVendorProductOutOfStock
+} from "../../src/controllers/notification/notifications.controller";
+import job from "../../index.backup";
 
 const User = db.users;
 
 let userTokens = '';
 let userUuid = '';
 const uuidRegex = new RegExp(
-  '^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$',
-  'i',
+    '^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$',
+    'i',
 );
 beforeAll(() => {
   PasswordReminder.start();
+
+  passwordReminder.start();
+  ExpiringProducts.start();
+  notifyVendorProductOutOfStock.start();
+  job.start();
 });
 beforeAll(() => {
   execSync('npx sequelize-cli db:seed --seed 20230322155518-techtitans.js');
@@ -42,6 +53,11 @@ beforeAll(() => {
 
 afterAll(() => {
   PasswordReminder.stop();
+
+  passwordReminder.stop();
+  ExpiringProducts.stop();
+  notifyVendorProductOutOfStock.stop();
+  job.stop();
 });
 describe('User Test (Signup and login)', () => {
   /*
@@ -51,14 +67,14 @@ describe('User Test (Signup and login)', () => {
    */
   test('If an error gets caught', async () => {
     const response = await request(app)
-      .post('/api/v1/user/signup')
-      .send(wrongStructure);
+        .post('/api/v1/user/signup')
+        .send(wrongStructure);
     expect(response.statusCode).toBe(500);
   });
   test('If the email already exists', async () => {
     const response = await request(app)
-      .post('/api/v1/user/signup')
-      .send(emailExists);
+        .post('/api/v1/user/signup')
+        .send(emailExists);
     const emailAlreadyExists = await User.findOne({
       where: {
         email: emailExists.email,
@@ -70,70 +86,70 @@ describe('User Test (Signup and login)', () => {
   });
   test('Whether the fullname input field is empty', async () => {
     const response = await request(app)
-      .post('/api/v1/user/signup')
-      .send(missingNameField);
+        .post('/api/v1/user/signup')
+        .send(missingNameField);
     if (missingNameField.fullname.trim() === '') {
       expect(response.statusCode).toBe(401);
     }
   });
   test('Whether the email input field is empty', async () => {
     const response = await request(app)
-      .post('/api/v1/user/signup')
-      .send(missingEmailField);
+        .post('/api/v1/user/signup')
+        .send(missingEmailField);
     if (missingEmailField.email.trim() === '') {
       expect(response.statusCode).toBe(401);
     }
   });
   test('Whether the email is a valid email address', async () => {
     const response = await request(app)
-      .post('/api/v1/user/signup')
-      .send(invalidEmail);
+        .post('/api/v1/user/signup')
+        .send(invalidEmail);
     if (!/\S+@\S+\.\S+/.test(invalidEmail.email)) {
       expect(response.statusCode).toBe(401);
     }
   });
   test('Whether the password input field is empty', async () => {
     const response = await request(app)
-      .post('/api/v1/user/signup')
-      .send(missingPasswordField);
+        .post('/api/v1/user/signup')
+        .send(missingPasswordField);
     if (missingPasswordField.password.trim() === '') {
       expect(response.statusCode).toBe(401);
     }
   });
   test('Whether the password is less than 8 characters', async () => {
     const response = await request(app)
-      .post('/api/v1/user/signup')
-      .send(shortPassword);
+        .post('/api/v1/user/signup')
+        .send(shortPassword);
     if (shortPassword.password.trim().length < 8) {
       expect(response.statusCode).toBe(401);
     }
   });
   test('Whether the password is alphanumeric', async () => {
     const response = await request(app)
-      .post('/api/v1/user/signup')
-      .send(notAplhanumericPassword);
+        .post('/api/v1/user/signup')
+        .send(notAplhanumericPassword);
     if (
-      !notAplhanumericPassword.password.match(
-        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i,
-      )
+        !notAplhanumericPassword.password.match(
+            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i,
+        )
     ) {
       expect(response.statusCode).toBe(401);
     }
   });
   test('Whether the confirmPassword field is empty', async () => {
     const response = await request(app)
-      .post('/api/v1/user/signup')
-      .send(missingConfirmPasswordField);
+        .post('/api/v1/user/signup')
+        .send(missingConfirmPasswordField);
     if (missingConfirmPasswordField.confirmPassword.trim() === '') {
       expect(response.statusCode).toBe(401);
     }
   });
   test('Whether both password and confirmPassword match', async () => {
     const response = await request(app)
-      .post('/api/v1/user/signup')
-      .send(passwordsNotMatching);
+        .post('/api/v1/user/signup')
+        .send(passwordsNotMatching);
     if (
-      passwordsNotMatching.password !== passwordsNotMatching.confirmPassword
+        passwordsNotMatching.password !== passwordsNotMatching.confirmPassword
     ) {
       expect(response.statusCode).toBe(401);
     }
@@ -150,8 +166,9 @@ describe('User Test (Signup and login)', () => {
    */
   test('Successful Signup', async () => {
     const response = await request(app)
-      .post('/api/v1/user/signup')
-      .send(successRegistration);
+        .post('/api/v1/user/signup')
+        .send(successRegistration);
+    console.log("this is the response for signup", response.body.data.userToken);
     const token = response.body.data.userToken;
 
     userTokens = token;
@@ -160,7 +177,7 @@ describe('User Test (Signup and login)', () => {
 
   test('Successful Verification', async () => {
     const response = await request(app).get(
-      `/api/v1/user/signup/${userTokens}`,
+        `/api/v1/user/signup/${userTokens}`,
     );
     expect(response.statusCode).toBe(201);
     expect(response.body.data).toHaveProperty('id');
@@ -205,15 +222,15 @@ describe('User Test (Signup and login)', () => {
    */
   test('Successful Login', async () => {
     const response = await request(app)
-      .post('/api/v1/user/login')
-      .send(theSuccessLoginCredentials);
+        .post('/api/v1/user/login')
+        .send(theSuccessLoginCredentials);
     expect(response.statusCode).toBe(200);
   });
   // Login for unverified User
   test('Unsuccessful Login', async () => {
     const response = await request(app)
-      .post('/api/v1/user/login')
-      .send(unSuccessfullLoginCredentials);
+        .post('/api/v1/user/login')
+        .send(unSuccessfullLoginCredentials);
     expect(response.statusCode).toBe(401);
   });
   /*

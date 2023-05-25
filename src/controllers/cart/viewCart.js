@@ -12,8 +12,7 @@ const viewCart = async (req, res) => {
     const decodedToken = JwtUtility.verifyToken(token);
 
     const cart = await models.Cart.findAll({
-      where: { userId: decodedToken.id },
-      include: { all: true },
+      where: { userId: decodedToken.id }
     });
 
     if (!cart || cart.length == 0) {
