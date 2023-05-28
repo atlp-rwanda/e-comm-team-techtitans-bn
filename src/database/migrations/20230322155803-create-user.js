@@ -4,7 +4,7 @@ const { DataTypes } = require('sequelize');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, DataTypes) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable("Users", {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -25,6 +25,7 @@ module.exports = {
       },
       accountStatus: {
         type: DataTypes.STRING,
+        defaultValue: "active",
       },
       createdAt: {
         allowNull: false,

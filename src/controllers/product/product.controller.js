@@ -93,6 +93,7 @@ export const addProduct = async (req, res) => {
     const vendorProduct = await models.Product.findOne({
       where: { name, vendorId: id },
     });
+
     if (vendorProduct) {
       return res.status(403).json({
         message:

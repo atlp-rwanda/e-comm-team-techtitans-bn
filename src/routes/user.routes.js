@@ -57,14 +57,13 @@ userRouter.get(
 
   isAdmin,
   checkPermission("manage users"),
-  findAllUsers
+  findAllUsers,
 );
-userRouter.post(
-  "/role",
-  RestrictPassword,
+userRouter.put(
+  '/role/:id',
   isAdmin,
   checkPermission("manage users"),
-  Role.setRole
+  Role.setRole,
 );
 
 // update user password
