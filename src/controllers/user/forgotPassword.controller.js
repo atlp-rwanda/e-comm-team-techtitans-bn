@@ -15,32 +15,42 @@ const forgotPassword = async (req, res) => {
     if (!user) {
       res.status(404).json({ error: 'Invalid Email' });
     } else {
-      // res.status(200).json({message:'User exist'})
+      const token = jwt.sign(
+        { user: user.email, userId: user.id },
+        resetSecret,
+        {
+          expiresIn: '10m',
+        },
+      );
 
-      const token = jwt.sign({ user: user.email }, resetSecret, {
-        expiresIn: '10m',
-      });
       const link = `https://ecommerce-tech-titans.herokuapp.com/api/v1/user/reset-password/${user.id}/${token}`;
+      // const link = `http://localhost:1001/api/v1/user/reset-password/${user.id}/${token}`;
       sendFunc(user, link);
       res.status(201).json({
         message: 'Password reset Link has been send to your email ....',
+        token,
+        theUser: user.id,
       });
     }
   } catch (error) {
+    console.log('**THE 500 ERROR**', error);
     res.status(500).json({ message: error.message });
   }
 };
 
 const getResetPassword = async (req, res) => {
-  const { id, token } = req.params;
+  const { id } = req.params;
+
   // check if id exist
   const user = await User.findOne({ where: { id } });
   if (!user) {
     res.status(404).json({ error: 'user not exist' });
   } else {
     try {
-      const payload = jwt.verify(token, resetSecret);
-      return res.send({ email: user.email });
+      const frontendlink = `https://tech-titans.techsroutine.com/auth/reset-password/${id}`;
+      // const frontendlink = `http://localhost:5173/auth/reset-password/${id}`;
+
+      return res.redirect(frontendlink);
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
@@ -48,7 +58,8 @@ const getResetPassword = async (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
-  const { id, token } = req.params;
+  // eslint-disable-next-line prefer-destructuring
+  const id = req.params.id;
   const { password, confirmPassword } = req.body;
   // check if id exist
   const user = await User.findOne({ where: { id } });
@@ -56,7 +67,6 @@ const resetPassword = async (req, res) => {
     res.status(404).json({ error: 'user not exist' });
   } else {
     try {
-      const payload = jwt.verify(token, resetSecret);
       switch (true) {
         case password.trim() === '':
           res.status(401).json({
@@ -89,26 +99,26 @@ const resetPassword = async (req, res) => {
           break;
         default:
           try {
-            const payload = jwt.verify(token, resetSecret);
             // user.password = password;
-            User.findOne({ where: { id } })
-              .then((user) => {
-                user.password = bcrypt.hashSync(password, 10);
-                user.lastPasswordUpdate = new Date();
-                return user.save();
-              })
-              .then((theData) => {
-                res.status(200).json({
-                  message: 'Password successfuly reset',
-                  data: theData,
-                });
-              });
+            const hashedPassword = await bcrypt.hash(password, 10);
+            user.password = hashedPassword;
+            user.lastPasswordUpdate = new Date();
+            await user.save();
+
+            return res.status(200).json({
+              message: 'Password successfully reset.',
+              data: user,
+            });
           } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({
+              message: `🚫 ...Internal Server errorr...: ${error.message}`,
+            });
           }
       }
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      return res
+        .status(500)
+        .json({ message: `🚫 Internal Server errorr: ${error.message}` });
     }
   }
 };
