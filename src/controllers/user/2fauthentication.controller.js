@@ -39,10 +39,11 @@ const verifyOtp = async (req, res) => {
     const token = JwtUtility.generateToken(
       {
         id: user.id,
+        fullname: user.fullname,
         email: user.email,
         roleId: user.roleId,
       },
-      '1y',
+      "1y"
     );
     res.cookie('token', token, {
       httpOnly: true,

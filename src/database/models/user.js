@@ -51,6 +51,9 @@ module.exports = (sequelize, DataTypes) => {
           this.setDataValue('email', val.toLowerCase());
         },
       },
+      image: {
+        type: DataTypes.STRING,
+      },
       password: {
         type: DataTypes.STRING,
       },
