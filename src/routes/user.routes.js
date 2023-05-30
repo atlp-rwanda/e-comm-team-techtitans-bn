@@ -51,19 +51,16 @@ userRouter.post('/reset-password/:id', resetPassword);
 // Update user profile
 userRouter.put('/profile', updateProfile);
 
-// Get all users
 userRouter.get(
-  '/profile/users',
-
+  "/profile/users",
   isAdmin,
-  checkPermission('manage users'),
+  checkPermission("manage users"),
   findAllUsers,
 );
-userRouter.post(
-  '/role',
-  RestrictPassword,
+userRouter.put(
+  '/role/:id',
   isAdmin,
-  checkPermission('manage users'),
+  checkPermission("manage users"),
   Role.setRole,
 );
 
