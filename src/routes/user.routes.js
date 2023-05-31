@@ -16,7 +16,7 @@ import {
   resetPassword,
 } from '../controllers/user/forgotPassword.controller';
 import findAllUsers from '../controllers/user/findAllUsers.controller';
-import updateProfile from '../controllers/user/profile.controller';
+import {updateProfile, getProfile} from '../controllers/user/profile.controller';
 import editPassword from '../controllers/user/user.edit.password';
 import verifyOtp from '../controllers/user/2fauthentication.controller';
 import RestrictPassword from '../middleware/auth/check.password.update';
@@ -50,6 +50,7 @@ userRouter.post('/reset-password/:id', resetPassword);
 
 // Update user profile
 userRouter.put('/profile', updateProfile);
+userRouter.get("/for/only/profiles", getProfile);
 
 userRouter.get(
   "/profile/users",
