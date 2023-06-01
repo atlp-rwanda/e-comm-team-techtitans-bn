@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Product.belongsTo(models.User, {
         foreignKey: "vendorId",
+        as: "productVendor",
       });
       Product.belongsTo(models.Category, {
         foreignKey: "categoryId",
@@ -14,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       Product.hasMany(models.Order, {
         foreignKey: "productId",
         onDelete: "CASCADE",
+        as: "productOrder",
       });
     }
   }
