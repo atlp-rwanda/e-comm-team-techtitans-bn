@@ -14,7 +14,8 @@ const secret = process.env.COOKIE_SECRET;
 let token = '';
 const generatePassword = () => {
   const l = 8;
-  const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const charset =
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let password = '';
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < l; i++) {
@@ -28,7 +29,9 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'https://ecommerce-tech-titans.herokuapp.com/api/v1/auth/google/callback',
+      callbackURL:
+        'https://ecommerce-tech-titans.herokuapp.com/api/v1/auth/google/callback',
+      scope: ['email', 'profile'],
       passReqToCallback: true,
     },
 
@@ -100,4 +103,4 @@ passport.serializeUser((user, done) => {
 });
 passport.deserializeUser((user, done) => {
   done(null, user);
-})
+});
