@@ -33,7 +33,11 @@ const wishlist = async (req, res) => {
       });
     } else {
       const user_id = user.id;
-      //   console.log(user_id);
+      const product_id = product.id;
+      const product_name = product.name;
+      const product_price = product.price;
+      const product_image = product.images;
+      console.log(product_name);
       const productExist = await Wishlists.findOne({
         where: { product_id, user_id },
       });
@@ -43,7 +47,13 @@ const wishlist = async (req, res) => {
           message: `product already exist in your wish list`,
         });
       }
-      const wishList = await Wishlists.create({ user_id, product_id });
+      const wishList = await Wishlists.create({
+        user_id,
+        product_id,
+        product_name,
+        product_price,
+        product_image,
+      });
       return res.status(201).json({
         message: "product successfully added to a wishlist",
         data: wishList,
@@ -54,7 +64,7 @@ const wishlist = async (req, res) => {
   }
 };
 
-// 
+//
 const getAllWishes = async (req, res) => {
   const { token } = req.params;
   const limit = req.query.limit || 10; // default to 10 wishlists per page
@@ -70,7 +80,7 @@ const getAllWishes = async (req, res) => {
     const allWishList = await Wishlists.findAndCountAll({
       where: { user_id },
       limit,
-      offset
+      offset,
     });
 
     const result = allWishList.rows;
@@ -78,12 +88,12 @@ const getAllWishes = async (req, res) => {
 
     if (result.length <= 0) {
       res.status(404).json({
-        status: 'fail',
-        message: '🚫 Oops...no wishlist found at the moment.',
+        status: "fail",
+        message: "🚫 Oops...no wishlist found at the moment.",
       });
     } else {
       res.status(200).json({
-        status: 'success',
+        status: "success",
         message: `🍀 ${result.length} Wishlists Fetched Successfully.`,
         data: result,
         currentPage: offset / limit + 1,
@@ -95,5 +105,5 @@ const getAllWishes = async (req, res) => {
       message: error.message,
     });
   }
-}
+};
 export { wishlist, getAllWishes };

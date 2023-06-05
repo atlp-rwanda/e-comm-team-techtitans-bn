@@ -15,17 +15,21 @@ import {
   isBuyer,
   checkPermission,
 } from "../middleware/auth/auth.middleware.js";
+import { sellerOrders } from "../controllers/order/sellerOrder.controller";
 
 const orderRouter = express.Router();
 //1. sellers update order status from "pending"to "shipped"
 orderRouter.put("/updatestatus/:id", isSeller, OrderStatus);
-orderRouter.post("/create", isBuyer, createOrder);
-orderRouter.post("/", isBuyer, buyNowOrder);
-orderRouter.get("/list-orders", isBuyer, listOrders);
-orderRouter.get("/:id", isBuyer, getOrder);
+orderRouter.post("/create", createOrder);
+orderRouter.post("/", buyNowOrder);
+orderRouter.get("/list-orders", listOrders);
+// seller order
+orderRouter.get("/orders", isSeller, sellerOrders);
+orderRouter.get("/:orderId", isBuyer, getOrder);
 orderRouter.delete("/delete/:id", isBuyer, deleteOrder);
 orderRouter.put("/update/:id", isBuyer, updateOrder);
-export default orderRouter;
 //order status tracking
-orderRouter.get('/get/trackorder/:id',isBuyer,getOrderStatus);
-orderRouter.post('/post/trackorder/:id',isSeller,getOrderStatus);
+orderRouter.get("/get/trackorder/:id", isBuyer, getOrderStatus);
+orderRouter.post("/post/trackorder/:id", isSeller, getOrderStatus);
+
+export default orderRouter;

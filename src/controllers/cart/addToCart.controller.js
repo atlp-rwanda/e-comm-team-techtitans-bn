@@ -55,6 +55,7 @@ const addItemToCart = async (req, res) => {
         quantity: productQuantity,
         price: product.price,
         images: product.images,
+        vendorId: product.vendorId,
         total: product.price * productQuantity,
       };
       products.push(newProduct);
