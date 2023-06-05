@@ -69,7 +69,7 @@ const isBuyer = async (req, res, next) => {
       next();
     } else {
       res
-        .status(403)
+        .status(404)
         .json({ message: "🚫 Your are Unauthorized to perform this action" });
     }
   } catch (err) {

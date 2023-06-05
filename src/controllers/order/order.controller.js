@@ -2,35 +2,42 @@ import asyncHandler from "express-async-handler";
 import models from "../../database/models";
 import JwtUtility from "../../utils/jwt.util";
 import db from "../../database/models";
-const Order = db.orders;
-const Cart = db.carts;
 
 export const createOrder = async (req, res) => {
   try {
-    let { cartId } = req.body;
+    const { cartId } = req.body;
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = JwtUtility.verifyToken(token);
     const { id } = decodedToken;
-    const cartOrder = await models.Order.findOne({
-      where: { cartId, userId: id },
-    });
-    if (cartOrder) {
-      return res.status(403).json({
-        message:
-          "🚫 You have already ordered this product. please update your order instead.",
-      });
-    }
+
+    // Find the cart by cartId
     const cart = await models.Cart.findOne({
       where: { id: cartId },
     });
+
+    // Check if the cart exists
+    if (!cart) {
+      return res.status(404).json({
+        message: "Cart not found",
+      });
+    }
+
     // Calculate the expected delivery date with 10 days from now
     const expectedDeliveryDate = new Date();
     expectedDeliveryDate.setDate(expectedDeliveryDate.getDate() + 10);
-    const order = await models.Order.create({
-      userId: id,
-      cartId,
-      expected_delivery_date: expectedDeliveryDate,
+
+    // Create an order for each product
+    const orderPromises = cart.products.map((product) => {
+      return models.Order.create({
+        userId: id,
+        cartId,
+        expected_delivery_date: expectedDeliveryDate,
+        productId: product.id, // Save the individual product ID
+      });
     });
+
+    // Wait for all order creation promises to resolve
+    const orders = await Promise.all(orderPromises);
 
     const restoken = JwtUtility.generateToken(
       {
@@ -38,21 +45,25 @@ export const createOrder = async (req, res) => {
       },
       "1y"
     );
+
     res.status(201).json({
-      message: `🍀 Your order has been added successfully.`,
+      message: "🍀 Your order has been added successfully.",
       token: restoken,
       data: {
-        order: order.id,
-        cartId: order.cartId,
-        total: cart.total,
-        quantity: cart.quantity,
-        expected_delivery_date: order.expected_delivery_date,
+        orders: orders.map((order) => ({
+          order: order.id,
+          cartId: order.cartId,
+          total: cart.total,
+          quantity: cart.quantity,
+          expected_delivery_date: order.expected_delivery_date,
+        })),
       },
     });
   } catch (error) {
     res.status(500).json({ status: "fail", message: error.message });
   }
 };
+
 export const buyNowOrder = async (req, res) => {
   try {
     let { productId, quantity } = req.body;
@@ -129,7 +140,7 @@ export const listOrders = async (req, res) => {
       include: [
         {
           model: models.Product,
-          as: "product",
+          as: "productOrder",
           attributes: [
             "id",
             "name",
@@ -158,6 +169,7 @@ export const listOrders = async (req, res) => {
       if (order.cartId) {
         cart = await models.Cart.findOne({ where: { id: order.cartId } });
       }
+      console.log("orders", order);
 
       const formattedOrder = {
         orderId: order.id,
@@ -166,8 +178,9 @@ export const listOrders = async (req, res) => {
         orderQuantity: order.quantity,
         orderExpectedDeliveryDate: order.expected_delivery_date,
         userId: order.userId,
-        product: order.product,
+        product: order.productOrder,
         cartId: cart,
+        cartProducts: order.cartProducts,
         createdAt: order.createdAt,
         updatedAt: order.updatedAt,
       };
@@ -189,13 +202,14 @@ export const getOrder = async (req, res) => {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = JwtUtility.verifyToken(token);
     const { id } = decodedToken;
+    const { orderId } = req.params;
 
     const order = await models.Order.findOne({
-      where: { id: req.params.id, userId: id },
+      where: { id: orderId, userId: id },
       include: [
         {
           model: models.Product,
-          as: "product",
+          as: "productOrder",
           attributes: ["id", "name", "description", "price", "images", "stock"],
         },
         {
@@ -230,6 +244,7 @@ export const getOrder = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log("error", error);
     res.status(500).json({ status: "fail", message: error.message });
   }
 };
