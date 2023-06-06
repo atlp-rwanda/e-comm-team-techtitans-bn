@@ -58,8 +58,7 @@ const backupDatabase = () => {
           fields: 'id'
         }, (err, file) => {
           if (err) {
-            //console.error(err);
-            console.log("invalid google drive credentials")
+           
             fs.unlink(backupFilePath, (err) => {
               if (err) {
                 
