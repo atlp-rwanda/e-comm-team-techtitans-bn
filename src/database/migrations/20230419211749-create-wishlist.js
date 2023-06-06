@@ -15,6 +15,16 @@ module.exports = {
       product_id: {
         type: Sequelize.STRING,
       },
+
+      product_name: {
+        type: Sequelize.STRING,
+      },
+      product_price: {
+        type: Sequelize.INTEGER,
+      },
+      product_image: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -1,7 +1,7 @@
-import asyncHandler from "express-async-handler";
 import models from "../../database/models";
 import JwtUtility from "../../utils/jwt.util";
 import db from "../../database/models";
+const User = db.users;
 
 export const createOrder = async (req, res) => {
   try {
@@ -32,7 +32,9 @@ export const createOrder = async (req, res) => {
         userId: id,
         cartId,
         expected_delivery_date: expectedDeliveryDate,
-        productId: product.id, // Save the individual product ID
+        productId: product.id,
+        quantity: cart.quantity,
+        total_price: cart.total,
       });
     });
 
@@ -41,7 +43,7 @@ export const createOrder = async (req, res) => {
 
     const restoken = JwtUtility.generateToken(
       {
-        total: cart.total,
+        total_price: cart.total,
       },
       "1y"
     );
@@ -53,7 +55,7 @@ export const createOrder = async (req, res) => {
         orders: orders.map((order) => ({
           order: order.id,
           cartId: order.cartId,
-          total: cart.total,
+          total_price: cart.total,
           quantity: cart.quantity,
           expected_delivery_date: order.expected_delivery_date,
         })),
@@ -150,6 +152,11 @@ export const listOrders = async (req, res) => {
             "stock",
             "quantity",
           ],
+          include: {
+            model: User,
+            as: "productVendor",
+            attributes: ["id", "fullname", "email"],
+          },
         },
       ],
     });
@@ -211,6 +218,11 @@ export const getOrder = async (req, res) => {
           model: models.Product,
           as: "productOrder",
           attributes: ["id", "name", "description", "price", "images", "stock"],
+          include: {
+            model: User,
+            as: "productVendor",
+            attributes: ["id", "fullname", "email"],
+          },
         },
         {
           model: models.Cart,
@@ -237,8 +249,8 @@ export const getOrder = async (req, res) => {
         quantity: order.quantity,
         expected_delivery_date: order.expected_delivery_date,
         user_id: order.userId,
-        cart: cart,
-        product: order.product,
+        // cart: cart,
+        product: order.productOrder,
         created_at: order.createdAt,
         updated_at: order.updatedAt,
       },

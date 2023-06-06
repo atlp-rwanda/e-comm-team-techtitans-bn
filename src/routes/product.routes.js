@@ -91,5 +91,5 @@ productRouter.get("/product/list/search", productSearch);
 productRouter.post("/wishlist", isBuyer, wishlist);
 productRouter.get("/wishlist/:token", getAllWishes);
 // buyer view all products
-productRouter.get('/product/all/viewAvailable',buyerViewProduct);
+productRouter.get("/product/all/viewAvailable", buyerViewProduct);
 export default productRouter;
