@@ -57,7 +57,7 @@ export const getOrderStatus = async (req, res) => {
       await order.save();
 
       // Send updated order status to all connected clients via WebSockets
-      const ws = new WebSocket('wss://ecommerce-tech-titans.herokuapp.com');//
+      const ws = new WebSocket('ws://localhost:3000');//
       ws.on('open', () => {
         ws.send(JSON.stringify({ type: 'orderStatusUpdated', id, status }));
         ws.close();
