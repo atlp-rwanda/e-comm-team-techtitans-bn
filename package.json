@@ -75,7 +75,7 @@
     "pusher": "^5.1.2",
     "sequelize": "^6.29.3",
     "sequelize-cli": "^6.6.0",
-    "socket.io": "^4.6.1",
+    "socket.io": "^4.6.2",
     "speakeasy": "^2.0.0",
     "stripe": "^12.0.0",
     "superagent": "^8.0.9",

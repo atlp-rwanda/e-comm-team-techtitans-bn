@@ -54,5 +54,6 @@ db.users = require('./user')(sequelize, Sequelize);
 db.messages = require('./message')(sequelize, Sequelize);
 db.chats = require('./chat')(sequelize, Sequelize);
 db.subscribers = require('./subscriber')(sequelize, Sequelize);
+db.allmessages = require('./allmessages')(sequelize, Sequelize);
 
 module.exports = db;
