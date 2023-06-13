@@ -1,7 +1,6 @@
 import models from "../../database/models";
 import JwtUtility from "../../utils/jwt.util";
 import db from "../../database/models";
-import { Op } from "sequelize";
 const User = db.users;
 
 export const sellerOrders = async (req, res) => {
@@ -66,10 +65,13 @@ export const sellerOrders = async (req, res) => {
       const formattedOrder = {
         orderId: order.id,
         orderStatus: order.status,
-        orderTotal: order.total_price,
-        orderQuantity: order.quantity,
+        orderTotal: order.total_price || order.cart.total,
+        orderQuantity: order.quantity || order.cart.quantity,
         orderExpectedDeliveryDate: order.expected_delivery_date,
-        userId: order.customer.id,
+        customer: {
+          name: order.customer.fullname,
+          email: order.customer.email,
+        },
         product: {
           id: order.productOrder.id,
           name: order.productOrder.name,
@@ -84,17 +86,6 @@ export const sellerOrders = async (req, res) => {
             email: order.productOrder.productVendor.email,
           },
         },
-        cartId: order.cart
-          ? {
-              id: order.cart.id,
-              products: order.cart.products,
-              quantity: order.cart.quantity,
-              userId: order.cart.userId,
-              total: order.cart.total,
-              createdAt: order.cart.createdAt,
-              updatedAt: order.cart.updatedAt,
-            }
-          : null,
         createdAt: order.createdAt,
         updatedAt: order.updatedAt,
       };

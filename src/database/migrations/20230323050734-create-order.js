@@ -43,7 +43,16 @@ module.exports = {
         onUpdate: "CASCADE",
       },
       status: {
-        type: Sequelize.ENUM("pending", "processing", "shipped", "delivered"),
+        type: Sequelize.ENUM(
+          "pending",
+          "processing",
+          "shipped",
+          "delivered",
+          "canceled",
+          "refunded",
+          "onhold",
+          "returned"
+        ),
         defaultValue: "pending",
       },
 
