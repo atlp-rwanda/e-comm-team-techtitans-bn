@@ -1,12 +1,12 @@
-import models from "../../database/models";
-import JwtUtility from "../../utils/jwt.util";
-import db from "../../database/models";
+import models from '../../database/models';
+import JwtUtility from '../../utils/jwt.util';
+import db from '../../database/models';
 const User = db.users;
 
 export const createOrder = async (req, res) => {
   try {
     const { cartId } = req.body;
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(' ')[1];
     const decodedToken = JwtUtility.verifyToken(token);
     const { id } = decodedToken;
 
@@ -18,7 +18,7 @@ export const createOrder = async (req, res) => {
     // Check if the cart exists
     if (!cart) {
       return res.status(404).json({
-        message: "Cart not found",
+        message: 'Cart not found',
       });
     }
 
@@ -45,11 +45,11 @@ export const createOrder = async (req, res) => {
       {
         total_price: cart.total,
       },
-      "1y"
+      '1y',
     );
 
     res.status(201).json({
-      message: "🍀 Your order has been added successfully.",
+      message: '🍀 Your order has been added successfully.',
       token: restoken,
       data: {
         orders: orders.map((order) => ({
@@ -62,41 +62,41 @@ export const createOrder = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ status: "fail", message: error.message });
+    res.status(500).json({ status: 'fail', message: error.message });
   }
 };
 
 export const buyNowOrder = async (req, res) => {
   try {
     let { productId, quantity } = req.body;
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(' ')[1];
     const decodedToken = JwtUtility.verifyToken(token);
     const { id } = decodedToken;
     // Check if the product exists and is available
     const checkProduct = await models.Product.findOne({
-      where: { id: productId, stock: "available" },
+      where: { id: productId, stock: 'available' },
     });
 
     if (!checkProduct) {
       return res.status(404).json({
         ok: false,
-        message: "🚫 Product not found!",
+        message: '🚫 Product not found!',
       });
     }
     // Check if the product is already order and not paid
     const checkOrder = await models.Order.findOne({
-      where: { productId, userId: id, status: "pending" },
+      where: { productId, userId: id, status: 'pending' },
     });
 
     if (checkOrder) {
       return res.status(404).json({
         ok: false,
         message:
-          "🚫 Your already order this product you need paid inorder to order it Again!",
+          '🚫 Your already order this product you need paid inorder to order it Again!',
       });
     }
     const product = await models.Product.findOne({ where: { id: productId } });
-    console.log("product", product.quantity);
+    console.log('product', product.quantity);
     if (quantity > product.quantity) {
       return res.status(404).json({
         ok: false,
@@ -117,8 +117,14 @@ export const buyNowOrder = async (req, res) => {
     const restoken = JwtUtility.generateToken(
       {
         total: neworder.total_price,
+        productId: product.id,
+        productName: product.name,
+        productPrice: product.price,
+        productImage: product.images[0],
+        quantityToBuyNow: neworder.quantity,
+        amount: neworder.total_price,
       },
-      "1d"
+      '1d',
     );
     res.status(201).json({
       message: `🍀 Your order has been added successfully.`,
@@ -127,13 +133,13 @@ export const buyNowOrder = async (req, res) => {
     });
   } catch (error) {
     // console.log(error);
-    res.status(500).json({ status: "fail", message: error.message });
+    res.status(500).json({ status: 'fail', message: error.message });
   }
 };
 
 export const listOrders = async (req, res) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(' ')[1];
     const decodedToken = JwtUtility.verifyToken(token);
     const { id } = decodedToken;
 
@@ -142,20 +148,20 @@ export const listOrders = async (req, res) => {
       include: [
         {
           model: models.Product,
-          as: "productOrder",
+          as: 'productOrder',
           attributes: [
-            "id",
-            "name",
-            "description",
-            "price",
-            "images",
-            "stock",
-            "quantity",
+            'id',
+            'name',
+            'description',
+            'price',
+            'images',
+            'stock',
+            'quantity',
           ],
           include: {
             model: User,
-            as: "productVendor",
-            attributes: ["id", "fullname", "email"],
+            as: 'productVendor',
+            attributes: ['id', 'fullname', 'email'],
           },
         },
       ],
@@ -163,7 +169,7 @@ export const listOrders = async (req, res) => {
 
     if (orders.length === 0) {
       res.status(404).json({
-        message: "🚫 You have no orders",
+        message: '🚫 You have no orders',
       });
       return;
     }
@@ -176,7 +182,7 @@ export const listOrders = async (req, res) => {
       if (order.cartId) {
         cart = await models.Cart.findOne({ where: { id: order.cartId } });
       }
-      console.log("orders", order);
+      console.log('orders', order);
 
       const formattedOrder = {
         orderId: order.id,
@@ -196,17 +202,17 @@ export const listOrders = async (req, res) => {
     }
 
     res.status(200).json({
-      message: "📝 Orders retrieved successfully",
+      message: '📝 Orders retrieved successfully',
       data: formattedOrders,
     });
   } catch (error) {
-    res.status(500).json({ status: "fail", message: error.message });
+    res.status(500).json({ status: 'fail', message: error.message });
   }
 };
 
 export const getOrder = async (req, res) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(' ')[1];
     const decodedToken = JwtUtility.verifyToken(token);
     const { id } = decodedToken;
     const { orderId } = req.params;
@@ -216,32 +222,32 @@ export const getOrder = async (req, res) => {
       include: [
         {
           model: models.Product,
-          as: "productOrder",
-          attributes: ["id", "name", "description", "price", "images", "stock"],
+          as: 'productOrder',
+          attributes: ['id', 'name', 'description', 'price', 'images', 'stock'],
           include: {
             model: User,
-            as: "productVendor",
-            attributes: ["id", "fullname", "email"],
+            as: 'productVendor',
+            attributes: ['id', 'fullname', 'email'],
           },
         },
         {
           model: models.Cart,
-          as: "cart", // specify the alias for this association
+          as: 'cart', // specify the alias for this association
         },
       ],
     });
 
     if (!order) {
       return res.status(404).json({
-        status: "fail",
-        message: "🚫 Order not found",
+        status: 'fail',
+        message: '🚫 Order not found',
       });
     }
     // Retrieve the cart object from the Cart model using the cartId
     const cart = await models.Cart.findOne({ where: { id: order.cartId } });
     res.status(200).json({
-      status: "success",
-      message: "📝 Order retrieved successfully",
+      status: 'success',
+      message: '📝 Order retrieved successfully',
       data: {
         id: order.id,
         status: order.status,
@@ -256,15 +262,15 @@ export const getOrder = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log("error", error);
-    res.status(500).json({ status: "fail", message: error.message });
+    console.log('error', error);
+    res.status(500).json({ status: 'fail', message: error.message });
   }
 };
 
 export const deleteOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(' ')[1];
     const decodedToken = JwtUtility.verifyToken(token);
     const { id } = decodedToken;
 
@@ -274,21 +280,21 @@ export const deleteOrder = async (req, res) => {
 
     if (!order) {
       return res.status(404).json({
-        status: "fail",
-        message: "🚫 Order not found or does not belong to you",
+        status: 'fail',
+        message: '🚫 Order not found or does not belong to you',
       });
     }
 
     await order.destroy();
 
     res.status(200).json({
-      status: "success",
-      message: "🍀 Order deleted successfully",
+      status: 'success',
+      message: '🍀 Order deleted successfully',
     });
   } catch (error) {
-    console.log("error", error);
+    console.log('error', error);
     res.status(500).json({
-      status: "fail",
+      status: 'fail',
       message: error.message,
     });
   }
@@ -297,7 +303,7 @@ export const updateOrder = async (req, res) => {
   try {
     const orderId = req.params.id;
     const { quantity } = req.body;
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(' ')[1];
     const decodedToken = JwtUtility.verifyToken(token);
     const { id } = decodedToken;
 
@@ -307,16 +313,16 @@ export const updateOrder = async (req, res) => {
       include: [
         {
           model: models.Product,
-          as: "product",
-          attributes: ["id", "name", "price", "quantity"],
+          as: 'product',
+          attributes: ['id', 'name', 'price', 'quantity'],
         },
       ],
     });
 
     if (!order) {
       return res.status(404).json({
-        status: "fail",
-        message: "Order not found or does not belong to this user",
+        status: 'fail',
+        message: 'Order not found or does not belong to this user',
       });
     }
 
@@ -324,8 +330,8 @@ export const updateOrder = async (req, res) => {
     const product = order.product;
     if (quantity > product.quantity) {
       return res.status(400).json({
-        status: "fail",
-        message: "🚫 You cannot order more than the available quantity",
+        status: 'fail',
+        message: '🚫 You cannot order more than the available quantity',
       });
     }
     // Update the order with the new quantity
@@ -334,8 +340,8 @@ export const updateOrder = async (req, res) => {
     await order.save();
 
     res.status(200).json({
-      status: "success",
-      message: "Order updated successfully",
+      status: 'success',
+      message: 'Order updated successfully',
       data: {
         orderId: order.id,
         orderStatus: order.status,
@@ -354,6 +360,6 @@ export const updateOrder = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ status: "fail", message: error.message });
+    res.status(500).json({ status: 'fail', message: error.message });
   }
 };
