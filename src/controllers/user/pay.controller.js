@@ -65,7 +65,8 @@ class payments {
     try {
       const charge = await stripe.charges.create({
         // amount: 1000 / 10,
-        amount: decodedToken.amount / 10,
+        // amount: decodedToken.amount / 10,
+        amount: decodedToken.amount,
         currency: 'usd',
         description: 'payment',
         customer: customer.id,
@@ -80,9 +81,13 @@ class payments {
         verifyUrl: `${charge.receipt_url}`,
         content: 'View Receipt',
       };
-      sendEmail.confirmPayment(authToken.email, 'Payment Confirmation', context);
+      sendEmail.confirmPayment(
+        authToken.email,
+        'Payment Confirmation',
+        context,
+      );
     } catch (error) {
-      res.status(500).json({ error });
+      res.status(500).json({ message: error.message, error });
     }
   }
 }
