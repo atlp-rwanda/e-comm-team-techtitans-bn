@@ -24,6 +24,7 @@ import {
 import {
   wishlist,
   getAllWishes,
+  removeWishlistItem,
 } from "../controllers/product/wishlist.controller";
 
 const productRouter = express.Router();
@@ -90,6 +91,7 @@ productRouter.delete(
 productRouter.get("/product/list/search", productSearch);
 productRouter.post("/wishlist", isBuyer, wishlist);
 productRouter.get("/wishlist/:token", getAllWishes);
+productRouter.delete("/wishlist:token",removeWishlistItem);
 // buyer view all products
 productRouter.get("/product/all/viewAvailable", buyerViewProduct);
 export default productRouter;

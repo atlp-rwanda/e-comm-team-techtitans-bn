@@ -1,26 +1,23 @@
-// import Wishlist from "../../database/models/wishlist";
-// import Product from "../../database/models/product";
 import models from "../../database/models";
 import db from "../../database/models";
 import jwt from "jsonwebtoken";
 import JwtUtility from "../../utils/jwt.util";
 import bcrypt from "bcrypt";
-// import User from "../../database/models/user";
 
 const Users = db.users;
 const Products = models.Product;
 const Wishlists = models.Wishlist;
 
 const secretToken = process.env.SECRET_TOKEN;
+
 const wishlist = async (req, res) => {
   const tokenHeader = req.headers.authorization;
   if (!tokenHeader) {
-    return res.status(401).json({ message: "Token not provided" }); // assuming the token is sent in the Authorization header
+    return res.status(401).json({ message: "Token not provided" });
   }
   const token = tokenHeader.split(" ")[1];
   try {
     const decodedToken = JwtUtility.verifyToken(token);
-    // const user = await User.findOne({ where: { id: decodedToken.id } });
     const { product_id } = req.body;
 
     const user = await Users.findOne({ where: { email: decodedToken.email } });
@@ -29,7 +26,7 @@ const wishlist = async (req, res) => {
 
     if (!product) {
       return res.status(500).json({
-        message: `Product not exist`,
+        message: `Product does not exist`,
       });
     } else {
       const user_id = user.id;
@@ -44,9 +41,10 @@ const wishlist = async (req, res) => {
 
       if (productExist) {
         return res.status(500).json({
-          message: `product already exist in your wish list`,
+          message: `Product already exists in your wishlist`,
         });
       }
+
       const wishList = await Wishlists.create({
         user_id,
         product_id,
@@ -54,8 +52,9 @@ const wishlist = async (req, res) => {
         product_price,
         product_image,
       });
+
       return res.status(201).json({
-        message: "product successfully added to a wishlist",
+        message: "Product successfully added to the wishlist",
         data: wishList,
       });
     }
@@ -64,11 +63,10 @@ const wishlist = async (req, res) => {
   }
 };
 
-//
 const getAllWishes = async (req, res) => {
   const { token } = req.params;
-  const limit = req.query.limit || 10; // default to 10 wishlists per page
-  const offset = req.query.offset || 0; // default to the first page
+  const limit = req.query.limit || 10;
+  const offset = req.query.offset || 0;
 
   try {
     const payload = jwt.verify(token, secretToken);
@@ -89,12 +87,12 @@ const getAllWishes = async (req, res) => {
     if (result.length <= 0) {
       res.status(404).json({
         status: "fail",
-        message: "🚫 Oops...no wishlist found at the moment.",
+        message: "No wishlist found at the moment.",
       });
     } else {
       res.status(200).json({
         status: "success",
-        message: `🍀 ${result.length} Wishlists Fetched Successfully.`,
+        message: `${result.length} wishlists fetched successfully.`,
         data: result,
         currentPage: offset / limit + 1,
         totalPages: Math.ceil(totalCount / limit),
@@ -106,4 +104,36 @@ const getAllWishes = async (req, res) => {
     });
   }
 };
-export { wishlist, getAllWishes };
+
+const removeWishlistItem = async (req, res) => {
+  const tokenHeader = req.headers.authorization;
+  if (!tokenHeader) {
+    return res.status(401).json({ message: "Token not provided" });
+  }
+  const token = tokenHeader.split(" ")[1];
+  try {
+    const decodedToken = JwtUtility.verifyToken(token);
+    const { product_id } = req.body;
+
+    const user = await Users.findOne({ where: { email: decodedToken.email } });
+    const user_id = user.id;
+
+    const deletedCount = await Wishlists.destroy({
+      where: { product_id, user_id },
+    });
+
+    if (deletedCount === 0) {
+      return res.status(404).json({
+        message: "Product not found in the wishlist",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Product successfully removed from the wishlist",
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export { wishlist, getAllWishes, removeWishlistItem };
