@@ -91,7 +91,7 @@ productRouter.delete(
 productRouter.get("/product/list/search", productSearch);
 productRouter.post("/wishlist", isBuyer, wishlist);
 productRouter.get("/wishlist/:token", getAllWishes);
-productRouter.delete("/wishlist:token",removeWishlistItem);
+ productRouter.delete("/wishlist/", isBuyer, removeWishlistItem);
 // buyer view all products
 productRouter.get("/product/all/viewAvailable", buyerViewProduct);
 export default productRouter;
