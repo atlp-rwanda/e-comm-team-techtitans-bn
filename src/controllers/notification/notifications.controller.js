@@ -75,7 +75,7 @@ const notifyVendorOnProductCreate = async (product) => {
         const vendor = await User.findOne({ where: { id: product.vendorId } });
         if (vendor) {
             const to = vendor.email;
-            const subject = "New Product added to your collection";
+            const subject = `${product.name} added to your collection`;
             const text = `Dear,</br> Vendor <br/><br/><strong>${vendor.fullname}</strong><br/><br/>New product has been added to your collection <br/>
                <br/><br/> <a href="https://ecommerce-tech-titans.herokuapp.com/api/v1/user/login">Please login in to check your collection</a> <br/><br/>
                Expired products are: <br/><br/></br><label><strong>Product Name : &nbsp; &nbsp; </strong></label> ${product.name} <br/></br></br><label><strong>Product Decription : &nbsp; &nbsp;</strong></label> ${product.description} <br/></br></br> <label><strong>Product Price : &nbsp; &nbsp;</strong></label>${product.price} <br/>
@@ -113,7 +113,7 @@ const notifyVendorOnProductDeletion = async (product) => {
         const vendor = await User.findOne({ where: { id: product.vendorId } });
         if (vendor) {
             const to = vendor.email;
-            const subject = "Product Deletion update";
+            const subject = `${product.name} deleted from your collection`;
             const text = `Dear,</br> Vendor <br/><br/><strong>${vendor.fullname}</strong><br/><br/>One of your product has been deleted from your collection <br/>
                <br/><br/> <a href="https://ecommerce-tech-titans.herokuapp.com/api/v1/user/login">Please login in to check your collection</a> <br/><br/>
                Expired products are: <br/><br/></br><label><strong>Product Name : &nbsp; &nbsp; </strong></label> ${product.name} <br/></br></br><label><strong>Product Decription : &nbsp; &nbsp;</strong></label> ${product.description} <br/></br></br> <label><strong>Product Price : &nbsp; &nbsp;</strong></label>${product.price} <br/>
