@@ -252,7 +252,7 @@ class sendEmail {
   static sendProductExpired(to, subject, text) {
     const { USER_EMAIL, USER_PASS } = process.env;
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
         user: USER_EMAIL,
         pass: USER_PASS,
@@ -275,11 +275,10 @@ class sendEmail {
     });
   }
 
-
-  static sendNotifications(to,subject, text) {
+  static sendNotifications(to, subject, text) {
     const { USER_EMAIL, USER_PASS } = process.env;
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
         user: USER_EMAIL,
         pass: USER_PASS,
@@ -294,18 +293,13 @@ class sendEmail {
       from: USER_EMAIL,
       to,
       subject,
-      html:text,
+      html: text,
     };
     transporter.sendMail(mailOptions, (err, success) => {
       if (err) return err;
       return success;
     });
   }
-
-
 }
-
-
-
 
 export default sendEmail;
