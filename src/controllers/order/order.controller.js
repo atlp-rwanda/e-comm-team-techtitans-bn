@@ -44,6 +44,8 @@ export const createOrder = async (req, res) => {
     const restoken = JwtUtility.generateToken(
       {
         total_price: cart.total,
+        amount: cart.total,
+        total: cart.total,
       },
       '1y',
     );
