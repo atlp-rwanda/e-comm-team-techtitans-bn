@@ -11,6 +11,7 @@ import {
   addCategory,
   addProduct,
   findAllCategories,
+  findAllProductsByCategory,
   findAllproducts,
   findAvailableProducts,
   outOfStockStatusUpdate,
@@ -32,6 +33,8 @@ const productRouter = express.Router();
 // Create a new Product
 productRouter.post("/category/create", addCategory);
 productRouter.get("/category", findAllCategories);
+productRouter.get("/category/:name", findAllProductsByCategory);
+// productRouter.get("/category/:id", findAllProductsByCategory);
 productRouter.post(
   "/product/create",
   isSeller,
@@ -91,7 +94,7 @@ productRouter.delete(
 productRouter.get("/product/list/search", productSearch);
 productRouter.post("/wishlist", isBuyer, wishlist);
 productRouter.get("/wishlist/:token", getAllWishes);
- productRouter.delete("/wishlist/", isBuyer, removeWishlistItem);
+productRouter.delete("/wishlist/", isBuyer, removeWishlistItem);
 // buyer view all products
 productRouter.get("/product/all/viewAvailable", buyerViewProduct);
 export default productRouter;

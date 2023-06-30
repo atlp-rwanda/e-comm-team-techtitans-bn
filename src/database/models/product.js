@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       Product.belongsTo(models.Category, {
         foreignKey: "categoryId",
+        as:"categoryProducts",
         onDelete: "CASCADE",
       });
       Product.hasMany(models.Order, {
